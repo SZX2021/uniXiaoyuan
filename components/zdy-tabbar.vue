@@ -100,18 +100,20 @@
   }
 
   .tabbar-container .item-active {
-    color: #0000d3;
+    color: #ffb82a;
   }
 
   .tabbar-container .center-item {
     display: block;
     position: relative;
+
   }
 
   .tabbar-container .tabbar-item .item-top {
     width: 70rpx;
     height: 70rpx;
     padding: 10rpx;
+
   }
 
   .tabbar-container .center-item .item-top {
@@ -123,7 +125,7 @@
     left: calc(50% - 50rpx);
     border-radius: 50%;
     box-shadow: 0 0 5px #999;
-    background-color: #ffffff;
+    background-color: #ffb82a;
     overflow: hidden;
     padding: 20rpx;
   }
