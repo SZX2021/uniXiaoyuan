@@ -28,7 +28,7 @@ view {
   text-align: center;
 }
 .tabbar-container .item-active {
-  color: #ffb82a;
+  color: #089bd5;
 }
 .tabbar-container .center-item {
   display: block;
@@ -44,11 +44,11 @@ view {
   width: 100rpx;
   height: 100rpx;
   position: absolute;
-  top: -50rpx;
+  top: -60rpx;
   left: calc(50% - 50rpx);
   border-radius: 50%;
   box-shadow: 0 0 5px #999;
-  background-color: #ffb82a;
+  background-color: #089bd5;
   overflow: hidden;
   padding: 20rpx;
 }

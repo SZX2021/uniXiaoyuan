@@ -1,3 +1,10 @@
+<!-- 自定义tabbar组件 -->
+<!-- 然后再 main.js文件中引入并注册 -->
+<!-- 引入 -->
+<!-- import zdyTabbar from "components/zdy-tabbar.vue" -->
+<!-- 注册全局组件 -->
+<!-- Vue.component('zdy-tabbar', zdyTabbar) -->
+
 <template>
   <view class="tabbar-container">
     <block>
@@ -12,7 +19,7 @@
       </view>
     </block>
   </view>
-</template>
+</template>git checkout master
 
 <script>
   export default {
@@ -100,7 +107,7 @@
   }
 
   .tabbar-container .item-active {
-    color: #ffb82a;
+    color: #089bd5;
   }
 
   .tabbar-container .center-item {
@@ -121,11 +128,11 @@
     width: 100rpx;
     height: 100rpx;
     position: absolute;
-    top: -50rpx;
+    top: -60rpx;
     left: calc(50% - 50rpx);
     border-radius: 50%;
     box-shadow: 0 0 5px #999;
-    background-color: #ffb82a;
+    background-color: #089bd5;
     overflow: hidden;
     padding: 20rpx;
   }
