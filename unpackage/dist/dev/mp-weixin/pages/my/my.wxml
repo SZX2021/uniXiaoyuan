@@ -1,1 +1,1 @@
-<view>我的个人页面</view>
+<view>我的个人页面<zdy-tabbar vue-id="704e9d00-1" current-page="{{2}}" bind:__l="__l"></zdy-tabbar></view>

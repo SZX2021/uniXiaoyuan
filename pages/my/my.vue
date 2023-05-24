@@ -1,6 +1,7 @@
 <template>
   <view>
     我的个人页面
+    <zdy-tabbar :current-page="2"></zdy-tabbar>
   </view>
 </template>
 

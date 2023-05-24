@@ -48,6 +48,11 @@
       "selectedIconPath": "static/list_active.png",
       "text": "主页"
     }, {
+      "pagePath": "pages/publish/publish",
+      "iconPath": "static/logo.png",
+      "selectedIconPath": "static/logo.png",
+      "text": "发布"
+    }, {
       "pagePath": "pages/my/my",
       "iconPath": "static/me.png",
       "selectedIconPath": "static/me_active.png",
