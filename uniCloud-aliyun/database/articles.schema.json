@@ -1,0 +1,58 @@
+// 文档教程: https://uniapp.dcloud.net.cn/uniCloud/schema
+{
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": true,
+		"create": true,
+		"update": true,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "文章ID，系统自动生成"
+		},
+		"content": {
+			"bsonType": "string",
+			"description": "文章内容"
+		},
+		"images": {
+			"bsonType": "array",
+			"arrayType": "file"
+		},
+		"author": {
+			"bsonType": "string",
+			"description": "发布者",
+			"defaultValue": "表白墙体验版"
+		},
+		"category": {
+			"bsonType": "string",
+			"description": "文章分类",
+			"defaultValue": "其他"
+		},
+		"time": {
+			"description": "发布时间"
+		},
+		"views": {
+			"bsonType": "int",
+			"description": "浏览数量",
+			"defaultValue": 0
+		},
+		"likes": {
+			"bsonType": "int",
+			"description": "点赞数量",
+			"defaultValue": 0
+		},
+		"comments": {
+			"bsonType": "int",
+			"description": "评论数量",
+			"defaultValue": 0
+		},
+		"shares": {
+			"bsonType": "int",
+			"description": "分享数量",
+			"defaultValue": 0
+		}
+		
+	}
+}
