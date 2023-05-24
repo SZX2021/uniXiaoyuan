@@ -1,20 +1,20 @@
 <template>
-	<view>
-		
-	</view>
+  <view>
+    首页
+  </view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				
-			}
-		},
-		methods: {
-			
-		}
-	}
+  export default {
+    data() {
+      return {
+
+      }
+    },
+    methods: {
+
+    }
+  }
 </script>
 
 <style>
