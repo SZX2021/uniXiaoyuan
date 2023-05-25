@@ -12,18 +12,18 @@
 		"_id": {
 			"description": "评论ID，系统自动生成"
 		},
-		"articleId": {
+		"article_id": {
 			"description": "文章ID"
 		},
-		"message": {
+		"content": {
 			"bsonType": "string",
 			"description": "评论内容"
 		},
-		"commenterId": {
+		"commenter_id": {
 			"bsonType": "string",
 			"description": "评论者Id"
 		},
-		"commenterInfo": {
+		"commenter_info": {
 			"bsonType": "object",
 			"description": "评论者头像和昵称"
 		},
@@ -31,11 +31,11 @@
 			"bsonType": "string",
 			"description": "评论时间"
 		},
-		"likes": {
+		"like_num": {
 			"bsonType": "int",
 			"description": "点赞数量"
 		},
-		"comments": {
+		"comment_num": {
 			"bsonType": "int",
 			"description": "评论数量"
 		}

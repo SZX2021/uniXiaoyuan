@@ -12,20 +12,20 @@
 		"_id": {
 			"description": "回复ID，系统自动生成"
 		},
-		"commentId": {
+		"comment_id": {
 			"description": "回复所属评论的id"
 		},
 		"author": {
 			"description": "回复作者"
 		},
-		"content": {
+		"content_reply": {
 			"description": "回复内容"
 		},
 		"time": {
 			"bsonType": "date",
 			"description": "回复时间"
 		},
-		"likes": {
+		"like_num": {
 			"bsonType": "int",
 			"description": "点赞数"
 		}

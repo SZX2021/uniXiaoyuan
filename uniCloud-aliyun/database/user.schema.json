@@ -10,10 +10,14 @@
 	},
 	"properties": {
 		"_id": {
-			"description": "ID，系统自动生成"
+			"description": "openid"
 		},
-		"avatar": {
-			"description": "表白墙头像"
+		"user_name": {
+			"bsonType": "string"
+		},
+		"user_avatar": {
+			"bsonType": "file",
+			"description": "头像"
 		}
 	}
 }
