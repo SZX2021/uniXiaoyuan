@@ -1,9 +1,9 @@
 {
   "pages": [
+    "pages/publish/publish",
     "pages/home/home",
     "pages/my/my",
-    "pages/detail/detail",
-    "pages/publish/publish"
+    "pages/detail/detail"
   ],
   "subPackages": [],
   "window": {

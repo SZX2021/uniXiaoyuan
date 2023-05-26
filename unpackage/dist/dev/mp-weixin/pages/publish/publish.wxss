@@ -1,0 +1,13 @@
+
+.card {
+	width: 90%;
+	border-radius: 20rpx;
+	background-color: #f8f8f8;
+}
+.button {
+	border-radius: 50rpx;
+	width: 90%;
+	font-weight: bold;
+	background-color: #FCC53A;
+}
+
