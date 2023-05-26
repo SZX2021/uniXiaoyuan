@@ -12,11 +12,11 @@
 		"_id": {
 			"description": "ID，系统自动生成"
 		},
-		"articleId": {
+		"article_id": {
 			"bsonType": "string",
 			"description": "点赞文章Id"
 		},
-		"userId": {
+		"user_id": {
 			"bsonType": "string",
 			"description": "点赞用户Id"
 		}
