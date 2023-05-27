@@ -22,7 +22,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 wx.__webpack_require_UNI_MP_PLUGIN__ = __webpack_require__;
 var zdyTabbar = function zdyTabbar() {
   __webpack_require__.e(/*! require.ensure | components/zdy-tabbar */ "components/zdy-tabbar").then((function () {
-    return resolve(__webpack_require__(/*! components/zdy-tabbar.vue */ 58));
+    return resolve(__webpack_require__(/*! components/zdy-tabbar.vue */ 60));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 // 注册全局组件
