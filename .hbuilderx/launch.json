@@ -6,6 +6,13 @@
      	{
      		"launchtype" : "local"
      	},
+<<<<<<< HEAD
+=======
+     	"h5" : 
+     	{
+     		"launchtype" : "local"
+     	},
+>>>>>>> e6b8cb0e068034377d8b22f2ec0c2f774d9cb444
      	"mp-weixin" : 
      	{
      		"launchtype" : "local"

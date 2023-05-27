@@ -9455,9 +9455,15 @@ internalMixin(Vue);
 
 /***/ }),
 /* 26 */
+<<<<<<< HEAD
 /*!******************************************!*\
   !*** D:/testcode/uniXiaoyuan/pages.json ***!
   \******************************************/
+=======
+/*!***********************************************!*\
+  !*** D:/testcode/uniXiaoyuan-main/pages.json ***!
+  \***********************************************/
+>>>>>>> e6b8cb0e068034377d8b22f2ec0c2f774d9cb444
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -9601,9 +9607,15 @@ function normalizeComponent (
 
 /***/ }),
 /* 33 */
+<<<<<<< HEAD
 /*!********************************************************!*\
   !*** D:/testcode/uniXiaoyuan/uni.promisify.adaptor.js ***!
   \********************************************************/
+=======
+/*!*************************************************************!*\
+  !*** D:/testcode/uniXiaoyuan-main/uni.promisify.adaptor.js ***!
+  \*************************************************************/
+>>>>>>> e6b8cb0e068034377d8b22f2ec0c2f774d9cb444
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
