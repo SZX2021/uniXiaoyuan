@@ -15,12 +15,8 @@
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
-<<<<<<< HEAD
-    }
-=======
     },
     "condition": false
->>>>>>> 76e2f3cb1c1c434489b9c17c90e86d0bcaf3dc1d
   },
   "compileType": "miniprogram",
   "libVersion": "2.32.0",

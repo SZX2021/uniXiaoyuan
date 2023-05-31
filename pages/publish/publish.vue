@@ -4,9 +4,9 @@
 			<!-- 文本 -->
 			<textarea class="text" placeholder="请输入投稿内容{禁止引战,不完整信息,广告}" :maxlength="400" v-model="content"></textarea>
 			<!-- 输入框右下角，字数限制 -->
-			<view style="align-self: flex-end;color: #f8f8f8;">{{content.length}}/400</view>
+			<view style="align-self: flex-end;color: #808080;">{{content.length}}/400</view>
 			<!-- 照片 -->
-			<uni-file-picker file-mediatype="image" :limit="9"></uni-file-picker>
+			<uni-file-picker file-mediatype="image" :limit="9" @select="select" @fail="fail"></uni-file-picker>
 			<!-- 分类标签 -->
 			<view class="tags">
 				<uni-tag class="tag" :circle="true" v-for="(tag,index) in tags" :key="index" :inverted="tag.inverted"
@@ -17,11 +17,11 @@
 			<view class="niming">
 				<text style="font-size: 24rpx;">开启匿名模式</text>
 
-				<switch color="#FCC53A" style="transform: scale(0.7);" />
+				<switch color="#FCC53A" style="transform: scale(0.7);" @change="isNiming"/>
 			</view>
 		</view>
 
-		<button class="button">发布投稿</button>
+		<button class="button" @click="uploadForm">发布投稿</button>
 		<zdy-tabbar :current-page="1"></zdy-tabbar>
 	</view>
 </template>
@@ -44,6 +44,8 @@
 					},
 				],
 				content: '',
+				files: [],
+				nimingFlag: false,
 			}
 		},
 		methods: {
@@ -51,6 +53,55 @@
 				this.tags.forEach(item => item.inverted = true);
 				this.tags[index].inverted = !this.tags[index].inverted;
 				console.log("输出内容：", index)
+			},
+
+			// 获取上传状态
+			select(e) {
+				console.log('选择文件：', e);
+				e.tempFilePaths.forEach(item=>this.files.push(item));
+				console.log('files:',this.files)
+			},
+
+			// 上传失败
+			fail(e) {
+				uni.showToast({
+					title: "上传失败",
+					icon: "fail"
+				})
+			},
+			
+			isNiming(e){
+				this.nimingFlag = e.detail.value;
+			},
+			
+			uploadForm(){
+				// <-- 测试代码
+				let upData =  {
+						// authorInfo: uni.getStorageSync(userInfo),
+						content: this.content,
+						files: this.files,
+						category: this.tags.find(item => item.inverted === false).tag,
+						nimingFlag: this.nimingFlag
+					}
+				console.log(upData);
+				// 测试代码 -->
+				// uniCloud.callFunction({
+				// 	name: 'uploadArticle',
+				// 	data: {
+				// 		authorInfo: uni.getStorageSync(userInfo),
+				// 		content: this.content,
+				// 		files: this.files,
+				// 		category: this.tags.find(item => item.inverted === false).tag,
+				// 		nimingFlag: this.nimingFlag
+				// 	}
+				// })
+				
+				uni.switchTab({
+					url: '../home/home'
+				});
+				uni.showToast({
+					title: '发布成功'
+				});
 			}
 		}
 	}
@@ -66,7 +117,7 @@
 	.card {
 		width: 90%;
 		border-radius: 20rpx;
-		background-color: #f8f8f8;
+		background-color: white;
 		padding: 30rpx;
 		display: flex;
 		flex-direction: column;
@@ -106,5 +157,6 @@
 		width: 90%;
 		font-weight: bold;
 		background-color: #FCC53A;
+		margin-top: 40rpx;
 	}
 </style>

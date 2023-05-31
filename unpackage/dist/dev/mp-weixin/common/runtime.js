@@ -55,14 +55,11 @@
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
-<<<<<<< HEAD
-=======
 /******/ 	// object to store loaded CSS chunks
 /******/ 	var installedCssChunks = {
 /******/ 		"common/runtime": 0
 /******/ 	}
 /******/
->>>>>>> 76e2f3cb1c1c434489b9c17c90e86d0bcaf3dc1d
 /******/ 	// object to store loaded and loading chunks
 /******/ 	// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 	// Promise = chunk loading, 0 = chunk loaded
@@ -72,14 +69,11 @@
 /******/
 /******/ 	var deferredModules = [];
 /******/
-<<<<<<< HEAD
-=======
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
 /******/ 		return __webpack_require__.p + "" + chunkId + ".js"
 /******/ 	}
 /******/
->>>>>>> 76e2f3cb1c1c434489b9c17c90e86d0bcaf3dc1d
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/
@@ -104,8 +98,6 @@
 /******/ 		return module.exports;
 /******/ 	}
 /******/
-<<<<<<< HEAD
-=======
 /******/ 	// This file contains only the entry chunk.
 /******/ 	// The chunk loading function for additional chunks
 /******/ 	__webpack_require__.e = function requireEnsure(chunkId) {
@@ -113,11 +105,11 @@
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"components/zdy-tabbar":1,"uni_modules/uni-file-picker/components/uni-file-picker/uni-file-picker":1,"uni_modules/uni-tag/components/uni-tag/uni-tag":1,"uni_modules/uni-file-picker/components/uni-file-picker/upload-file":1,"uni_modules/uni-file-picker/components/uni-file-picker/upload-image":1};
+/******/ 		var cssChunks = {"components/zdy-tabbar":1,"uni_modules/uni-icons/components/uni-icons/uni-icons":1,"uni_modules/uni-segmented-control/components/uni-segmented-control/uni-segmented-control":1,"uni_modules/uni-file-picker/components/uni-file-picker/uni-file-picker":1,"uni_modules/uni-tag/components/uni-tag/uni-tag":1,"uni_modules/uni-file-picker/components/uni-file-picker/upload-file":1,"uni_modules/uni-file-picker/components/uni-file-picker/upload-image":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
-/******/ 				var href = "" + ({"components/zdy-tabbar":"components/zdy-tabbar","uni_modules/uni-file-picker/components/uni-file-picker/uni-file-picker":"uni_modules/uni-file-picker/components/uni-file-picker/uni-file-picker","uni_modules/uni-tag/components/uni-tag/uni-tag":"uni_modules/uni-tag/components/uni-tag/uni-tag","uni_modules/uni-file-picker/components/uni-file-picker/upload-file":"uni_modules/uni-file-picker/components/uni-file-picker/upload-file","uni_modules/uni-file-picker/components/uni-file-picker/upload-image":"uni_modules/uni-file-picker/components/uni-file-picker/upload-image"}[chunkId]||chunkId) + ".wxss";
+/******/ 				var href = "" + ({"components/zdy-tabbar":"components/zdy-tabbar","uni_modules/uni-dateformat/components/uni-dateformat/uni-dateformat":"uni_modules/uni-dateformat/components/uni-dateformat/uni-dateformat","uni_modules/uni-icons/components/uni-icons/uni-icons":"uni_modules/uni-icons/components/uni-icons/uni-icons","uni_modules/uni-segmented-control/components/uni-segmented-control/uni-segmented-control":"uni_modules/uni-segmented-control/components/uni-segmented-control/uni-segmented-control","uni_modules/uni-file-picker/components/uni-file-picker/uni-file-picker":"uni_modules/uni-file-picker/components/uni-file-picker/uni-file-picker","uni_modules/uni-tag/components/uni-tag/uni-tag":"uni_modules/uni-tag/components/uni-tag/uni-tag","uni_modules/uni-file-picker/components/uni-file-picker/upload-file":"uni_modules/uni-file-picker/components/uni-file-picker/upload-file","uni_modules/uni-file-picker/components/uni-file-picker/upload-image":"uni_modules/uni-file-picker/components/uni-file-picker/upload-image"}[chunkId]||chunkId) + ".wxss";
 /******/ 				var fullhref = __webpack_require__.p + href;
 /******/ 				var existingLinkTags = document.getElementsByTagName("link");
 /******/ 				for(var i = 0; i < existingLinkTags.length; i++) {
@@ -208,7 +200,6 @@
 /******/ 		}
 /******/ 		return Promise.all(promises);
 /******/ 	};
->>>>>>> 76e2f3cb1c1c434489b9c17c90e86d0bcaf3dc1d
 /******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
@@ -262,12 +253,9 @@
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "/";
 /******/
-<<<<<<< HEAD
-=======
 /******/ 	// on error function for async loading
 /******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
 /******/
->>>>>>> 76e2f3cb1c1c434489b9c17c90e86d0bcaf3dc1d
 /******/ 	var jsonpArray = global["webpackJsonp"] = global["webpackJsonp"] || [];
 /******/ 	var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
 /******/ 	jsonpArray.push = webpackJsonpCallback;

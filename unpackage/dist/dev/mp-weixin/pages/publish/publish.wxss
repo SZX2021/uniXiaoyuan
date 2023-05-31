@@ -7,7 +7,7 @@
 .card {
 	width: 90%;
 	border-radius: 20rpx;
-	background-color: #f8f8f8;
+	background-color: white;
 	padding: 30rpx;
 	display: flex;
 	flex-direction: column;
@@ -41,5 +41,6 @@
 	width: 90%;
 	font-weight: bold;
 	background-color: #FCC53A;
+	margin-top: 40rpx;
 }
 

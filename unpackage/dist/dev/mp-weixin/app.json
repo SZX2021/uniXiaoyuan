@@ -1,16 +1,9 @@
 {
   "pages": [
-<<<<<<< HEAD
     "pages/home/home",
-    "pages/my/my",
-    "pages/detail/detail",
-    "pages/publish/publish"
-=======
     "pages/publish/publish",
-    "pages/home/home",
     "pages/my/my",
     "pages/detail/detail"
->>>>>>> 76e2f3cb1c1c434489b9c17c90e86d0bcaf3dc1d
   ],
   "subPackages": [],
   "window": {
@@ -19,9 +12,6 @@
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
-<<<<<<< HEAD
-  "usingComponents": {}
-=======
   "tabBar": {
     "color": "#7A7E83",
     "selectedColor": "#008077",
@@ -51,5 +41,4 @@
   "usingComponents": {
     "zdy-tabbar": "/components/zdy-tabbar"
   }
->>>>>>> 76e2f3cb1c1c434489b9c17c90e86d0bcaf3dc1d
 }
