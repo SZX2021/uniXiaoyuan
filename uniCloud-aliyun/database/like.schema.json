@@ -14,11 +14,13 @@
 		},
 		"article_id": {
 			"bsonType": "string",
-			"description": "点赞文章Id"
+			"description": "点赞文章Id",
+			"foreignKey": "article._id"
 		},
 		"user_id": {
 			"bsonType": "string",
-			"description": "点赞用户Id"
+			"description": "点赞用户Id",
+			"foreignKey": "user._id"
 		}
 	}
 }

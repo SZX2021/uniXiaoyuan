@@ -9,4 +9,12 @@
 // 详细JQL语法，请参考：https://uniapp.dcloud.net.cn/uniCloud/jql.html
 
 // 下面示例查询uni-id-users表的所有数据
-db.collection('uni-id-users').get();
+db.collection('comment').add({
+	"article_id": "64785af109e298a239d31987",
+	"content": "第一次",
+	"commenter_id": "001",
+	"time":Date.now,
+	"like_num":1,
+	"comment_num": 2
+})
+

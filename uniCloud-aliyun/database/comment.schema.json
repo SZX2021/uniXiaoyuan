@@ -13,7 +13,8 @@
 			"description": "评论ID，系统自动生成"
 		},
 		"article_id": {
-			"description": "文章ID"
+			"description": "文章ID",
+			"foreignKey": "article._id"
 		},
 		"content": {
 			"bsonType": "string",
@@ -21,11 +22,8 @@
 		},
 		"commenter_id": {
 			"bsonType": "string",
-			"description": "评论者Id"
-		},
-		"commenter_info": {
-			"bsonType": "object",
-			"description": "评论者头像和昵称"
+			"description": "评论者Id",
+			"foreignKey": "user._id"
 		},
 		"time": {
 			"bsonType": "string",
@@ -35,7 +33,7 @@
 			"bsonType": "int",
 			"description": "点赞数量"
 		},
-		"comment_num": {
+		"reply_num": {
 			"bsonType": "int",
 			"description": "评论数量"
 		}

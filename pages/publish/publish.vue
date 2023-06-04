@@ -6,7 +6,7 @@
 			<!-- 输入框右下角，字数限制 -->
 			<view style="align-self: flex-end;color: #808080;">{{content.length}}/400</view>
 			<!-- 照片 -->
-			<uni-file-picker file-mediatype="image" :limit="9" @select="select" @fail="fail"></uni-file-picker>
+			<uni-file-picker file-mediatype="image" :limit="9" ref="images" :auto-upload="false" @success="success" @fail="fail"></uni-file-picker>
 			<!-- 分类标签 -->
 			<view class="tags">
 				<uni-tag class="tag" :circle="true" v-for="(tag,index) in tags" :key="index" :inverted="tag.inverted"
@@ -17,7 +17,7 @@
 			<view class="niming">
 				<text style="font-size: 24rpx;">开启匿名模式</text>
 
-				<switch color="#FCC53A" style="transform: scale(0.7);" @change="isNiming"/>
+				<switch color="#FCC53A" :checked="nimingFlag" style="transform: scale(0.7);" @change="isNiming"/>
 			</view>
 		</view>
 
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+	const db = uniCloud.database();
 	export default {
 		data() {
 			return {
@@ -44,61 +45,54 @@
 					},
 				],
 				content: '',
-				files: [],
+				images: [],
 				nimingFlag: false,
+				
 			}
 		},
 		methods: {
+			// 用于选择标签
 			setInverted(index) {
 				this.tags.forEach(item => item.inverted = true);
 				this.tags[index].inverted = !this.tags[index].inverted;
-				console.log("输出内容：", index)
 			},
 
-			// 获取上传状态
-			select(e) {
-				console.log('选择文件：', e);
-				e.tempFilePaths.forEach(item=>this.files.push(item));
-				console.log('files:',this.files)
+			success(e){
+				this.images = e.tempFilePaths;//将上传后的图片地址赋值给this.images
 			},
 
-			// 上传失败
+			// 图片上传失败
 			fail(e) {
 				uni.showToast({
 					title: "上传失败",
 					icon: "fail"
 				})
 			},
-			
+			// 是否匿名
 			isNiming(e){
-				this.nimingFlag = e.detail.value;
+				this.nimingFlag = e.detail.value;//赋值给nimingFlag用于添加数据库时使用
+				console.log(e.detail.value)
 			},
 			
 			uploadForm(){
-				// <-- 测试代码
-				let upData =  {
-						// authorInfo: uni.getStorageSync(userInfo),
-						content: this.content,
-						files: this.files,
-						category: this.tags.find(item => item.inverted === false).tag,
-						nimingFlag: this.nimingFlag
-					}
-				console.log(upData);
-				// 测试代码 -->
-				// uniCloud.callFunction({
-				// 	name: 'uploadArticle',
-				// 	data: {
-				// 		authorInfo: uni.getStorageSync(userInfo),
-				// 		content: this.content,
-				// 		files: this.files,
-				// 		category: this.tags.find(item => item.inverted === false).tag,
-				// 		nimingFlag: this.nimingFlag
-				// 	}
-				// })
+				uni.showLoading({
+					title: '发布中...'
+				});
+				this.$refs.images.upload();//将选中的图片上传到云储存
 				
-				uni.switchTab({
+				db.collection('article').add({
+					authorInfo: uni.getStorageSync('userInfo'),
+					content: this.content,
+					images: this.images,
+					category: this.tags.find(item => item.inverted === false).tag,
+					nimingFlag: this.nimingFlag,
+					time: Date.now(),
+				}).then(()=>uni.hideLoading);
+				
+				uni.redirectTo({
 					url: '../home/home'
 				});
+				
 				uni.showToast({
 					title: '发布成功'
 				});

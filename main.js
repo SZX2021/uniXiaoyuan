@@ -6,11 +6,14 @@ Vue.component('zdy-tabbar', zdyTabbar)
 
 // #ifndef VUE3
 import Vue from 'vue'
+import store from './store/index.js'
+Vue.prototype.$store = store
 import './uni.promisify.adaptor'
 Vue.config.productionTip = false
 App.mpType = 'app'
 const app = new Vue({
-  ...App
+  ...App,
+  store
 })
 app.$mount()
 // #endif

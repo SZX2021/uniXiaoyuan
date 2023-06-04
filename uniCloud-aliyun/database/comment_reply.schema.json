@@ -13,10 +13,12 @@
 			"description": "回复ID，系统自动生成"
 		},
 		"comment_id": {
-			"description": "回复所属评论的id"
+			"description": "回复所属评论的id",
+			"foreignKey": "comment._id"
 		},
-		"author": {
-			"description": "回复作者"
+		"author_id": {
+			"description": "回复作者",
+			"foreignKey": "user._id"
 		},
 		"content_reply": {
 			"description": "回复内容"
