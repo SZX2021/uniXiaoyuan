@@ -3,7 +3,10 @@
     "pages/home/home",
     "pages/my/my",
     "pages/detail/detail",
-    "pages/publish/publish"
+    "pages/publish/publish",
+    "pages/my/components/About",
+    "pages/my/components/AboutInfo",
+    "pages/my/components/userInfo"
   ],
   "subPackages": [],
   "window": {
@@ -40,5 +43,6 @@
   },
   "usingComponents": {
     "zdy-tabbar": "/components/zdy-tabbar"
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }
