@@ -2,7 +2,7 @@
   "name": "getArticleData",
   "dependencies": {},
   "extensions": {
-    "uni-cloud-jql": {},
-    "uni-cloud-redis": {}
+    "uni-cloud-redis": {},
+    "uni-cloud-jql": {}
   }
 }

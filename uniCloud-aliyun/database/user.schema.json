@@ -3,7 +3,7 @@
 	"bsonType": "object",
 	"required": [],
 	"permission": {
-		"read": false,
+		"read": true,
 		"create": false,
 		"update": false,
 		"delete": false
@@ -16,7 +16,6 @@
 			"bsonType": "string"
 		},
 		"user_avatar": {
-			"bsonType": "file",
 			"description": "头像"
 		}
 	}

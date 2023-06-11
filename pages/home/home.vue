@@ -1,6 +1,5 @@
 <template>
 	<view style="display: flex;flex-direction: column;">
-		<button type="primary" @click="huoqu">获取数据</button>
 		<swiper autoplay circular class="lunbotu">
 			<swiper-item v-for="(item,index1) in swipers " :key="index1">
 				<image :src="item"></image>
@@ -26,7 +25,7 @@
 									:threshold="[60000,3600000,86400000]"></uni-dateformat> </view> <!-- 发布时间 -->
 						</view>
 					</view>
-					<view @click="toDetail()" class="article-list-card-content">
+					<view @click="toDetail(item._id,false)" class="article-list-card-content">
 						{{item.content}} <!-- 发布内容 -->
 					</view>
 					<view class="article-list-card-data">
@@ -35,7 +34,7 @@
 							<text>次</text>
 						</view><!--例：浏览量 29次 -->
 						<view class="article-list-card-data-right">
-							<uni-icons type="chat" size='40rpx' @click="toDetail('comment')"></uni-icons>
+							<uni-icons type="chat" size='40rpx' @click="toDetail(item._id,true)"></uni-icons>
 							<view style="margin-right: 20rpx;font-size: 22rpx;">{{item.comment_num}}</view>
 							<uni-icons type="hand-up" size='40rpx' v-if="liked===false" @click="likeClicked('add')" />
 							<uni-icons type="hand-up-filled" size='40rpx' v-else @click="likeClicked('sub')" />
@@ -67,10 +66,7 @@
 			}
 		},
 		onLoad() {
-			
-			// console.log('home66:',this.$store.state.userInfo);
-			// uni.setStorageSync('userInfo', {'userName':'haha','userAvatar':'../../static/home/avatar.jpg'});
-			
+			this.$store.dispatch('getArticle');	
 		},
 		computed: {
 			article(){
@@ -78,22 +74,16 @@
 			}
 		},
 		methods: {
-			huoqu(){
-				this.$store.dispatch('getArticle');
-			},
 			onClickItem(e) {
 				if (this.current !== e.currentIndex) {
 					this.current = e.currentIndex
 				};
-				console.log('home35：', e.currentIndex)
+	
 			},
-			toDetail(value) {
+			toDetail(value,flag) {
 				uni.navigateTo({
-					url: '../detail/detail'
+					url: `../detail/detail?article_id=${value}&isShowKeyboard=${flag}`
 				});
-				// if(value==='comment'){
-				// 	弹出键盘
-				// }
 			},
 			likeClicked() {
 

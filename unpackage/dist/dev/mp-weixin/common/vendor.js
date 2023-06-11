@@ -780,8 +780,8 @@ function populateParameters(result) {
     appVersion: "1.0.0",
     appVersionCode: "100",
     appLanguage: getAppLanguage(hostLanguage),
-    uniCompileVersion: "3.8.3",
-    uniRuntimeVersion: "3.8.3",
+    uniCompileVersion: "3.8.4",
+    uniRuntimeVersion: "3.8.4",
     uniPlatform: undefined || "mp-weixin",
     deviceBrand: deviceBrand,
     deviceModel: model,
@@ -17613,20 +17613,47 @@ var store = new _vuex.default.Store({
     addArticle: function addArticle(state, value) {
       var _state$article;
       (_state$article = state.article).push.apply(_state$article, (0, _toConsumableArray2.default)(value));
+    },
+    addComment: function addComment(state, _ref) {
+      var index = _ref.index,
+        value = _ref.value;
+      _vue.default.set(state.article[index], "comment", value);
+    },
+    tempAddComment: function tempAddComment(state, _ref2) {
+      var index = _ref2.index,
+        value = _ref2.value;
+      _vue.default.set(state.article[index].comment, [0], value);
     }
   },
   actions: {
     //相当于异步的操作,不能直接改变state的值，只能通过触发mutations的方法才能改变
     getArticle: function getArticle(context) {
       uniCloud.callFunction({
-        name: 'getArticleData',
+        name: 'getArticle',
         data: {
           skipcount: context.state.skipcount,
           limitcount: context.state.limitcount
         }
       }).then(function (value) {
-        return context.commit('addArticle', value.result.data);
+        return context.commit('addArticle', value.result);
       });
+      // 
+    },
+    //根据文章id获取评论数据
+    getComment: function getComment(context, _ref3) {
+      var index = _ref3.index,
+        article_id = _ref3.article_id;
+      uniCloud.callFunction({
+        name: 'getComment',
+        data: {
+          article_id: article_id
+        }
+      }).then(function (result) {
+        return context.commit('addComment', {
+          index: index,
+          value: result.result
+        });
+      }); //value =>console.log(value)
     }
   }
 });
@@ -18961,7 +18988,9 @@ uni.addInterceptor({
 /* 92 */,
 /* 93 */,
 /* 94 */,
-/* 95 */
+/* 95 */,
+/* 96 */,
+/* 97 */
 /*!***************************************************************************************************!*\
   !*** D:/testcode/uniXiaoyuan/uni_modules/uni-dateformat/components/uni-dateformat/date-format.js ***!
   \***************************************************************************************************/
@@ -19178,12 +19207,12 @@ function friendlyDate(time, _ref) {
 }
 
 /***/ }),
-/* 96 */,
-/* 97 */,
 /* 98 */,
 /* 99 */,
 /* 100 */,
-/* 101 */
+/* 101 */,
+/* 102 */,
+/* 103 */
 /*!***********************************************************************************!*\
   !*** D:/testcode/uniXiaoyuan/uni_modules/uni-icons/components/uni-icons/icons.js ***!
   \***********************************************************************************/
@@ -20204,14 +20233,14 @@ var _default = {
 exports.default = _default;
 
 /***/ }),
-/* 102 */,
-/* 103 */,
 /* 104 */,
 /* 105 */,
 /* 106 */,
 /* 107 */,
 /* 108 */,
-/* 109 */
+/* 109 */,
+/* 110 */,
+/* 111 */
 /*!****************************************************************************************************************!*\
   !*** D:/testcode/uniXiaoyuan/uni_modules/uni-file-picker/components/uni-file-picker/choose-and-upload-file.js ***!
   \****************************************************************************************************************/
@@ -20426,7 +20455,7 @@ function chooseAndUploadFile() {
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/wx.js */ 1)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 27)["default"]))
 
 /***/ }),
-/* 110 */
+/* 112 */
 /*!***********************************************************************************************!*\
   !*** D:/testcode/uniXiaoyuan/uni_modules/uni-file-picker/components/uni-file-picker/utils.js ***!
   \***********************************************************************************************/

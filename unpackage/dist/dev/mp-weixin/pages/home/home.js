@@ -102,13 +102,13 @@ var components
 try {
   components = {
     uniSegmentedControl: function () {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-segmented-control/components/uni-segmented-control/uni-segmented-control */ "uni_modules/uni-segmented-control/components/uni-segmented-control/uni-segmented-control").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-segmented-control/components/uni-segmented-control/uni-segmented-control.vue */ 83))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-segmented-control/components/uni-segmented-control/uni-segmented-control */ "uni_modules/uni-segmented-control/components/uni-segmented-control/uni-segmented-control").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-segmented-control/components/uni-segmented-control/uni-segmented-control.vue */ 85))
     },
     uniDateformat: function () {
-      return Promise.all(/*! import() | uni_modules/uni-dateformat/components/uni-dateformat/uni-dateformat */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-dateformat/components/uni-dateformat/uni-dateformat")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-dateformat/components/uni-dateformat/uni-dateformat.vue */ 90))
+      return Promise.all(/*! import() | uni_modules/uni-dateformat/components/uni-dateformat/uni-dateformat */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-dateformat/components/uni-dateformat/uni-dateformat")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-dateformat/components/uni-dateformat/uni-dateformat.vue */ 92))
     },
     uniIcons: function () {
-      return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 96))
+      return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 98))
     },
   }
 } catch (e) {
@@ -228,7 +228,6 @@ exports.default = void 0;
 //
 //
 //
-//
 var _default = {
   data: function data() {
     return {
@@ -238,9 +237,7 @@ var _default = {
     };
   },
   onLoad: function onLoad() {
-
-    // console.log('home66:',this.$store.state.userInfo);
-    // uni.setStorageSync('userInfo', {'userName':'haha','userAvatar':'../../static/home/avatar.jpg'});
+    this.$store.dispatch('getArticle');
   },
   computed: {
     article: function article() {
@@ -248,23 +245,16 @@ var _default = {
     }
   },
   methods: {
-    huoqu: function huoqu() {
-      this.$store.dispatch('getArticle');
-    },
     onClickItem: function onClickItem(e) {
       if (this.current !== e.currentIndex) {
         this.current = e.currentIndex;
       }
       ;
-      console.log('home35：', e.currentIndex);
     },
-    toDetail: function toDetail(value) {
+    toDetail: function toDetail(value, flag) {
       uni.navigateTo({
-        url: '../detail/detail'
+        url: "../detail/detail?article_id=".concat(value, "&isShowKeyboard=").concat(flag)
       });
-      // if(value==='comment'){
-      // 	弹出键盘
-      // }
     },
     likeClicked: function likeClicked() {}
   }

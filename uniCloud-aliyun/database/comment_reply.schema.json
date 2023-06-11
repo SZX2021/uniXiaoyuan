@@ -16,8 +16,8 @@
 			"description": "回复所属评论的id",
 			"foreignKey": "comment._id"
 		},
-		"author_id": {
-			"description": "回复作者",
+		"replyer_id": {
+			"description": "回复者",
 			"foreignKey": "user._id"
 		},
 		"content_reply": {
