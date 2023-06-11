@@ -98,15 +98,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
-var render = function () {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-}
-var recyclableRender = false
+var render = function () {}
 var staticRenderFns = []
-render._withStripped = true
+var recyclableRender
+var components
 
 
 
@@ -133,99 +128,9 @@ __webpack_require__.r(__webpack_exports__);
   !*** ./node_modules/babel-loader/lib!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--13-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!D:/testcode/uniXiaoyuan/pages/detail/detail.vue?vue&type=script&lang=js& ***!
   \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uniCloud) {
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-var _vue = __webpack_require__(/*! vue */ 25);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default = {
-  data: function data() {
-    return {
-      content: '',
-      list: [],
-      hiddenmodalput: true
-    };
-  },
-  onLoad: function onLoad() {
-    var _this = this;
-    uniCloud.callFunction({
-      name: 'fun',
-      data: {
-        api: 'getMessages'
-      }
-    }).then(function (res) {
-      _this.list = res.result.data;
-    });
-  },
-  methods: {
-    publish: function publish() {
-      uniCloud.callFunction({
-        name: 'fun',
-        data: {
-          api: 'publish',
-          content: this.content,
-          publishTime: new Date().toLocaleDateString()
-        }
-      }).then(function (res) {
-        console.log(res);
-      });
-    },
-    modalinput: function modalinput() {
-      this.hiddenmodalput = false;
-      console.log("modalinput");
-    },
-    cancel: function cancel() {
-      this.hiddenmodalput = true;
-      console.log("cancel");
-    },
-    confirm: function confirm() {
-      this.hiddenmodalput = true;
-      console.log("confirm");
-    }
-  }
-};
-exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 27)["default"]))
+throw new Error("Module build failed (from ./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js):\nSyntaxError: Unexpected token (139:0)\n    at instantiate (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:67:32)\n    at constructor (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:364:12)\n    at TypeScriptParserMixin.raise (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:3365:19)\n    at TypeScriptParserMixin.unexpected (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:3398:16)\n    at TypeScriptParserMixin.parseExprAtom (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:11568:22)\n    at TypeScriptParserMixin.parseExprSubscripts (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:11171:23)\n    at TypeScriptParserMixin.parseUpdate (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:11153:21)\n    at TypeScriptParserMixin.parseMaybeUnary (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:11127:23)\n    at TypeScriptParserMixin.parseMaybeUnary (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:9590:20)\n    at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10956:61)\n    at TypeScriptParserMixin.parseExprOps (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10962:23)\n    at TypeScriptParserMixin.parseMaybeConditional (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10937:23)\n    at TypeScriptParserMixin.parseMaybeAssign (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10895:21)\n    at TypeScriptParserMixin.parseMaybeAssign (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:9529:20)\n    at TypeScriptParserMixin.parseExpressionBase (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10845:23)\n    at D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10840:39\n    at TypeScriptParserMixin.allowInAnd (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:12635:16)\n    at TypeScriptParserMixin.parseExpression (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:10840:17)\n    at TypeScriptParserMixin.parseStatementContent (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:13096:23)\n    at TypeScriptParserMixin.parseStatementContent (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:9223:18)\n    at TypeScriptParserMixin.parseStatementLike (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:12952:17)\n    at TypeScriptParserMixin.parseModuleItem (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:12933:17)\n    at TypeScriptParserMixin.parseBlockOrModuleBlockBody (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:13558:36)\n    at TypeScriptParserMixin.parseBlockBody (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:13550:10)\n    at TypeScriptParserMixin.parseProgram (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:12842:10)\n    at TypeScriptParserMixin.parseTopLevel (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:12832:25)\n    at TypeScriptParserMixin.parse (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:14740:10)\n    at TypeScriptParserMixin.parse (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:9891:18)\n    at Object.parse (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@babel\\parser\\lib\\index.js:14782:38)\n    at Object.<anonymous> (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@dcloudio\\webpack-uni-mp-loader\\lib\\script-new.js:90:23)\n    at Object.<anonymous> (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\@dcloudio\\webpack-uni-mp-loader\\lib\\script.js:22:36)");
 
 /***/ }),
 
@@ -250,11 +155,9 @@ __webpack_require__.r(__webpack_exports__);
   !*** ./node_modules/mini-css-extract-plugin/dist/loader.js??ref--6-oneOf-1-0!./node_modules/css-loader/dist/cjs.js??ref--6-oneOf-1-1!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--6-oneOf-1-2!./node_modules/postcss-loader/src??ref--6-oneOf-1-3!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!D:/testcode/uniXiaoyuan/pages/detail/detail.vue?vue&type=style&index=0&lang=css& ***!
   \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-// extracted by mini-css-extract-plugin
-    if(false) { var cssReload; }
-  
+throw new Error("Module build failed (from ./node_modules/mini-css-extract-plugin/dist/loader.js):\nModuleBuildError: Module build failed (from ./node_modules/postcss-loader/src/index.js):\nSyntaxError\n\n(572:1) Unknown word\n\n  570 | \t.margin_right_20{\n  571 | \t\tmargin-right: 20rpx;\n> 572 | >>>>>>> feature_publish\n      | ^\n  573 | \t}\n  574 | \n\n    at D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\webpack\\lib\\NormalModule.js:316:20\n    at D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\loader-runner\\lib\\LoaderRunner.js:367:11\n    at D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\loader-runner\\lib\\LoaderRunner.js:233:18\n    at context.callback (D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\loader-runner\\lib\\LoaderRunner.js:111:13)\n    at D:\\Programs\\HBuilderX\\plugins\\uniapp-cli\\node_modules\\postcss-loader\\src\\index.js:207:9");
 
 /***/ })
 

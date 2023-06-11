@@ -1,0 +1,8 @@
+{
+  "name": "getArticleData",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-redis": {},
+    "uni-cloud-jql": {}
+  }
+}

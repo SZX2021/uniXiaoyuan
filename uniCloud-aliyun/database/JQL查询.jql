@@ -9,4 +9,26 @@
 // 详细JQL语法，请参考：https://uniapp.dcloud.net.cn/uniCloud/jql.html
 
 // 下面示例查询uni-id-users表的所有数据
-db.collection('uni-id-users').get();
+// db.collection('user').add({
+// 	user_name: 'hahaha',
+// 	user_avatar: '../../static/home/avatar.jpg'
+// })
+// db.collection('article').add({
+// 	"view_num": 20,
+// 	"like_num": 10,
+// 	"comment_num": 20,
+// 	"author_id":"647dc2cee1a35c1a7f6050af",
+// 	"content": "007",
+// 	"images": [],
+// 	"category": "集市",
+// 	"nimingFlag": false,
+// 	"like_user_id": [],
+// 	"time": Date.now()
+// })
+db.collection('comment').add({
+    "article_id": "647e68a928064a22b19c2aac",
+    "content": "第一次",
+    "commenter_id": "001",
+    "like_num": 1,
+    "reply_num": 2
+})

@@ -85,6 +85,7 @@
 		justify-content: center;
 		padding: 5rpx 0;
 		color: #999999;
+		background-color: #f8f8f8;
 	}
 
 	.tabbar-container .tabbar-item {

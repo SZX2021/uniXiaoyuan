@@ -1,0 +1,9 @@
+{
+  "name": "uploadComment",
+  "dependencies": {
+    "jwt": "file:../common/jwt"
+  },
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}
