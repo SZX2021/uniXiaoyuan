@@ -1,13 +1,19 @@
 'use strict';
-const jwt = require('jwt'); 
+const jwt = require('jsonwebtoken'); 
+const UniSecCheck = require('uni-sec-check');
+const db = uniCloud.database();
+const dbCmd = db.command;
+
 exports.main = async (event, context) => {
 	const dbJQL = uniCloud.databaseForJQL({
 		event,
 		context
 	});
-	const openid = jwt.verifyToken(event.token,"secrect");
+	const openid = jwt.verify(event.token,"secret").openid;
+	console.log(openid);
+	console.log(context);
 	const uniSecCheck = new UniSecCheck({
-		provider: 'mp-weixin',
+		provider: "mp-weixin",
 		requestId: context.requestId,
 	});
 	const checkRes = await uniSecCheck.textSecCheck({
@@ -16,6 +22,7 @@ exports.main = async (event, context) => {
 		scene: 2, // 场景值
 		version: 2, // 接口版本号
 	});
+	
 	if(checkRes.result.suggest!="pass"){
 		return false
 	} else{
@@ -27,7 +34,7 @@ exports.main = async (event, context) => {
 			"like_num": 0,
 			"reply_num": 0,
 		});
-		dbJQL.collection('article').update({
+		db.collection('article').doc(event.article_id).update({
 				comment_num: dbCmd.inc(1)
 		})
 	}

@@ -24,7 +24,12 @@ const store = new Vuex.Store({
 			Vue.set(state.article[index],"comment",value);
 		},
 		tempAddComment(state,{index,value}){
-			Vue.set(state.article[index].comment,[0],value);
+			// state.article[index].comment.push(value);
+			Vue.set(state.article[index].comment,0,value);
+		},
+		tempAddArticle(state,{value}){
+			state.article.unshift(value);
+			// Vue.set(state.article,unshift,value);
 		}
 	},
     actions: {

@@ -1,10 +1,7 @@
 'use strict';
 let jwt = require("jsonwebtoken");
 
-const db = uniCloud.database({
-	provider: 'aliyun',
-	spaceId: 'mp-a797baca-203d-4891-8ea0-0831ebc75329'
-});
+const db = uniCloud.database();
 
 exports.main = async (event, context) => {
 	//event为客户端上传的参数
