@@ -15,11 +15,12 @@
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
-    }
+    },
+    "condition": false
   },
   "compileType": "miniprogram",
   "libVersion": "2.32.0",
-  "appid": "touristappid",
+  "appid": "wxef7aacd06e3a6784",
   "projectname": "uniXiaoyuan",
   "condition": {},
   "editorSetting": {

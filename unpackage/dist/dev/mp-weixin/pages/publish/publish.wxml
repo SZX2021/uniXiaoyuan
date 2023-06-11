@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-<view></view>
-=======
 <view>发布页<zdy-tabbar vue-id="5053b6c0-1" current-page="{{1}}" bind:__l="__l"></zdy-tabbar></view>
->>>>>>> e6b8cb0e068034377d8b22f2ec0c2f774d9cb444

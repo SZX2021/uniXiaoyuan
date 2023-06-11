@@ -3,7 +3,10 @@
     "pages/home/home",
     "pages/my/my",
     "pages/detail/detail",
-    "pages/publish/publish"
+    "pages/publish/publish",
+    "pages/my/components/About",
+    "pages/my/components/AboutInfo",
+    "pages/my/components/userInfo"
   ],
   "subPackages": [],
   "window": {
@@ -12,9 +15,6 @@
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
-<<<<<<< HEAD
-  "usingComponents": {}
-=======
   "tabBar": {
     "color": "#7A7E83",
     "selectedColor": "#008077",
@@ -44,5 +44,4 @@
   "usingComponents": {
     "zdy-tabbar": "/components/zdy-tabbar"
   }
->>>>>>> e6b8cb0e068034377d8b22f2ec0c2f774d9cb444
 }

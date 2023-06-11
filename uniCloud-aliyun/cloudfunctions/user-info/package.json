@@ -1,0 +1,9 @@
+{
+  "name": "user-info",
+  "dependencies": {
+    "jsonwebtoken": "^9.0.0"
+  },
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}
