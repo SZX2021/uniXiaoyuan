@@ -17579,13 +17579,15 @@ function normalizeComponent (
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uniCloud) {
+/* WEBPACK VAR INJECTION */(function(uniCloud, uni) {
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 28));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 31));
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ 18));
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 25));
 var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 46));
@@ -17601,7 +17603,6 @@ var store = new _vuex.default.Store({
     };
   },
   mutations: {
-    //相当于同步的操作
     addArticle: function addArticle(state, value) {
       var _state$article;
       (_state$article = state.article).push.apply(_state$article, (0, _toConsumableArray2.default)(value));
@@ -17611,27 +17612,54 @@ var store = new _vuex.default.Store({
         value = _ref.value;
       _vue.default.set(state.article[index], "comment", value);
     },
+    //提交评论后，在本地生成评论数据
     tempAddComment: function tempAddComment(state, _ref2) {
       var index = _ref2.index,
         value = _ref2.value;
-      // state.article[index].comment.push(value);
-      _vue.default.set(state.article[index].comment, 0, value);
+      var newList = [value].push(state.article[index].comment);
+      _vue.default.set(state.article[index], "comment", newList);
     },
     tempAddArticle: function tempAddArticle(state, _ref3) {
       var value = _ref3.value;
-      state.article.unshift(value);
-      // Vue.set(state.article,unshift,value);
+      var newList = [value].push(state.article);
+      state.article = newList;
+    },
+    tempSetLiked: function tempSetLiked(state, _ref4) {
+      var liked = _ref4.liked,
+        article_index = _ref4.article_index,
+        comment_index = _ref4.comment_index,
+        reply_index = _ref4.reply_index;
+      if (reply_index) {
+        state.article[article_index].comment[comment_index].reply[reply_index].liked = liked;
+        if (liked) {
+          state.article[article_index].comment[comment_index].reply[reply_index].like_num++;
+        } else {
+          tate.article[article_index].comment[comment_index].reply[reply_index].like_num--;
+        }
+      } else if (comment_index) {
+        state.article[article_index].comment[comment_index].liked = liked;
+        if (liked) {
+          state.article[article_index].comment[comment_index].like_num++;
+        } else {
+          tate.article[article_index].comment[comment_index].like_num--;
+        }
+      } else {
+        state.article[article_index].liked = liked;
+        if (liked) {
+          state.article[article_index].like_num++;
+        } else {
+          state.article[article_index].like_num--;
+        }
+      }
     }
   },
-
   actions: {
     //相当于异步的操作,不能直接改变state的值，只能通过触发mutations的方法才能改变
     getArticle: function getArticle(context) {
       uniCloud.callFunction({
         name: 'getArticle',
         data: {
-          skipcount: context.state.skipcount,
-          limitcount: context.state.limitcount
+          token: uni.getStorageSync('token')
         }
       }).then(function (value) {
         return context.commit('addArticle', value.result);
@@ -17639,26 +17667,39 @@ var store = new _vuex.default.Store({
       // 
     },
     //根据文章id获取评论数据
-    getComment: function getComment(context, _ref4) {
-      var index = _ref4.index,
-        article_id = _ref4.article_id;
-      uniCloud.callFunction({
-        name: 'getComment',
-        data: {
-          article_id: article_id
-        }
-      }).then(function (result) {
-        return context.commit('addComment', {
-          index: index,
-          value: result.result
-        });
-      }); //value =>console.log(value)
+    getComment: function getComment(context, _ref5) {
+      return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+        var index, article_id;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                index = _ref5.index, article_id = _ref5.article_id;
+                uniCloud.callFunction({
+                  name: 'getComment',
+                  data: {
+                    article_id: article_id,
+                    token: uni.getStorageSync('token')
+                  }
+                }).then(function (result) {
+                  context.commit('addComment', {
+                    index: index,
+                    value: result.result
+                  });
+                });
+              case 2:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
     }
   }
 });
 var _default = store;
 exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 27)["default"]))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 27)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
 
 /***/ }),
 /* 46 */

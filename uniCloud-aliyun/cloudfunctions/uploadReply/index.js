@@ -15,7 +15,7 @@ exports.main = async (event, context) => {
 		requestId: context.requestId,
 	});
 	const checkRes = await uniSecCheck.textSecCheck({
-		content: event.content, // 文本内容，不可超过500KB
+		content: event.content_reply, // 文本内容，不可超过500KB
 		openid, // 用户的小程序openid
 		scene: 2, // 场景值
 		version: 2, // 接口版本号
@@ -25,14 +25,16 @@ exports.main = async (event, context) => {
 		return false
 	} else{
 		
-		dbJQL.collection('comment').add({
-			"article_id": event.article_id,
-			"commenter_id": openid,
-			"content": event.content,
-			"time": event.time,
+		dbJQL.collection('comment_reply').add({
+			"replyer_id": openid,
+			"replyer_name": event.replyer_name,
+			"content_reply": event.content_reply,
 			"like_num": 0,
-			"like_user_id": [],
-			"reply_num": 0,
+			"time": event.time,
+			"comment_id": event.comment_id,
+			"replyer_to_user_name": event.replyer_to_user_name,
+			"replyer_to_user_id": event.replyer_to_user_id,
+			"like_user_id": []
 		});
 		db.collection('article').doc(event.article_id).update({
 				comment_num: dbCmd.inc(1)
@@ -40,3 +42,4 @@ exports.main = async (event, context) => {
 	}
 	
 };
+

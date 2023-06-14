@@ -19,9 +19,7 @@
 						</view>
 						<!-- 头像组件无法修改样式，在组件外加一个view用来调整外边距 -->
 						<view>
-							<view style="color: #FC965E; font-weight: bold;margin-bottom: 10rpx;">
-								{{item.authorInfo.userName}}
-							</view>
+							<view style="color: #FC965E; font-weight: bold;margin-bottom: 10rpx;">{{item.author_info.user_name}}</view>
 							<!-- 发布者 -->
 							<view style="font-size: 20rpx;color: #999999;"> <uni-dateformat :date="item.time"
 									:threshold="[60000,3600000,86400000]"></uni-dateformat> </view> <!-- 发布时间 -->
@@ -38,8 +36,8 @@
 						<view class="article-list-card-data-right">
 							<uni-icons type="chat" size='40rpx' @click="toDetail(item._id,true)"></uni-icons>
 							<view style="margin-right: 20rpx;font-size: 22rpx;">{{item.comment_num}}</view>
-							<uni-icons type="hand-up" size='40rpx' v-if="liked===false" @click="likeClicked('add')" />
-							<uni-icons type="hand-up-filled" size='40rpx' v-else @click="likeClicked('sub')" />
+							<uni-icons type="hand-up" size='40rpx' v-if="!item.liked" @click="likeClicked('add',index2,item._id)" />
+							<uni-icons type="hand-up-filled" size='40rpx' v-else @click="likeClicked('sub',index2,item._id)" />
 							<view style="font-size: 22rpx;">{{item.like_num}}</view>
 						</view>
 					</view>
@@ -59,6 +57,8 @@
 </template>
 
 <script>
+	const db = uniCloud.database();
+	const dbCmd = db.command;
 	export default {
 		data() {
 			return {
@@ -69,7 +69,11 @@
 			}
 		},
 		onLoad() {
+			uni.showLoading({
+				title: '加载中...'
+			});
 			this.$store.dispatch('getArticle');
+			uni.hideLoading();
 		},
 		computed: {
 			article() {
@@ -85,12 +89,21 @@
 			},
 			toDetail(value, flag) {
 				uni.navigateTo({
-					url: `../detail/detail?article_id=${value}&isShowKeyboard=${flag}`
+					url: `../detail/detail?article_id=${value}&isShowKeyboard=${flag}&message_type=comment`
 				});
 			},
-			likeClicked() {
-
-			}
+			likeClicked(api,index,article_id) {
+				const liked = api==="add";
+				this.$store.commit('tempSetLiked',{liked,index});
+				uniCloud.callFunction({
+					name: 'updateLike',
+					data: {
+						liked,
+						token: uni.getStorageSync('token'),
+						article_id
+					}
+				})
+			}  
 		}
 	}
 </script>

@@ -38,7 +38,7 @@
 	display: flex;
 	align-items: center;
 }
-.comment_card {
+.comment-card {
 	width: 90%;
 	border-radius: 20rpx;
 	background-color: white;
@@ -55,18 +55,19 @@
 	justify-self: start;
 	width: 100%;
 	font-weight: bold;
+	margin-bottom: 20rpx;
 }
-.detail_comment_area_data {
+.comment-card-data {
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-end;
 	width: 100%;
-	padding-left: 15%;
+	margin-bottom: 20rpx;
 }
-.detail_comment_area_data_left {
+.comment-card-data_left {
 	font-weight: bold;
 	font-size: 22rpx;
 }
-.detail_comment_area_data_right {
+.comment-card-data_right {
 	weight: 100rpx;
 	display: flex;
 	align-items: center;
@@ -95,7 +96,7 @@
 	background-color: #f8f8f8;
 	width: 100%;
 	border-radius: 5rpx;
-	padding: 20rpx;
+	padding: 20rpx 20rpx 10rpx;
 }
 .reply_head {
 	display: flex;
@@ -107,16 +108,5 @@
 	width: 100%;
 	padding-left: 15%;
 	font-weight: bold;
-}
-
-/* 公共部分 */
-.margin_bottom_20 {
-	margin-bottom: 20rpx;
-}
-.margin_bottom_30 {
-	margin-bottom: 30rpx;
-}
-.margin_right_20 {
-	margin-right: 20rpx;
 }
 

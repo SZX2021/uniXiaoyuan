@@ -1,0 +1,7 @@
+{
+  "name": "getReply",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

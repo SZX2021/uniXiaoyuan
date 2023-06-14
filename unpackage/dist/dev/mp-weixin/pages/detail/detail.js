@@ -129,14 +129,52 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var m0 = _vm.userAvatar()
-  var m1 = m0 ? _vm.userAvatar() : null
+  var m0 = _vm.avatar()
+  if (!_vm._isMounted) {
+    _vm.e0 = function () {
+      return _vm.showKeyboard(true, "comment")
+    }
+    _vm.e1 = function (item) {
+      var args = [],
+        len = arguments.length - 1
+      while (len-- > 0) args[len] = arguments[len + 1]
+
+      var _temp = args[args.length - 1].currentTarget.dataset,
+        _temp2 = _temp.eventParams || _temp["event-params"],
+        item = _temp2.item
+      var _temp, _temp2
+      return _vm.showKeyboard(
+        true,
+        "reply",
+        item._id,
+        item.commenter_info.user_name,
+        item.commenter_info._id
+      )
+    }
+    _vm.e2 = function (item, reply) {
+      var args = [],
+        len = arguments.length - 2
+      while (len-- > 0) args[len] = arguments[len + 2]
+
+      var _temp3 = args[args.length - 1].currentTarget.dataset,
+        _temp4 = _temp3.eventParams || _temp3["event-params"],
+        item = _temp4.item,
+        reply = _temp4.reply
+      var _temp3, _temp4
+      return _vm.showKeyboard(
+        true,
+        "reply",
+        item._id,
+        reply.commenter_info.user_name,
+        _vm.itme.commenter_info._id
+      )
+    }
+  }
   _vm.$mp.data = Object.assign(
     {},
     {
       $root: {
         m0: m0,
-        m1: m1,
       },
     }
   )
@@ -180,8 +218,38 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ 11));
 var _index = _interopRequireDefault(__webpack_require__(/*! @/store/index.js */ 45));
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -295,27 +363,30 @@ var _default = {
       message: '',
       //评论区输入框内容
       article_id: '',
-      articleIndex: ''
+      article_index: '',
+      message_type: String,
+      comment_id: String,
+      replyer_to_user: String,
+      replyer_to_user_id: String
     };
   },
   onLoad: function onLoad(options) {
+    uni.showLoading({
+      title: '加载中...'
+    });
     this.isShowKeyboard = JSON.parse(options.isShowKeyboard);
     this.article_id = options.article_id;
-    this.articleIndex = this.$store.state.article.findIndex(function (item) {
+    this.message_type = options.message_type;
+    this.article_index = this.$store.state.article.findIndex(function (item) {
       return item._id === options.article_id;
     });
-    if (!("comment" in this.$store.state.article[this.articleIndex])) {
+    if (!("comment" in this.$store.state.article[this.article_index])) {
       this.$store.dispatch('getComment', {
-        index: this.articleIndex,
+        index: this.article_index,
         article_id: options.article_id
       });
     }
     ;
-  },
-  onShow: function onShow() {
-    uni.showLoading({
-      title: '加载中...'
-    });
     uni.hideLoading();
   },
   computed: {
@@ -327,8 +398,12 @@ var _default = {
     }
   },
   methods: {
-    showKeyboard: function showKeyboard(flag) {
+    showKeyboard: function showKeyboard(flag, message_type, comment_id, replyer_to_user, replyer_to_user_id) {
       this.isShowKeyboard = flag;
+      this.message_type = message_type;
+      this.comment_id = comment_id;
+      this.replyer_to_user = replyer_to_user;
+      this.replyer_to_user_id = replyer_to_user_id;
     },
     sendMessage: function sendMessage() {
       var _this2 = this;
@@ -342,104 +417,133 @@ var _default = {
       uni.showLoading({
         title: '敏感内容检测中...'
       });
+      if (this.message_type === "comment") {
+        uniCloud.callFunction({
+          name: 'uploadComment',
+          data: {
+            article_id: this.article_id,
+            content: this.message,
+            token: uni.getStorageSync('token'),
+            time: Date.now()
+          }
+        }).then(function (res) {
+          uni.hideLoading();
+          console.log(res.result);
+          if (res.result) {
+            uni.showToast({
+              title: '内容敏感',
+              icon: 'error'
+            });
+          } else {
+            var data = {
+              "content": _this2.message,
+              "like_num": 0,
+              "reply_num": 0,
+              "commenter_info": uni.getStorageSync('user_info'),
+              "time": Date.now()
+            };
+            //在本地临时更新页面数据
+            _this2.$store.commit('tempAddComment', {
+              index: _this2.article_index,
+              value: data
+            });
+            _this2.message = '';
+          }
+          ;
+        });
+      }
+      ;
+      if (this.message_type === "reply") {
+        uniCloud.callFunction({
+          name: 'uploadReply',
+          data: {
+            article_id: this.article_id,
+            content_reply: this.message,
+            replyer_name: uni.getStorageSync('user_info').user_name,
+            token: uni.getStorageSync('token'),
+            time: Date.now(),
+            comment_id: this.comment_id,
+            replyer_to_user_name: this.replyer_to_user,
+            replyer_to_user_id: this.replyer_to_user_id
+          }
+        }).then(function (res) {
+          uni.hideLoading();
+          console.log(res.result);
+          if (res.result) {
+            uni.showToast({
+              title: '内容敏感',
+              icon: 'error'
+            });
+          } else {
+            var data = {
+              "content": _this2.message,
+              "like_num": 0,
+              "reply_num": 0
+            };
+            //在本地临时更新页面数据
+            _this2.$store.commit('tempAddComment', {
+              index: _this2.article_index,
+              value: data
+            });
+            _this2.message = '';
+          }
+          ;
+        });
+      }
+    },
+    articleLikeClicked: function articleLikeClicked(api, article_index, article_id) {
+      var liked = api === "add";
+      this.$store.commit('tempSetLiked', {
+        liked: liked,
+        index: index
+      });
       uniCloud.callFunction({
-        name: 'uploadComment',
+        name: 'updateLike',
         data: {
-          article_id: this.article_id,
-          content: this.message,
+          api: "article",
+          liked: liked,
           token: uni.getStorageSync('token'),
-          time: Date.now()
+          article_id: article_id
         }
-      }).then(function (res) {
-        uni.hideLoading();
-        console.log(res.result);
-        if (res.result) {
-          uni.showToast({
-            title: '内容敏感',
-            icon: 'error'
-          });
-        } else {
-          var data = {
-            "content": _this2.message,
-            "like_num": 0,
-            "reply_num": 0
-          };
-          //在本地临时更新页面数据
-          _this2.$store.commit('tempAddComment', {
-            index: _this2.articleIndex,
-            value: data
-          });
-          _this2.message = '';
-        }
-        ;
       });
     },
-    likeClicked: function likeClicked(value) {
-      // 处理点赞逻辑
-      if (value === 'add') {
-        //添加点赞数量
-        this.liked = true;
-        uniCloud.callFunction({
-          name: 'refreshArticleData',
-          data: {
-            api: 'addLikes',
-            id: this.Id
-          }
-        });
-        this.likeNumber++;
-
-        //记录点赞用户
-        uniCloud.callFunction({
-          name: 'refreshLikes',
-          data: {
-            api: 'add',
-            userToken: uni.getStorageSync('token'),
-            articleId: this.Id
-          }
-        });
-        var eventChannel = this.getOpenerEventChannel();
-        eventChannel.emit('acceptData', (0, _defineProperty2.default)({
-          liked: this.liked,
-          likeNumber: this.likeNumber,
-          commentNumber: this.commentNumber
-        }, "likeNumber", this.likeNumber));
-      }
-      ;
-      if (value === 'sub') {
-        //减少点赞数量
-        this.liked = false;
-        uniCloud.callFunction({
-          name: 'refreshArticleData',
-          data: {
-            api: 'subLikes',
-            id: this.Id
-          }
-        });
-        this.likeNumber--;
-
-        //删除特定用户点赞的文章记录
-        uniCloud.callFunction({
-          name: 'refreshLikes',
-          data: {
-            api: 'sub',
-            userToken: uni.getStorageSync('token'),
-            articleId: this.Id
-          }
-        });
-        var _eventChannel = this.getOpenerEventChannel();
-        _eventChannel.emit('acceptData', (0, _defineProperty2.default)({
-          liked: this.liked,
-          likeNumber: this.likeNumber,
-          commentNumber: this.commentNumber
-        }, "likeNumber", this.likeNumber));
-      }
-      ;
+    commentLikeClicked: function commentLikeClicked(api, article_index, comment_index, comment_id) {
+      var liked = api === "add";
+      this.$store.commit('tempSetLiked', {
+        liked: liked,
+        article_index: article_index,
+        comment_index: comment_index
+      });
+      uniCloud.callFunction({
+        name: 'updateLike',
+        data: {
+          api: "comment",
+          liked: liked,
+          token: uni.getStorageSync('token'),
+          comment_id: comment_id
+        }
+      });
+    },
+    replyLikeClicked: function replyLikeClicked(api, article_index, comment_index, reply_index, reply_id) {
+      var liked = api === "add";
+      this.$store.commit('tempSetLiked', {
+        liked: liked,
+        article_index: article_index,
+        comment_index: comment_index,
+        reply_index: reply_index
+      });
+      uniCloud.callFunction({
+        name: 'updateLike',
+        data: {
+          api: "reply",
+          liked: liked,
+          token: uni.getStorageSync('token'),
+          reply_id: reply_id
+        }
+      });
     },
     avatar: function avatar() {
-      return _index.default.state.avatar;
-    },
-    userAvatar: function userAvatar() {
-      return uni.getStorageSync('userAvatar');
+      return uni.getStorageSync('user_info').user_avatar;
     }
   }
 };

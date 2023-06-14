@@ -26,12 +26,15 @@
 			"foreignKey": "user._id"
 		},
 		"time": {
-			"bsonType": "string",
 			"description": "评论时间"
 		},
 		"like_num": {
 			"bsonType": "int",
 			"description": "点赞数量"
+		},
+		"like_user_id": {
+			"bsonType": "array",
+			"description": "点赞用户的ID"
 		},
 		"reply_num": {
 			"bsonType": "int",
