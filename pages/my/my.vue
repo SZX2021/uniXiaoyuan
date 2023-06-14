@@ -72,30 +72,43 @@
 					provider: 'weixin',
 				});
 				const code = codeRes.code;
-				//云函数 提交数据
-				const dataRes = await uniCloud.callFunction({
-					name: 'user-register',
-					data: {
-						code,
-						avatarUrl: userInfoRes.userInfo.avatarUrl,
-						nickName: userInfoRes.userInfo.nickName
-					}
-				});
-				//返回的用户数据
-				const userdata = dataRes.result;
-				//消失加载效果
-				uni.hideLoading();
-				//本地存储
-				uni.setStorageSync('user_info', userdata.user);
-				uni.setStorageSync('token', userdata.token);
-				// data里面存
-				this.token = dataRes.token;
-				this.userInfo.avatarUrl = userdata.user.user_avatar;
-				this.userInfo.nickName = userdata.user.user_name;
-				// 页面重载
-				uni.redirectTo({
-					url: 'my'
-				});
+				try {
+					//云函数 提交数据
+					const dataRes = await uniCloud.callFunction({
+						name: 'user-register',
+						data: {
+							code,
+							avatarUrl: userInfoRes.userInfo.avatarUrl,
+							nickName: userInfoRes.userInfo.nickName
+						}
+					});
+					//返回的用户数据
+					const userdata = dataRes.result;
+					//消失加载效果
+					uni.hideLoading();
+					//本地存储
+					uni.setStorageSync('user_info', userdata.user);
+					uni.setStorageSync('token', userdata.token);
+					// data里面存
+					this.token = dataRes.token;
+					this.userInfo.avatarUrl = userdata.user.user_avatar;
+					this.userInfo.nickName = userdata.user.user_name;
+					// 页面重载
+					uni.redirectTo({
+						url: 'my'
+					});
+
+				} catch (e) {
+
+					//消失加载效果
+					uni.hideLoading();
+					//提示失败
+					uni.showToast({
+						title: '登录失败',
+						icon: 'error',
+						duration: 2000
+					});
+				}
 
 			},
 			//跳转用户信息编辑页面
@@ -103,6 +116,7 @@
 				wx.navigateTo({
 					url: this.userInfoUrl
 				})
+
 			},
 
 
@@ -125,13 +139,16 @@
 
 	/* 用户信息展示样式 */
 	.my-info {
-		background-color: rgb(252, 197, 58);
+		/* background-color: rgb(252, 197, 58); */
+
+		background-color: #2b85e4;
 		width: 100%;
 		height: 200px;
 		display: flex;
 		align-items: center;
 		padding: 10px;
 		position: relative;
+		color: white;
 	}
 
 	.left {
@@ -154,6 +171,7 @@
 		font-size: 20px;
 		right: 20px;
 		position: absolute;
+
 	}
 
 	.icon-zhuce {

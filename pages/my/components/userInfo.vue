@@ -243,10 +243,12 @@
 		margin: 0 auto;
 		height: 50px;
 		background-color: 20px;
-		background-color: rgb(252, 197, 58);
+		/* background-color: rgb(252, 197, 58); */
+		background-color: #2b85e4;
 		font-size: 14px;
 		text-align: center;
 		line-height: 50px;
 		margin-top: 60px;
+		color: white;
 	}
 </style>

@@ -14,8 +14,8 @@ exports.main = async (event, context) => {
 		nickName
 	} = event;
 	//微信登录配置
-	const SECRET = "83fd8b47dbcd0025ced32a2dc8268223";
-	const APPID = "wxef7aacd06e3a6784"
+	const SECRET = "5331e159637c0ac237a099d018a77456";
+	const APPID = "wx77328d1368398c36"
 	let URL =
 		`https://api.weixin.qq.com/sns/jscode2session?appid=${APPID}&secret=${SECRET}&js_code=${code}&grant_type=authorization_code `;
 	let res = await rp(URL);
