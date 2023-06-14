@@ -53,6 +53,37 @@
 			}
 		},
 		methods: {
+			onLoad() {
+				this.checkLogin()
+			},
+			//检查用户是否登录
+			checkLogin() {
+				// 检查是否注册过
+				const token = uni.getStorageSync('token');
+				if (!token) {
+					uni.showModal({
+						title: '提示',
+						content: '未登录，请您登录',
+						success: function(res) {
+							if (res.confirm) {
+								console.log('用户点击确定');
+								uni.switchTab({
+									url: '/pages/my/my'
+								});
+							} else if (res.cancel) {
+								console.log('用户点击取消');
+								uni.switchTab({
+									url: '/pages/home/home'
+								});
+							}
+						}
+					});
+					return 0
+
+				} else {
+					return 1
+				}
+			},
 			// 用于选择标签
 			setInverted(index) {
 				this.tags.forEach(item => item.inverted = true);
@@ -75,12 +106,41 @@
 				this.nimingFlag = e.detail.value; //赋值给nimingFlag用于添加数据库时使用
 				console.log(e.detail.value)
 			},
-
+			//检查内容
+			checkForm() {
+				//正则表达式 不能少于五个汉字
+				const regex = /[\u4e00-\u9fff]{5,}/;
+				const target = regex.test(this.content)
+				if (!target) {
+					//提示失败
+					uni.showToast({
+						title: '内容不能少于5个汉字',
+						icon: 'error',
+						duration: 2000
+					});
+					return 0
+				}
+				return 1
+			},
 			uploadForm() {
+				//检查是否登录
+				const target = this.checkLogin()
+				if (!target) {
+					return 0
+				}
+				//检查表单内容是否合法
+				if (!this.checkForm()) {
+					return 0
+				}
 				uni.showLoading({
 					title: '发布中...'
 				});
 				this.$refs.images.upload(); //将选中的图片上传到云储存
+				try {
+
+				} catch (e) {
+					//TODO handle the exception
+				}
 				uniCloud.callFunction({
 					name: "uploadArticle",
 					data: {
@@ -90,8 +150,10 @@
 						category: this.tags.find(item => item.inverted === false).tag,
 						nimingFlag: this.nimingFlag,
 						time: Date.now(),
-					}
+					},
+
 				}).then(() => {
+
 					uni.hideLoading;
 					const value = {
 						content: this.content,
@@ -113,6 +175,18 @@
 
 					uni.showToast({
 						title: '发布成功'
+					});
+
+				}, (err) => {
+
+					console.log(err);
+					// 消失加载效果
+					uni.hideLoading();
+					//提示失败
+					uni.showToast({
+						title: '发布失败',
+						icon: 'error',
+						duration: 2000
 					});
 				});
 
@@ -139,9 +213,15 @@
 	}
 
 	.text {
+
 		align-self: center;
 		font-size: 24rpx;
 		width: 100%;
+		/* 根据需要调整行间距的数值 */
+		line-height: 3px;
+		/* 根据需要调整字间距的数值 */
+		letter-spacing: 3px;
+
 	}
 
 	.tags {

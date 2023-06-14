@@ -14,9 +14,14 @@
 	margin-top: 40rpx;
 }
 .text {
+
 	align-self: center;
 	font-size: 24rpx;
 	width: 100%;
+	/* 根据需要调整行间距的数值 */
+	line-height: 3px;
+	/* 根据需要调整字间距的数值 */
+	letter-spacing: 3px;
 }
 .tags {
 	display: flex;

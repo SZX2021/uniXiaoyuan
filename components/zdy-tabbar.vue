@@ -1,7 +1,8 @@
 <template>
 	<view class="tabbar-container">
 		<block>
-			<view class="tabbar-item" v-for="(item, index) in tabbarList" :key="index" :class="[item.centerItem ? 'center-item' : '']" @click="changeItem(item)">
+			<view class="tabbar-item" v-for="(item, index) in tabbarList" :key="index"
+				:class="[item.centerItem ? 'center-item' : '']" @click="changeItem(item)">
 				<view class="item-top">
 					<image :src="currentItem == item.id ? item.selectIcon : item.icon"></image>
 				</view>
