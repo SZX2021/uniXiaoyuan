@@ -1,0 +1,10 @@
+{
+  "name": "uploadReply",
+  "dependencies": {
+    "jwt": "file:../common/jwt",
+    "uni-sec-check": "file:../../../uni_modules/uni-sec-check/uniCloud/cloudfunctions/common/uni-sec-check"
+  },
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

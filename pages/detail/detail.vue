@@ -4,7 +4,7 @@
 			<view class="article-card">
 				<view class="article-card-head">
 					<view style="margin-right: 20rpx;">
-						<image src='../../static/home/avatar.jpg'
+						<image :src='article.author_info.user_avatar'
 							style="border-radius: 50%;width: 80rpx;height: 80rpx;"></image>
 					</view>
 					<!-- 头像组件无法修改样式，在组件外加一个view用来调整外边距 -->
@@ -26,71 +26,102 @@
 						<text>次</text>
 					</view><!--例：浏览量 29次 -->
 					<view class="article-card-data-right">
-						<uni-icons type="chat" size='40rpx' @click="showKeyboard(true)"></uni-icons>
+						<uni-icons type="chat" size='40rpx' @click="() => showKeyboard(true,'comment')"></uni-icons>
 						<view style="margin-right: 20rpx;font-size: 22rpx;">{{article.comment_num}}</view>
-						<uni-icons type="hand-up" size='40rpx' v-if="liked===false" @click="likeClicked('add')" />
-						<uni-icons type="hand-up-filled" size='40rpx' v-else @click="likeClicked('sub')" />
+						<uni-icons type="hand-up" size='40rpx' v-if="article.liked===false"
+							@click="articleLikeClicked('add',article_index,article_id)" />
+						<uni-icons type="hand-up-filled" size='40rpx' v-else
+							@click="articleLikeClicked('sub',article_index,article_id)" />
 						<view style="font-size: 22rpx;">{{article.like_num}}</view>
 					</view>
 				</view>
 			</view>
+
 			<view style="align-self: flex-start;padding: 30rpx 30rpx;">
-				<text class="margin_right_20;" style="font-weight: bold;">评论</text>
+				<text style="font-weight: bold;margin-right: 20rpx;">评论</text>
 				<text style="font-weight: bold;">1</text>
 			</view>
-			<view class="comment_card" v-for="(item, index) in article.comment" :key="index">
-				<view class="head">
-					<image :src="item.commenter_info.commenter_avatar"
+
+			<!-- 评论区 -->
+			<view class="comment-card" v-for="(item, index1) in article.comment" :key="index1">
+				<!-- 头像组件无法修改样式，在组件外加一个view用来调整外边距 -->
+				<view class="comment-card-head">
+					<image :src="item.commenter_info.user_avatar" class="comment-card-head-avatar"
 						style="border-radius: 50%;width: 60rpx;height: 60rpx;margin-right: 20rpx;"></image>
-					<!-- 头像组件无法修改样式，在组件外加一个view用来调整外边距 -->
-					<view class="comment_publisher" style="align-self: center;font-size: 24rpx;">
-						{{item.commenter_info.commenter_name}}
-					</view> <!-- 发布者 -->
+					<!-- 发布者 -->
+					<view class="comment-card-head-publisher" style="align-self: center;font-size: 24rpx;">
+						{{item.commenter_info.user_name}}
+					</view>
 				</view>
 
-				<view class="detail_comment_area_content margin_bottom_20">
+				<view class="detail_comment_area_content">
 					<view style="width: 80rpx;"></view>
 					<text style="font-size: 25rpx;">{{item.content}}</text>
 				</view>
 
-				<view style="font-size: 20rpx;color: #999999;display: flex;">
-					<view style="width: 80rpx;"></view>
-					<uni-dateformat :date="item.time" :threshold="[60000,3600000,86400000]"></uni-dateformat>
-				</view>
 
 
-				<!-- 评论数据，点赞和分享功能 -->
-				<view class="detail_comment_area_data margin_bottom_20 ">
-					<view class="detail_comment_area_data_left ">浏览量 29次</view>
-					<view class="detail_comment_data_right">
-						<uni-icons type="chat" size='40rpx' />
-						<text style="margin-right: 20rpx;font-size: 22rpx;">12</text>
-						<uni-icons type="hand-up" size='40rpx' />
-						<text style="font-size: 22rpx;">12</text>
+
+				<!-- 评论数据，点赞功能 -->
+				<view class="comment-card-data">
+					<view style="font-size: 20rpx;color: #999999;display: flex;">
+						<view style="width: 80rpx;"></view>
+						<uni-dateformat :date="item.time" :threshold="[60000,3600000,86400000]"></uni-dateformat>
 					</view>
+					<view>
+						<uni-icons type="hand-up" size='40rpx' v-if="article.liked===false"
+							@click="commentLikeClicked('add',article_index,index1,item._id)" />
+						<uni-icons type="hand-up-filled" size='40rpx' v-else
+							@click="commentLikeClicked('sub',article_index,index1,item._id)" />
+						<text style="font-size: 22rpx;">12</text>
+						<uni-icons type="chat" size='40rpx'
+							@click="() => showKeyboard(true,'reply',item._id,item.commenter_info.user_name,item.commenter_info._id)" />
+					</view>
+
 				</view>
+
 				<!-- 评论回复功能 -->
-				<view class="reply inline_card_two">
+				<view class="reply inline_card_two" v-for="(reply,index2) in item.comment_reply" :key="index2">
+					<!-- 头像组件无法修改样式，在组件外加一个view用来调整外边距 -->
 					<view class="reply_head">
 						<image :src="item.commenterInfo.commenterAvatar"
 							style="border-radius: 50%;width: 60rpx;height: 60rpx;margin-right: 20rpx;"></image>
-						<!-- 头像组件无法修改样式，在组件外加一个view用来调整外边距 -->
+						<!-- 发布者 -->
 						<view class="comment_publisher" style="align-self: center;font-size: 24rpx;">
-							{{item.commenterInfo.commenterName}}
-						</view> <!-- 发布者 -->
+							{{reply.replyer_name}}
+						</view>
 						<uni-icons type="forward" size="20rpx" style="margin: 0 20rpx;" />
-						<view style="align-self: center;font-size: 20rpx; "> woshi黑黑</view>
+						<view style="align-self: center;font-size: 20rpx; ">{{reply.replyer_to_user_name}}</view>
 					</view>
-					<view class="reply_content margin_bottom_20">
-						你好
+					<!-- 发布内容 -->
+					<view class="reply_content">
+						{{reply.content_reply}}
+					</view>
+
+					<view class="comment-card-data">
+						<view style="font-size: 20rpx;color: #999999;display: flex;">
+							<view style="width: 80rpx;"></view>
+							<uni-dateformat :date="item.time" :threshold="[60000,3600000,86400000]"></uni-dateformat>
+						</view>
+						<view>
+							<uni-icons type="hand-up" size='40rpx' v-if="article.liked===false"
+								@click="replyLikeClicked('add',article_index,index1,index2,reply._id)" />
+							<uni-icons type="hand-up-filled" size='40rpx' v-else
+								@click="replyLikeClicked('sub',article_index,index1,index2,reply._id)" />
+							<text style="font-size: 22rpx;">{{reply.like_num}}</text>
+							<uni-icons type="chat" size='40rpx'
+								@click="() => showKeyboard(true,'reply',item._id,reply.commenter_info.user_name,itme.commenter_info._id)"></uni-icons>
+						</view>
+
 					</view>
 				</view>
 			</view>
+
+			<!-- 键盘区 -->
 			<!-- 根据变量控制输入框的显示和隐藏 -->
 			<view class="input-wrap" v-show="isShowKeyboard">
 				<view style="margin: 40rpx;">
-					<image :src="(userAvatar() ? userAvatar() : '../../static/home/avatar_default.jpg')"
-						style="border-radius: 50%;width: 60rpx;height: 60rpx;"></image>
+					<image :src="avatar()" style="border-radius: 50%;width: 60rpx;height: 60rpx;"></image>
 				</view>
 				<view style="display: flex;align-items: center; background-color: #F5F7FA;border-radius: 20rpx;">
 					<textarea @blur="showKeyboard(false)" v-model="message" :autoHeight="true" placeholder="请输入评论内容"
@@ -111,25 +142,27 @@
 				isShowKeyboard: false, //控制输入框显示
 				message: '', //评论区输入框内容
 				article_id: '',
-				articleIndex: ''
+				article_index: '',
+				message_type: String,
+				comment_id: String,
+				replyer_to_user: String,
+				replyer_to_user_id: String,
 			}
 		},
 		onLoad(options) {
-			this.isShowKeyboard = JSON.parse(options.isShowKeyboard);
-			this.article_id = options.article_id;
-			this.articleIndex = this.$store.state.article.findIndex(item => item._id === options.article_id);
-			if(!("comment" in this.$store.state.article[this.articleIndex])){
-				this.$store.dispatch('getComment', {
-					index: this.articleIndex,
-					article_id: options.article_id
-				});
-			};
-			
-		},
-		onShow() {
 			uni.showLoading({
 				title: '加载中...'
 			});
+			this.isShowKeyboard = JSON.parse(options.isShowKeyboard);
+			this.article_id = options.article_id;
+			this.message_type = options.message_type;
+			this.article_index = this.$store.state.article.findIndex(item => item._id === options.article_id);
+			if (!("comment" in this.$store.state.article[this.article_index])) {
+				this.$store.dispatch('getComment', {
+					index: this.article_index,
+					article_id: options.article_id
+				});
+			};
 			uni.hideLoading();
 		},
 		computed: {
@@ -138,8 +171,12 @@
 			}
 		},
 		methods: {
-			showKeyboard(flag) {
+			showKeyboard(flag, message_type, comment_id, replyer_to_user, replyer_to_user_id) {
 				this.isShowKeyboard = flag;
+				this.message_type = message_type;
+				this.comment_id = comment_id;
+				this.replyer_to_user = replyer_to_user;
+				this.replyer_to_user_id = replyer_to_user_id;
 			},
 			sendMessage() {
 				if (!this.message) {
@@ -151,109 +188,132 @@
 				uni.showLoading({
 					title: '敏感内容检测中...'
 				});
-				uniCloud.callFunction({
-					name: 'uploadComment',
-					data: {
-						article_id: this.article_id,
-						content: this.message,
-						token: uni.getStorageSync('token'),
-						time: Date.now(),
-					}
-				}).then((res) => {
-					uni.hideLoading();
-					console.log(res.result);
-					if (res.result) {
-						uni.showToast({
-							title: '内容敏感',
-							icon: 'error'
-						});
-					} else {
-						const data = {
-							"content": this.message,
-							"like_num": 0,
-							"reply_num": 0,
+				if (this.message_type === "comment") {
+					uniCloud.callFunction({
+						name: 'uploadComment',
+						data: {
+							article_id: this.article_id,
+							content: this.message,
+							token: uni.getStorageSync('token'),
+							time: Date.now(),
+						}
+					}).then((res) => {
+						uni.hideLoading();
+						console.log(res.result);
+						if (res.result) {
+							uni.showToast({
+								title: '内容敏感',
+								icon: 'error'
+							});
+						} else {
+							const data = {
+								"content": this.message,
+								"like_num": 0,
+								"reply_num": 0,
+								"commenter_info": uni.getStorageSync('user_info'),
+								"time": Date.now()
+							};
+							//在本地临时更新页面数据
+							this.$store.commit('tempAddComment', {
+								index: this.article_index,
+								value: data
+							});
+							this.message = '';
 						};
-						//在本地临时更新页面数据
-						this.$store.commit('tempAddComment', {
-							index: this.articleIndex,
-							value: data
-						});
-						this.message = '';
-					};
+					});
+				};
+				if (this.message_type === "reply") {
+					uniCloud.callFunction({
+						name: 'uploadReply',
+						data: {
+							article_id: this.article_id,
+							content_reply: this.message,
+							replyer_name: uni.getStorageSync('user_info').user_name,
+							token: uni.getStorageSync('token'),
+							time: Date.now(),
+							comment_id: this.comment_id,
+							replyer_to_user_name: this.replyer_to_user,
+							replyer_to_user_id: this.replyer_to_user_id,
+						}
+					}).then((res) => {
+						uni.hideLoading();
+						console.log(res.result);
+						if (res.result) {
+							uni.showToast({
+								title: '内容敏感',
+								icon: 'error'
+							});
+						} else {
+							const data = {
+								"content": this.message,
+								"like_num": 0,
+								"reply_num": 0,
+							};
+							//在本地临时更新页面数据
+							this.$store.commit('tempAddComment', {
+								index: this.article_index,
+								value: data
+							});
+							this.message = '';
+						};
+					});
+				}
+
+			},
+
+			articleLikeClicked(api, article_index, article_id) {
+				const liked = api === "add";
+				this.$store.commit('tempSetLiked', {
+					liked,
+					index
+				});
+				uniCloud.callFunction({
+					name: 'updateLike',
+					data: {
+						api: "article",
+						liked,
+						token: uni.getStorageSync('token'),
+						article_id
+					}
 				});
 			},
-			likeClicked(value) {
-				// 处理点赞逻辑
-				if (value === 'add') {
-					//添加点赞数量
-					this.liked = true;
-
-					uniCloud.callFunction({
-						name: 'refreshArticleData',
-						data: {
-							api: 'addLikes',
-							id: this.Id
-						}
-					});
-
-					this.likeNumber++;
-
-					//记录点赞用户
-					uniCloud.callFunction({
-						name: 'refreshLikes',
-						data: {
-							api: 'add',
-							userToken: uni.getStorageSync('token'),
-							articleId: this.Id
-						}
-					})
-
-					const eventChannel = this.getOpenerEventChannel()
-					eventChannel.emit('acceptData', {
-						liked: this.liked,
-						likeNumber: this.likeNumber,
-						commentNumber: this.commentNumber,
-						likeNumber: this.likeNumber
-					})
-				};
-				if (value === 'sub') {
-					//减少点赞数量
-					this.liked = false;
-
-					uniCloud.callFunction({
-						name: 'refreshArticleData',
-						data: {
-							api: 'subLikes',
-							id: this.Id
-						}
-					});
-
-					this.likeNumber--;
-
-					//删除特定用户点赞的文章记录
-					uniCloud.callFunction({
-						name: 'refreshLikes',
-						data: {
-							api: 'sub',
-							userToken: uni.getStorageSync('token'),
-							articleId: this.Id
-						}
-					});
-
-					const eventChannel = this.getOpenerEventChannel()
-					eventChannel.emit('acceptData', {
-						liked: this.liked,
-						likeNumber: this.likeNumber,
-						commentNumber: this.commentNumber,
-						likeNumber: this.likeNumber
-					})
-				};
+			commentLikeClicked(api, article_index, comment_index, comment_id) {
+				const liked = (api === "add");
+				this.$store.commit('tempSetLiked', {
+					liked,
+					article_index,
+					comment_index
+				});
+				uniCloud.callFunction({
+					name: 'updateLike',
+					data: {
+						api:"comment",
+						liked,
+						token: uni.getStorageSync('token'),
+						comment_id
+					}
+				});
+			},
+			replyLikeClicked(api, article_index, comment_index, reply_index, reply_id) {
+				const liked = (api === "add");
+				this.$store.commit('tempSetLiked', {
+					liked,
+					article_index,
+					comment_index,
+					reply_index
+				});
+				uniCloud.callFunction({
+					name: 'updateLike',
+					data: {
+						api: "reply",
+						liked,
+						token: uni.getStorageSync('token'),
+						reply_id
+					}
+				});
 			},
 			avatar() {
-				return store.state.avatar;
-			},
-			userAvatar() {
-				return uni.getStorageSync('userAvatar');
+				return uni.getStorageSync('user_info').user_avatar
 			}
 		}
 	}
@@ -308,7 +368,7 @@
 
 	}
 
-	.comment_card {
+	.comment-card {
 		width: 90%;
 		border-radius: 20rpx;
 		background-color: white;
@@ -327,21 +387,22 @@
 		justify-self: start;
 		width: 100%;
 		font-weight: bold;
+		margin-bottom: 20rpx;
 	}
 
-	.detail_comment_area_data {
+	.comment-card-data {
 		display: flex;
-		justify-content: space-between;
+		justify-content: flex-end;
 		width: 100%;
-		padding-left: 15%;
+		margin-bottom: 20rpx;
 	}
 
-	.detail_comment_area_data_left {
+	.comment-card-data_left {
 		font-weight: bold;
 		font-size: 22rpx;
 	}
 
-	.detail_comment_area_data_right {
+	.comment-card-data_right {
 		weight: 100rpx;
 		display: flex;
 		align-items: center;
@@ -374,7 +435,7 @@
 		background-color: #f8f8f8;
 		width: 100%;
 		border-radius: 5rpx;
-		padding: 20rpx;
+		padding: 20rpx 20rpx 10rpx;
 	}
 
 	.reply_head {
@@ -388,18 +449,5 @@
 		width: 100%;
 		padding-left: 15%;
 		font-weight: bold;
-	}
-
-	/* 公共部分 */
-	.margin_bottom_20 {
-		margin-bottom: 20rpx;
-	}
-
-	.margin_bottom_30 {
-		margin-bottom: 30rpx;
-	}
-
-	.margin_right_20 {
-		margin-right: 20rpx;
 	}
 </style>

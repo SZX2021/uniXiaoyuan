@@ -165,7 +165,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {
+/* WEBPACK VAR INJECTION */(function(uniCloud, uni) {
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -228,6 +228,9 @@ exports.default = void 0;
 //
 //
 //
+
+var db = uniCloud.database();
+var dbCmd = db.command;
 var _default = {
   data: function data() {
     return {
@@ -237,7 +240,11 @@ var _default = {
     };
   },
   onLoad: function onLoad() {
+    uni.showLoading({
+      title: '加载中...'
+    });
     this.$store.dispatch('getArticle');
+    uni.hideLoading();
   },
   computed: {
     article: function article() {
@@ -253,14 +260,28 @@ var _default = {
     },
     toDetail: function toDetail(value, flag) {
       uni.navigateTo({
-        url: "../detail/detail?article_id=".concat(value, "&isShowKeyboard=").concat(flag)
+        url: "../detail/detail?article_id=".concat(value, "&isShowKeyboard=").concat(flag, "&message_type=comment")
       });
     },
-    likeClicked: function likeClicked() {}
+    likeClicked: function likeClicked(api, index, article_id) {
+      var liked = api === "add";
+      this.$store.commit('tempSetLiked', {
+        liked: liked,
+        index: index
+      });
+      uniCloud.callFunction({
+        name: 'updateLike',
+        data: {
+          liked: liked,
+          token: uni.getStorageSync('token'),
+          article_id: article_id
+        }
+      });
+    }
   }
 };
 exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 27)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
 
 /***/ }),
 
