@@ -53,52 +53,52 @@
 }
 
 page {
-    background-color: rgb(245, 247, 250);
+  background-color: rgb(245, 247, 250);
 }
 .about-container {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 .about-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .about-info image {
-    width: 90px;
-    height: 90px;
-    border-radius: 10px;
+  width: 90px;
+  height: 90px;
+  border-radius: 10px;
 }
 .info-title {
-    margin-top: 10px;
-    font-size: 24px;
-    font-weight: bold;
+  margin-top: 10px;
+  font-size: 24px;
+  font-weight: bold;
 }
 .info-version {
-    margin-top: 15px;
-    font-size: 14px;
-    font-weight: 400;
+  margin-top: 15px;
+  font-size: 14px;
+  font-weight: 400;
 }
 .about-link {
-    width: 95%;
-    margin: 30px auto;
+  width: 95%;
+  margin: 30px auto;
 }
 .about-other {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    left: 50%;
-    bottom: 5%;
-    -webkit-transform: translate(-50%, -5%);
-            transform: translate(-50%, -5%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  bottom: 5%;
+  -webkit-transform: translate(-50%, -5%);
+          transform: translate(-50%, -5%);
 }
 .other-icon {
-    font-size: 50px;
+  font-size: 50px;
 }
 .other-text {
-    font-size: 12px;
-    margin-top: 10px;
+  font-size: 12px;
+  margin-top: 10px;
 }
 

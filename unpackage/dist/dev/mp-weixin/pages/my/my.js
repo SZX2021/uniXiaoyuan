@@ -167,15 +167,12 @@ var _icont = _interopRequireDefault(__webpack_require__(/*! ./icont.css */ 62));
 //
 //
 //
+//
 // 引入icont
-var listCard = function listCard() {
-  __webpack_require__.e(/*! require.ensure | pages/my/components/listCard */ "pages/my/components/listCard").then((function () {
-    return resolve(__webpack_require__(/*! ./components/listCard.vue */ 133));
-  }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
-};
+// import listCard from "./components/listCard.vue"
 var _default = {
   components: {
-    listCard: listCard
+    // listCard
   },
   data: function data() {
     return {

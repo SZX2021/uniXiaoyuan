@@ -24,11 +24,17 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 wx.__webpack_require_UNI_MP_PLUGIN__ = __webpack_require__;
 var zdyTabbar = function zdyTabbar() {
   __webpack_require__.e(/*! require.ensure | components/zdy-tabbar */ "components/zdy-tabbar").then((function () {
-    return resolve(__webpack_require__(/*! components/zdy-tabbar.vue */ 105));
+    return resolve(__webpack_require__(/*! components/zdy-tabbar.vue */ 117));
+  }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+};
+var listCard = function listCard() {
+  __webpack_require__.e(/*! require.ensure | components/listCard */ "components/listCard").then((function () {
+    return resolve(__webpack_require__(/*! components/listCard.vue */ 124));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 // 注册全局组件
 _vue.default.component('zdy-tabbar', zdyTabbar);
+_vue.default.component('listCard', listCard);
 _vue.default.prototype.$store = _index2.default;
 _vue.default.config.productionTip = false;
 _App.default.mpType = 'app';

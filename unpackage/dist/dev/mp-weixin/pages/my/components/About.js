@@ -161,14 +161,10 @@ var _icont = _interopRequireDefault(__webpack_require__(/*! ../icont.css */ 62))
 //
 //
 //
-var listCard = function listCard() {
-  __webpack_require__.e(/*! require.ensure | pages/my/components/listCard */ "pages/my/components/listCard").then((function () {
-    return resolve(__webpack_require__(/*! ./listCard.vue */ 133));
-  }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
-};
+// import listCard from "./listCard.vue"
 var _default = {
   components: {
-    listCard: listCard
+    // listCard
   },
   data: function data() {
     return {
@@ -177,9 +173,13 @@ var _default = {
         right: 'icon-youjiantou2',
         url: '/pages/my/components/AboutInfo'
       }, {
-        text: '隐私协议保护',
+        text: '隐私政策',
         right: 'icon-youjiantou2',
-        url: '/pages/my/components/AboutInfo'
+        url: '/pages/my/components/PrivacyPolicy'
+      }, {
+        text: '用户协议',
+        right: 'icon-youjiantou2',
+        url: '/pages/my/components/UserServiceAgreement'
       }],
       ourEmail: 'Hashan@88.com'
     };

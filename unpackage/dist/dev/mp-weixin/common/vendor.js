@@ -17361,24 +17361,40 @@ var _default = {
       "navigationBarTitleText": "",
       "enablePullDownRefresh": false
     }
-  }, {
-    "path": "pages/my/components/About",
-    "style": {
-      "navigationBarTitleText": "关于我们",
-      "enablePullDownRefresh": false
-    }
-  }, {
-    "path": "pages/my/components/AboutInfo",
-    "style": {
-      "navigationBarTitleText": "",
-      "enablePullDownRefresh": false
-    }
-  }, {
-    "path": "pages/my/components/userInfo",
-    "style": {
-      "navigationBarTitleText": "",
-      "enablePullDownRefresh": false
-    }
+  }],
+  "subPackages": [{
+    "root": "pages/my/components",
+    "pages": [{
+      "path": "About",
+      "style": {
+        "navigationBarTitleText": "关于我们",
+        "enablePullDownRefresh": false
+      }
+    }, {
+      "path": "AboutInfo",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    }, {
+      "path": "userInfo",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    }, {
+      "path": "PrivacyPolicy",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    }, {
+      "path": "UserServiceAgreement",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    }]
   }],
   "globalStyle": {
     "navigationBarTextStyle": "black",
@@ -17394,18 +17410,12 @@ var _default = {
     "backgroundColor": "#ffffff",
     "list": [{
       "pagePath": "pages/home/home",
-      "iconPath": "static/list.png",
-      "selectedIconPath": "static/list_active.png",
       "text": "主页"
     }, {
       "pagePath": "pages/publish/publish",
-      "iconPath": "static/logo.png",
-      "selectedIconPath": "static/logo.png",
       "text": "发布"
     }, {
       "pagePath": "pages/my/my",
-      "iconPath": "static/me.png",
-      "selectedIconPath": "static/me_active.png",
       "text": "我的"
     }]
   }
@@ -19066,7 +19076,26 @@ uni.addInterceptor({
 /* 121 */,
 /* 122 */,
 /* 123 */,
-/* 124 */
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */,
+/* 132 */,
+/* 133 */,
+/* 134 */,
+/* 135 */,
+/* 136 */,
+/* 137 */,
+/* 138 */,
+/* 139 */,
+/* 140 */,
+/* 141 */,
+/* 142 */,
+/* 143 */
 /*!********************************************************************************************************************************!*\
   !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/uni_modules/uni-dateformat/components/uni-dateformat/date-format.js ***!
   \********************************************************************************************************************************/
@@ -19283,12 +19312,12 @@ function friendlyDate(time, _ref) {
 }
 
 /***/ }),
-/* 125 */,
-/* 126 */,
-/* 127 */,
-/* 128 */,
-/* 129 */,
-/* 130 */
+/* 144 */,
+/* 145 */,
+/* 146 */,
+/* 147 */,
+/* 148 */,
+/* 149 */
 /*!****************************************************************************************************************!*\
   !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/uni_modules/uni-icons/components/uni-icons/icons.js ***!
   \****************************************************************************************************************/
@@ -20309,21 +20338,14 @@ var _default = {
 exports.default = _default;
 
 /***/ }),
-/* 131 */,
-/* 132 */,
-/* 133 */,
-/* 134 */,
-/* 135 */,
-/* 136 */,
-/* 137 */,
-/* 138 */,
-/* 139 */,
-/* 140 */,
-/* 141 */,
-/* 142 */,
-/* 143 */,
-/* 144 */,
-/* 145 */
+/* 150 */,
+/* 151 */,
+/* 152 */,
+/* 153 */,
+/* 154 */,
+/* 155 */,
+/* 156 */,
+/* 157 */
 /*!*********************************************************************************************************************************************!*\
   !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/uni_modules/uni-file-picker/components/uni-file-picker/choose-and-upload-file.js ***!
   \*********************************************************************************************************************************************/
@@ -20538,7 +20560,7 @@ function chooseAndUploadFile() {
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/wx.js */ 1)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 27)["default"]))
 
 /***/ }),
-/* 146 */
+/* 158 */
 /*!****************************************************************************************************************************!*\
   !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/uni_modules/uni-file-picker/components/uni-file-picker/utils.js ***!
   \****************************************************************************************************************************/

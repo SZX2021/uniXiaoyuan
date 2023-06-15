@@ -53,51 +53,51 @@
 }
 
 page {
-	background-color: rgb(245, 247, 250);
+  background-color: rgb(245, 247, 250);
 }
 .my-container {
-	display: flex;
-	flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 /* 用户信息展示样式 */
 .my-info {
-	/* background-color: rgb(252, 197, 58); */
+  /* background-color: rgb(252, 197, 58); */
 
-	background-color: #2b85e4;
-	width: 100%;
-	height: 200px;
-	display: flex;
-	align-items: center;
-	padding: 10px;
-	position: relative;
-	color: white;
+  background-color: #2b85e4;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  position: relative;
+  color: white;
 }
 .left {
-	font-size: 80px;
+  font-size: 80px;
 }
 .image {
-	width: 100px;
-	height: 100px;
-	border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
 }
 .my-info-name {
-	margin-left: 20px;
-	font-size: 20px;
-	font-weight: bold;
+  margin-left: 20px;
+  font-size: 20px;
+  font-weight: bold;
 }
 .right {
-	font-size: 20px;
-	right: 20px;
-	position: absolute;
+  font-size: 20px;
+  right: 20px;
+  position: absolute;
 }
 .icon-zhuce {
-	font-size: 70px;
+  font-size: 70px;
 }
 
 /* 链接列表样式 */
 .my-link-list {
-	width: 95%;
-	margin: 10px auto;
+  width: 95%;
+  margin: 10px auto;
 }
 

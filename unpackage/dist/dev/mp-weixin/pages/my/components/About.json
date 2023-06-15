@@ -1,7 +1,5 @@
 {
   "navigationBarTitleText": "关于我们",
   "enablePullDownRefresh": false,
-  "usingComponents": {
-    "list-card": "/pages/my/components/listCard"
-  }
+  "usingComponents": {}
 }
