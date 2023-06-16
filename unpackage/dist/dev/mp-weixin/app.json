@@ -1,51 +1,50 @@
 {
-    "pages": [
-        "pages/home/home",
-        "pages/my/my",
-        "pages/detail/detail",
-        "pages/publish/publish"
-    ],
-    "subPackages": [
-        {
-            "root": "pages/my/components",
-            "pages": [
-                "About",
-                "AboutInfo",
-                "userInfo",
-                "PrivacyPolicy",
-                "UserServiceAgreement"
-            ]
-        }
-    ],
-    "window": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "uni-app",
-        "navigationBarBackgroundColor": "#F8F8F8",
-        "backgroundColor": "#F8F8F8"
-    },
-    "tabBar": {
-        "color": "#7A7E83",
-        "selectedColor": "#008077",
-        "borderStyle": "black",
-        "backgroundColor": "#ffffff",
-        "list": [
-            {
-                "pagePath": "pages/home/home",
-                "text": "主页"
-            },
-            {
-                "pagePath": "pages/publish/publish",
-                "text": "发布"
-            },
-            {
-                "pagePath": "pages/my/my",
-                "text": "我的"
-            }
-        ]
-    },
-    "usingComponents": {
-        "zdy-tabbar": "/components/zdy-tabbar",
-        "list-card": "/components/listCard"
-    },
-    "sitemapLocation": "sitemap.json"
+  "pages": [
+    "pages/home/home",
+    "pages/my/my",
+    "pages/detail/detail",
+    "pages/publish/publish"
+  ],
+  "subPackages": [
+    {
+      "root": "pages/my/components",
+      "pages": [
+        "About",
+        "AboutInfo",
+        "userInfo",
+        "PrivacyPolicy",
+        "UserServiceAgreement"
+      ]
+    }
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#008077",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "主页"
+      },
+      {
+        "pagePath": "pages/publish/publish",
+        "text": "发布"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的"
+      }
+    ]
+  },
+  "usingComponents": {
+    "zdy-tabbar": "/components/zdy-tabbar",
+    "list-card": "/components/listCard"
+  }
 }

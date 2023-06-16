@@ -17,7 +17,30 @@ const store = new Vuex.Store({
 	},
 	mutations: {
 		addArticle(state, value) {
-			state.article.push(...value);
+			if (state.article.length === 0) {
+				state.article.push(...value);
+			} else {
+				//比较两个数组的差异 并且把差异添加数组中
+				let target = state.article
+				const data = value
+
+				data.forEach(item1 => {
+					let isDifferent = true;
+
+					target.forEach(item2 => {
+						if (item1._id === item2._id) {
+							isDifferent = false;
+						}
+					})
+
+					if (isDifferent) {
+						target.unshift(item1)
+					}
+
+				})
+
+
+			}
 		},
 		addComment(state, {
 			index,
@@ -30,10 +53,12 @@ const store = new Vuex.Store({
 			index,
 			value
 		}) {
-			const newList =[value].push(state.article[index].comment);
-			Vue.set(state.article[index],"comment", newList);
+			const newList = [value].push(state.article[index].comment);
+			Vue.set(state.article[index], "comment", newList);
 		},
-		tempAddArticle(state, {value}) {
+		tempAddArticle(state, {
+			value
+		}) {
 			const newList = [value].push(state.article);
 			state.article = newList;
 		},
@@ -43,16 +68,17 @@ const store = new Vuex.Store({
 			comment_index,
 			reply_index
 		}) {
+
 			if (reply_index) {
 				state.article[article_index].comment[comment_index].reply[reply_index].liked = liked;
-				if(liked){
+				if (liked) {
 					state.article[article_index].comment[comment_index].reply[reply_index].like_num++;
 				} else {
 					tate.article[article_index].comment[comment_index].reply[reply_index].like_num--;
 				}
 			} else if (comment_index) {
 				state.article[article_index].comment[comment_index].liked = liked;
-				if(liked){
+				if (liked) {
 					state.article[article_index].comment[comment_index].like_num++;
 				} else {
 					tate.article[article_index].comment[comment_index].like_num--;

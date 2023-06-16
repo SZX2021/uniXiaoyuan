@@ -1,6 +1,8 @@
 {
   "name": "getArticleData",
-  "dependencies": {},
+  "dependencies": {
+    "jsonwebtoken": "^9.0.0"
+  },
   "extensions": {
     "uni-cloud-redis": {},
     "uni-cloud-jql": {}

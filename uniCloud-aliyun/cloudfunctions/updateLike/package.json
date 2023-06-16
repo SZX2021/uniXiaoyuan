@@ -1,6 +1,8 @@
 {
   "name": "updateLike",
-  "dependencies": {},
+  "dependencies": {
+    "jsonwebtoken": "^9.0.0"
+  },
   "extensions": {
     "uni-cloud-jql": {}
   }

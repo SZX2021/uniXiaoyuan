@@ -1556,7 +1556,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -8913,7 +8913,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -8934,14 +8934,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -9037,7 +9037,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -9455,9 +9455,9 @@ internalMixin(Vue);
 
 /***/ }),
 /* 26 */
-/*!***********************************************************************!*\
-  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/pages.json ***!
-  \***********************************************************************/
+/*!******************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/yuanDao/Xioayuan/pages.json ***!
+  \******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -9958,18 +9958,20 @@ var k = "development" === "development",
   E = b({
     "address": [
         "127.0.0.1",
-        "10.5.7.248"
+        "192.168.135.1",
+        "192.168.152.1",
+        "192.168.0.193"
     ],
     "debugPort": 9000,
     "initialLaunchType": "local",
     "servePort": 7000,
     "skipFiles": [
         "<node_internals>/**",
-        "D:/Users/user/Desktop/HBuilderX.3.4.7.20220422/HBuilderX/plugins/unicloud/**/*.js"
+        "C:/Program Files/HBuilderX/plugins/unicloud/**/*.js"
     ]
 }
 ),
-  O = b([{"provider":"aliyun","spaceName":"test221202","spaceId":"mp-449f655d-1dfc-47b3-8d77-5ea41022aae8","clientSecret":"M0R1pUwmJ+VyPTMoZre59Q==","endpoint":"https://api.next.bspapp.com"}]) || [],
+  O = b([{"provider":"aliyun","spaceName":"test-xiaoyuan","spaceId":"mp-a797baca-203d-4891-8ea0-0831ebc75329","clientSecret":"J0aL/dJBLFPDNi3TjvautQ==","endpoint":"https://api.next.bspapp.com"}]) || [],
   x = true;
 var R = "";
 try {
@@ -17323,9 +17325,9 @@ module.exports = _isNativeFunction, module.exports.__esModule = true, module.exp
 
 /***/ }),
 /* 37 */
-/*!****************************************************************************************************!*\
-  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/pages.json?{"type":"origin-pages-json"} ***!
-  \****************************************************************************************************/
+/*!***********************************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/yuanDao/Xioayuan/pages.json?{"type":"origin-pages-json"} ***!
+  \***********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17424,9 +17426,9 @@ exports.default = _default;
 
 /***/ }),
 /* 38 */
-/*!***************************************************************************************!*\
-  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/pages.json?{"type":"stat"} ***!
-  \***************************************************************************************/
+/*!**********************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/yuanDao/Xioayuan/pages.json?{"type":"stat"} ***!
+  \**********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17580,9 +17582,9 @@ function normalizeComponent (
 
 /***/ }),
 /* 45 */
-/*!***************************************************************************!*\
-  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/store/index.js ***!
-  \***************************************************************************/
+/*!**********************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/yuanDao/Xioayuan/store/index.js ***!
+  \**********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17612,8 +17614,25 @@ var store = new _vuex.default.Store({
   },
   mutations: {
     addArticle: function addArticle(state, value) {
-      var _state$article;
-      (_state$article = state.article).push.apply(_state$article, (0, _toConsumableArray2.default)(value));
+      if (state.article.length === 0) {
+        var _state$article;
+        (_state$article = state.article).push.apply(_state$article, (0, _toConsumableArray2.default)(value));
+      } else {
+        //比较两个数组的差异 并且把差异添加数组中
+        var target = state.article;
+        var data = value;
+        data.forEach(function (item1) {
+          var isDifferent = true;
+          target.forEach(function (item2) {
+            if (item1._id === item2._id) {
+              isDifferent = false;
+            }
+          });
+          if (isDifferent) {
+            target.unshift(item1);
+          }
+        });
+      }
     },
     addComment: function addComment(state, _ref) {
       var index = _ref.index,
@@ -18967,9 +18986,9 @@ module.exports = index_cjs;
 
 /***/ }),
 /* 47 */
-/*!*************************************************************************************!*\
-  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/uni.promisify.adaptor.js ***!
-  \*************************************************************************************/
+/*!********************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/yuanDao/Xioayuan/uni.promisify.adaptor.js ***!
+  \********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19004,9 +19023,9 @@ uni.addInterceptor({
 /* 60 */,
 /* 61 */,
 /* 62 */
-/*!*******************************************************************************!*\
-  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/pages/my/icont.css ***!
-  \*******************************************************************************/
+/*!**************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/yuanDao/Xioayuan/pages/my/icont.css ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19095,10 +19114,17 @@ uni.addInterceptor({
 /* 140 */,
 /* 141 */,
 /* 142 */,
-/* 143 */
-/*!********************************************************************************************************************************!*\
-  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/uni_modules/uni-dateformat/components/uni-dateformat/date-format.js ***!
-  \********************************************************************************************************************************/
+/* 143 */,
+/* 144 */,
+/* 145 */,
+/* 146 */,
+/* 147 */,
+/* 148 */,
+/* 149 */,
+/* 150 */
+/*!***************************************************************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/yuanDao/Xioayuan/uni_modules/uni-dateformat/components/uni-dateformat/date-format.js ***!
+  \***************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19312,15 +19338,15 @@ function friendlyDate(time, _ref) {
 }
 
 /***/ }),
-/* 144 */,
-/* 145 */,
-/* 146 */,
-/* 147 */,
-/* 148 */,
-/* 149 */
-/*!****************************************************************************************************************!*\
-  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/uni_modules/uni-icons/components/uni-icons/icons.js ***!
-  \****************************************************************************************************************/
+/* 151 */,
+/* 152 */,
+/* 153 */,
+/* 154 */,
+/* 155 */,
+/* 156 */
+/*!***********************************************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/yuanDao/Xioayuan/uni_modules/uni-icons/components/uni-icons/icons.js ***!
+  \***********************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -20338,17 +20364,17 @@ var _default = {
 exports.default = _default;
 
 /***/ }),
-/* 150 */,
-/* 151 */,
-/* 152 */,
-/* 153 */,
-/* 154 */,
-/* 155 */,
-/* 156 */,
-/* 157 */
-/*!*********************************************************************************************************************************************!*\
-  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/uni_modules/uni-file-picker/components/uni-file-picker/choose-and-upload-file.js ***!
-  \*********************************************************************************************************************************************/
+/* 157 */,
+/* 158 */,
+/* 159 */,
+/* 160 */,
+/* 161 */,
+/* 162 */,
+/* 163 */,
+/* 164 */
+/*!****************************************************************************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/yuanDao/Xioayuan/uni_modules/uni-file-picker/components/uni-file-picker/choose-and-upload-file.js ***!
+  \****************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -20560,10 +20586,10 @@ function chooseAndUploadFile() {
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/wx.js */ 1)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 27)["default"]))
 
 /***/ }),
-/* 158 */
-/*!****************************************************************************************************************************!*\
-  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/uni_modules/uni-file-picker/components/uni-file-picker/utils.js ***!
-  \****************************************************************************************************************************/
+/* 165 */
+/*!***********************************************************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/yuanDao/Xioayuan/uni_modules/uni-file-picker/components/uni-file-picker/utils.js ***!
+  \***********************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

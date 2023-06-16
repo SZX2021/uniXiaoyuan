@@ -287,7 +287,7 @@
 				uniCloud.callFunction({
 					name: 'updateLike',
 					data: {
-						api:"comment",
+						api: "comment",
 						liked,
 						token: uni.getStorageSync('token'),
 						comment_id
