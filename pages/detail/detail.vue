@@ -116,7 +116,7 @@
 					<view class="comment-card-data">
 						<view class="comment-card-data-left">
 							<view style="width: 80rpx;"></view>
-							<uni-dateformat :date="item.time" :threshold="[60000,3600000,86400000]"></uni-dateformat>
+							<uni-dateformat :date="reply.time" :threshold="[60000,3600000,86400000]"></uni-dateformat>
 						</view>
 						<view class="comment-card-data-right">
 							<uni-icons type="hand-up" size='40rpx' v-if="reply.liked===false"
