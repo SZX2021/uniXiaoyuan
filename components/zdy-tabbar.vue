@@ -75,7 +75,7 @@
     }
   };
 </script>
-<style>
+<style scoped>
   view {
     padding: 0;
     margin: 0;

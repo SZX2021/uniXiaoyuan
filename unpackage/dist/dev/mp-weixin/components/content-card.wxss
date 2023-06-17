@@ -15,18 +15,13 @@
 	margin-top: 40rpx;
 }
 .article-list-card-head {
+	width: 100%;
 	display: flex;
-	align-self: flex-start;
+	justify-content: space-between;
 	margin-bottom: 40rpx;
 }
-
-/* 作者信息 */
-.author_info {
-	width: 300rpx;
+.article-list-card-head-left {
 	display: flex;
-	align-items: center;
-	margin-bottom: 5px;
-	padding: 0;
 }
 .item-category {
 	margin-left: 10px;

@@ -38,7 +38,11 @@ exports.main = async (event, context) => {
 		});
 		db.collection('article').doc(event.article_id).update({
 				comment_num: dbCmd.inc(1)
-		})
+		});
+		db.collection('comment').doc(event.comment_id).update({
+				reply_num: dbCmd.inc(1)
+		});
+		
 	}
 	
 };

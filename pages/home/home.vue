@@ -35,8 +35,8 @@
 				items: ['全部', '日常', '集市', '树洞'],
 				swipers: ['../../static/home/lunbo1.jpg', '../../static/home/lunbo2.jpg', '../../static/home/lunbo3.jpg'],
 				current: 0,
-				contentList: '',
-				cardList: ''
+				tabContentList: '',
+				cardList: []
 			}
 		},
 		async onLoad() {
@@ -50,7 +50,7 @@
 		computed: {
 			//检查数据是否有，没有一直显示加载中。。。
 			showLoading() {
-				this.contentList.length > 0 ? uni.hideLoading() : 0
+				this.tabContentList.length > 0 ? uni.hideLoading() : 0
 				return 1
 			}
 		},
@@ -62,14 +62,12 @@
 				};
 				//筛选数据
 				const target = this.items[currentIndex]
-				const data = (currentIndex === 0) ? this.contentList : this.contentList.filter(item => item.category ===
+				const data = (currentIndex === 0) ? this.tabContentList : this.tabContentList.filter(item => item.category ===
 					target)
 				this.cardList = data
-
-
 			},
 			article() {
-				this.contentList = this.$store.state.article
+				this.tabContentList = this.$store.state.article
 				this.cardList = this.$store.state.article
 				return 1
 			}

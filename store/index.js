@@ -42,57 +42,55 @@ const store = new Vuex.Store({
 
 			}
 		},
-		addComment(state, {
-			index,
-			value
-		}) {
+		addComment(state, {index,value}) {
 			Vue.set(state.article[index], "comment", value);
 		},
-		//提交评论后，在本地生成评论数据
-		tempAddComment(state, {
-			index,
-			value
-		}) {
-			const newList = [value].push(state.article[index].comment);
-			Vue.set(state.article[index], "comment", newList);
-		},
-		tempAddArticle(state, {
-			value
-		}) {
-			const newList = [value].push(state.article);
-			state.article = newList;
+		addReply(state,{article_index,comment_id,value}) {
+			const comment = state.article[article_index].comment.find(item => item._id===comment_id);
+			console.log(comment);
+			// comment.reply = value;
+			Vue.set(comment,"reply",value);
 		},
 		tempSetLiked(state, {
 			liked,
-			article_index,
-			comment_index,
-			reply_index
+			article_id,
+			comment_id,
+			reply_id
 		}) {
-
-			if (reply_index) {
-				state.article[article_index].comment[comment_index].reply[reply_index].liked = liked;
+			//通过id定位点赞的内容
+			if (reply_id) {
+				const article = state.article.find(item => article_id === item._id);
+				const comment = article.comment.find(item => comment_id === item._id);
+				const reply = comment.reply.find(item => reply_id === item._id);
+				reply.liked = liked;
 				if (liked) {
-					state.article[article_index].comment[comment_index].reply[reply_index].like_num++;
+					reply.like_num++;
 				} else {
-					tate.article[article_index].comment[comment_index].reply[reply_index].like_num--;
+					reply.like_num--;
 				}
-			} else if (comment_index) {
-				state.article[article_index].comment[comment_index].liked = liked;
+			} else if (comment_id) {
+				const article = state.article.find(item => item._id === article_id);
+				const comment = article.comment.find(item =>item._id === comment_id);
+				comment.liked = liked;
 				if (liked) {
-					state.article[article_index].comment[comment_index].like_num++;
+					comment.like_num++;
 				} else {
-					tate.article[article_index].comment[comment_index].like_num--;
+					comment.like_num--;
 				}
 			} else {
-				state.article[article_index].liked = liked;
+				const article = state.article.find(item => article_id === item._id);
+				article.liked = liked;
 				if (liked) {
-					state.article[article_index].like_num++;
+					article.like_num++;
 				} else {
-					state.article[article_index].like_num--;
+					article.like_num--;
 				}
 
 			}
 
+		},
+		setIsViewAll(state, {article_index,comment_index}){
+			Vue.set(state.article[article_index].comment[comment_index],'isViewAll',true)
 		}
 	},
 	actions: {
@@ -107,10 +105,7 @@ const store = new Vuex.Store({
 			// 
 		},
 		//根据文章id获取评论数据
-		async getComment(context, {
-			index,
-			article_id
-		}) {
+		async getComment(context, {index,article_id}) {
 			uniCloud.callFunction({
 				name: 'getComment',
 				data: {
@@ -123,7 +118,22 @@ const store = new Vuex.Store({
 					value: result.result
 				})
 			});
-
+		},
+		async getReply(context, {article_index,comment_id}){
+			console.log("store120:",{article_index,comment_id});
+			uniCloud.callFunction({
+				name: 'getReply',
+				data: {
+					comment_id,
+					token: uni.getStorageSync('token'),
+				}
+			}).then(result => {
+				context.commit('addReply', {
+					article_index,
+					comment_id,
+					value: result.result
+				})
+			});
 		},
 	}
 })

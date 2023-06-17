@@ -1,42 +1,51 @@
 <template>
 	<view class="article-list">
 		<view class="article-list-card" v-for="(item,index) in contentList" :key="index">
+			
+			
 			<view class="article-list-card-head">
-				<!-- 头像组件无法修改样式，在组件外加一个view用来调整外边距 -->
-				<view>
-					<view class="author_info">
-						<image :src="item.author_info.user_avatar"
-							style="border-radius: 50%;width: 80rpx;height: 80rpx; margin-right: 10px;"></image>
+				<view class="article-list-card-head-left">
+					<!-- 发布者头像 -->
+					<image :src="item.author_info.user_avatar"
+						style="border-radius: 50%;width: 80rpx;height: 80rpx; margin-right: 10px;"></image>
+					<view>
+						<!-- 发布者 -->
 						<view class="" style="color: #FC965E; font-weight: bold;">
 							{{item.author_info.user_name}}
 						</view>
-						<text class="item-category">{{item.category}}</text>
-
+						<!-- 发布时间 -->
+						<view style="font-size: 20rpx;color: #999999;"> <uni-dateformat :date="item.time"
+								:threshold="[60000,3600000,86400000]"></uni-dateformat> </view> 
 					</view>
-					<!-- 发布者 -->
-					<view style="font-size: 20rpx;color: #999999;margin-left: 3px;"> <uni-dateformat :date="item.time"
-							:threshold="[60000,3600000,86400000]"></uni-dateformat> </view> <!-- 发布时间 -->
 				</view>
-
-
+				<view class="article-list-card-head-right">
+					<!-- 文章分类 -->
+					<text class="item-category">{{item.category}}</text>
+				</view>
+				
+				
 			</view>
+			
+			
 			<view class="article-list-card-content" @click="toDetail(item._id,false)">
 
 				{{item.content}} <!-- 发布内容 -->
 
 			</view>
 			<view class="article-list-card-data">
+				<!-- 浏览量 -->
 				<view class="article-list-card-data-left">
+					<!-- <text>浏览量</text>
 					{{item.view_num}}
-					<text style="margin-left: 2px;">次</text>
+					<text style="margin-left: 2px;">次</text> -->
 				</view><!--例：浏览量 29次 -->
 				<view class="article-list-card-data-right">
 					<uni-icons type="chat" size='40rpx' @click="toDetail(item._id,true)"></uni-icons>
 					<view style="margin-right: 20rpx;font-size: 22rpx;">{{item.comment_num}}</view>
 					<uni-icons type="hand-up" size='40rpx' v-if="!item.liked"
-						@click="likeClicked('add',index,item._id)" />
+						@click="likeClicked('add',item._id)" />
 					<uni-icons color="rgb(41, 121, 255)" type="hand-up-filled" size='40rpx' v-else
-						@click="likeClicked('sub',index,item._id)" />
+						@click="likeClicked('sub',item._id)" />
 					<view style="font-size: 22rpx;">{{item.like_num}}</view>
 				</view>
 			</view>
@@ -51,29 +60,22 @@
 				type: Array
 			}
 		},
-		computed: {
-			avatar() {
-				return
-			}
-		},
 		methods: {
 			toDetail(value, flag) {
 				uni.navigateTo({
 					url: `../detail/detail?article_id=${value}&isShowKeyboard=${flag}&message_type=comment`
 				});
 			},
-			likeClicked(api, index, article_id) {
-
+			likeClicked(api, article_id) {
 				let liked = api === "add";
-				const article_index = index;
 				this.$store.commit('tempSetLiked', {
 					liked,
-					article_index
-					// index
+					article_id
 				});
 				uniCloud.callFunction({
 					name: 'updateLike',
 					data: {
+						api:"article",
 						liked,
 						token: uni.getStorageSync('token'),
 						article_id
@@ -103,19 +105,13 @@
 	}
 
 	.article-list-card-head {
+		width: 100%;
 		display: flex;
-		align-self: flex-start;
+		justify-content: space-between;
 		margin-bottom: 40rpx;
 	}
-
-	/* 作者信息 */
-	.author_info {
-		width: 300rpx;
+	.article-list-card-head-left {
 		display: flex;
-		align-items: center;
-		margin-bottom: 5px;
-		padding: 0;
-
 	}
 
 	.item-category {

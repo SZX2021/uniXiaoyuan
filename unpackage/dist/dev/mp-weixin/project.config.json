@@ -15,11 +15,12 @@
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
-    }
+    },
+    "condition": false
   },
   "compileType": "miniprogram",
-  "libVersion": "2.32.2",
-  "appid": "wx77328d1368398c36",
+  "libVersion": "2.32.0",
+  "appid": "wxef7aacd06e3a6784",
   "projectname": "uniXiaoyuan",
   "condition": {},
   "editorSetting": {

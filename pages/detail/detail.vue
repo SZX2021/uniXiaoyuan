@@ -2,36 +2,46 @@
 	<view>
 		<view class="container">
 			<view class="article-card">
+				
 				<view class="article-card-head">
-					<view style="margin-right: 20rpx;">
-						<image :src='article.author_info.user_avatar'
-							style="border-radius: 50%;width: 80rpx;height: 80rpx;"></image>
-					</view>
-					<!-- 头像组件无法修改样式，在组件外加一个view用来调整外边距 -->
-					<view>
-						<view style="color: #FC965E; font-weight: bold;margin-bottom: 10rpx;">
-							{{article.author_info.user_name}}
+					<view class="article-card-head-left">
+						<!-- 发布者头像 -->
+						<image :src="article.author_info.user_avatar"
+							style="border-radius: 50%;width: 80rpx;height: 80rpx; margin-right: 10px;"></image>
+						<view>
+							<!-- 发布者 -->
+							<view class="" style="color: #FC965E; font-weight: bold;">
+								{{article.author_info.user_name}}
+							</view>
+							<!-- 发布时间 -->
+							<view style="font-size: 20rpx;color: #999999;"> <uni-dateformat :date="article.time"
+									:threshold="[60000,3600000,86400000]"></uni-dateformat> </view> 
 						</view>
-						<!-- 发布者 -->
-						<view style="font-size: 20rpx;color: #999999;"> <uni-dateformat :date="article.time"
-								:threshold="[60000,3600000,86400000]"></uni-dateformat> </view> <!-- 发布时间 -->
+					</view>
+					<view class="article-card-head-right">
+						<!-- 文章分类 -->
+						<text class="item-category">{{article.category}}</text>
 					</view>
 				</view>
+				
+				
 				<view class="article-card-content">
 					{{article.content}} <!-- 发布内容 -->
 				</view>
 				<view class="article-card-data">
+					<!-- 浏览量 -->
 					<view class="article-card-data-left">
+						<!-- <text>浏览量</text>
 						{{article.view_num}}
-						<text>次</text>
+						<text>次</text> -->
 					</view><!--例：浏览量 29次 -->
 					<view class="article-card-data-right">
 						<uni-icons type="chat" size='40rpx' @click="() => showKeyboard(true,'comment')"></uni-icons>
 						<view style="margin-right: 20rpx;font-size: 22rpx;">{{article.comment_num}}</view>
 						<uni-icons type="hand-up" size='40rpx' v-if="article.liked===false"
-							@click="articleLikeClicked('add',article_index,article_id)" />
-						<uni-icons type="hand-up-filled" size='40rpx' v-else
-							@click="articleLikeClicked('sub',article_index,article_id)" />
+							@click="articleLikeClicked('add',article_id)" />
+						<uni-icons color="rgb(41, 121, 255)"  type="hand-up-filled" size='40rpx' v-else
+							@click="articleLikeClicked('sub',article_id)" />
 						<view style="font-size: 22rpx;">{{article.like_num}}</view>
 					</view>
 				</view>
@@ -54,13 +64,10 @@
 					</view>
 				</view>
 
-				<view class="detail_comment_area_content">
+				<view class="comment-card-content">
 					<view style="width: 80rpx;"></view>
 					<text style="font-size: 25rpx;">{{item.content}}</text>
 				</view>
-
-
-
 
 				<!-- 评论数据，点赞功能 -->
 				<view class="comment-card-data">
@@ -68,53 +75,65 @@
 						<view style="width: 80rpx;"></view>
 						<uni-dateformat :date="item.time" :threshold="[60000,3600000,86400000]"></uni-dateformat>
 					</view>
-					<view>
-						<uni-icons type="hand-up" size='40rpx' v-if="article.liked===false"
-							@click="commentLikeClicked('add',article_index,index1,item._id)" />
-						<uni-icons type="hand-up-filled" size='40rpx' v-else
-							@click="commentLikeClicked('sub',article_index,index1,item._id)" />
-						<text style="font-size: 22rpx;">12</text>
+					<view class="comment-card-data-right">
+						<uni-icons type="hand-up" size='40rpx' v-if="item.liked===false"
+							@click="commentLikeClicked('add',article_id,item._id)" />
+						<uni-icons color="rgb(41, 121, 255)" type="hand-up-filled" size='40rpx' v-else
+							@click="commentLikeClicked('sub',article_id,item._id)" />
+						<text style="font-size: 22rpx;margin-right: 20rpx;">{{item.like_num}}</text>
 						<uni-icons type="chat" size='40rpx'
 							@click="() => showKeyboard(true,'reply',item._id,item.commenter_info.user_name,item.commenter_info._id)" />
 					</view>
-
+					
 				</view>
-
-				<!-- 评论回复功能 -->
-				<view class="reply inline_card_two" v-for="(reply,index2) in item.comment_reply" :key="index2">
+				
+				<view v-if="item.isViewAll === false">
+					<view class="view-all" v-if="item.reply_num > 0" @click="viewAll(article_index,index1,item._id)">
+						<text>展开{{item.reply_num}}条回复</text>
+					</view>
+				</view>
+				
+				
+				<!-- 评论回复区 -->
+				<view class="reply" v-for="(reply,index2) in item.reply" :key="index2">
 					<!-- 头像组件无法修改样式，在组件外加一个view用来调整外边距 -->
-					<view class="reply_head">
-						<image :src="item.commenterInfo.commenterAvatar"
+					<view class="reply-head">
+						<!-- 发布者头像 -->
+						<image :src="reply.replyer_info.user_avatar"
 							style="border-radius: 50%;width: 60rpx;height: 60rpx;margin-right: 20rpx;"></image>
 						<!-- 发布者 -->
-						<view class="comment_publisher" style="align-self: center;font-size: 24rpx;">
-							{{reply.replyer_name}}
+						<view class="comment-publisher" style="align-self: center;font-size: 24rpx;">
+							{{reply.replyer_info.user_name}}
 						</view>
 						<uni-icons type="forward" size="20rpx" style="margin: 0 20rpx;" />
-						<view style="align-self: center;font-size: 20rpx; ">{{reply.replyer_to_user_name}}</view>
+						<view style="align-self: center;font-size: 24rpx; ">{{reply.replyer_to_user_name}}</view>
 					</view>
 					<!-- 发布内容 -->
-					<view class="reply_content">
+					<view class="reply-content">
 						{{reply.content_reply}}
 					</view>
 
 					<view class="comment-card-data">
-						<view style="font-size: 20rpx;color: #999999;display: flex;">
+						<view class="comment-card-data-left">
 							<view style="width: 80rpx;"></view>
 							<uni-dateformat :date="item.time" :threshold="[60000,3600000,86400000]"></uni-dateformat>
 						</view>
-						<view>
-							<uni-icons type="hand-up" size='40rpx' v-if="article.liked===false"
-								@click="replyLikeClicked('add',article_index,index1,index2,reply._id)" />
-							<uni-icons type="hand-up-filled" size='40rpx' v-else
-								@click="replyLikeClicked('sub',article_index,index1,index2,reply._id)" />
+						<view class="comment-card-data-right">
+							<uni-icons type="hand-up" size='40rpx' v-if="reply.liked===false"
+								@click="replyLikeClicked('add',article_id,item._id,reply._id)" />
+							<uni-icons color="rgb(41, 121, 255)" type="hand-up-filled" size='40rpx' v-else
+								@click="replyLikeClicked('sub',article_id,item._id,reply._id)" />
 							<text style="font-size: 22rpx;">{{reply.like_num}}</text>
-							<uni-icons type="chat" size='40rpx'
-								@click="() => showKeyboard(true,'reply',item._id,reply.commenter_info.user_name,itme.commenter_info._id)"></uni-icons>
+							<!-- 评论按钮 -->
+							<!-- <uni-icons type="chat" size='40rpx'
+								@click="() => showKeyboard(true,'reply',item._id,reply.commenter_info.user_name,itme.commenter_info._id)"></uni-icons> -->
 						</view>
 
 					</view>
+					
+					
 				</view>
+			
 			</view>
 
 			<!-- 键盘区 -->
@@ -156,9 +175,9 @@
 			this.isShowKeyboard = JSON.parse(options.isShowKeyboard);
 			this.article_id = options.article_id;
 			this.message_type = options.message_type;
-			this.article_index = this.$store.state.article.findIndex(item => item._id === options.article_id);
-			if (!("comment" in this.$store.state.article[this.article_index])) {
-				this.$store.dispatch('getComment', {
+			this.article_index = store.state.article.findIndex(item => item._id === options.article_id);
+			if (!("comment" in store.state.article[this.article_index])) {
+				store.dispatch('getComment', {
 					index: this.article_index,
 					article_id: options.article_id
 				});
@@ -167,7 +186,7 @@
 		},
 		computed: {
 			article() {
-				return this.$store.state.article.find(item => item._id === this.article_id);
+				return store.state.article.find(item => item._id === this.article_id);
 			}
 		},
 		methods: {
@@ -179,6 +198,7 @@
 				this.replyer_to_user_id = replyer_to_user_id;
 			},
 			sendMessage() {
+				const that = this;
 				if (!this.message) {
 					uni.showToast({
 						title: "输入不能为空"
@@ -199,26 +219,18 @@
 						}
 					}).then((res) => {
 						uni.hideLoading();
-						console.log(res.result);
+						console.log("detail204:",res.result);
 						if (res.result) {
 							uni.showToast({
 								title: '内容敏感',
 								icon: 'error'
 							});
 						} else {
-							const data = {
-								"content": this.message,
-								"like_num": 0,
-								"reply_num": 0,
-								"commenter_info": uni.getStorageSync('user_info'),
-								"time": Date.now()
-							};
-							//在本地临时更新页面数据
-							this.$store.commit('tempAddComment', {
-								index: this.article_index,
-								value: data
+							store.dispatch('getComment', {
+								index: that.article_index,
+								article_id: that.article_id,
 							});
-							this.message = '';
+							that.message = '';
 						};
 					});
 				};
@@ -236,36 +248,30 @@
 							replyer_to_user_id: this.replyer_to_user_id,
 						}
 					}).then((res) => {
+						console.log(that.comment_id);
 						uni.hideLoading();
-						console.log(res.result);
 						if (res.result) {
 							uni.showToast({
 								title: '内容敏感',
 								icon: 'error'
 							});
 						} else {
-							const data = {
-								"content": this.message,
-								"like_num": 0,
-								"reply_num": 0,
-							};
-							//在本地临时更新页面数据
-							this.$store.commit('tempAddComment', {
-								index: this.article_index,
-								value: data
+							console.log(that.comment_id);
+							store.dispatch('getReply', {
+								article_index: that.article_index,
+								comment_id: that.comment_id
 							});
-							this.message = '';
 						};
 					});
 				}
 
 			},
 
-			articleLikeClicked(api, article_index, article_id) {
+			articleLikeClicked(api, article_id) {
 				const liked = api === "add";
-				this.$store.commit('tempSetLiked', {
+				store.commit('tempSetLiked', {
 					liked,
-					index
+					aritcle_id
 				});
 				uniCloud.callFunction({
 					name: 'updateLike',
@@ -277,12 +283,12 @@
 					}
 				});
 			},
-			commentLikeClicked(api, article_index, comment_index, comment_id) {
+			commentLikeClicked(api, article_id, comment_id) {
 				const liked = (api === "add");
-				this.$store.commit('tempSetLiked', {
+				store.commit('tempSetLiked', {
 					liked,
-					article_index,
-					comment_index
+					article_id,
+					comment_id
 				});
 				uniCloud.callFunction({
 					name: 'updateLike',
@@ -294,13 +300,13 @@
 					}
 				});
 			},
-			replyLikeClicked(api, article_index, comment_index, reply_index, reply_id) {
+			replyLikeClicked(api, article_id, comment_id, reply_id) {
 				const liked = (api === "add");
-				this.$store.commit('tempSetLiked', {
+				store.commit('tempSetLiked', {
 					liked,
-					article_index,
-					comment_index,
-					reply_index
+					article_id,
+					comment_id,
+					reply_id
 				});
 				uniCloud.callFunction({
 					name: 'updateLike',
@@ -314,6 +320,10 @@
 			},
 			avatar() {
 				return uni.getStorageSync('user_info').user_avatar
+			},
+			viewAll(article_index,comment_index,comment_id) {
+				store.dispatch('getReply',{article_index,comment_id});
+				store.commit('setIsViewAll',{article_index,comment_index});
 			}
 		}
 	}
@@ -338,9 +348,19 @@
 	}
 
 	.article-card-head {
+		width: 100%;
 		display: flex;
-		align-self: flex-start;
+		justify-content: space-between;
 		margin-bottom: 40rpx;
+	}
+	.article-card-head-left {
+		display: flex;
+	}
+	
+	.item-category {
+		margin-left: 10px;
+		font-size: 14px;
+		color: rgb(193, 193, 193);
 	}
 
 	.article-card-content {
@@ -377,12 +397,16 @@
 		flex-direction: column;
 		margin-top: 40rpx;
 	}
+	.comment-card-head {
+		display: flex;
+	}
+	
 
 	.content {
 		width: 100%;
 	}
 
-	.detail_comment_area_content {
+	.comment-card-content {
 		display: flex;
 		justify-self: start;
 		width: 100%;
@@ -392,21 +416,36 @@
 
 	.comment-card-data {
 		display: flex;
-		justify-content: flex-end;
+		justify-content: space-between;
+		align-items: center;
 		width: 100%;
 		margin-bottom: 20rpx;
 	}
 
-	.comment-card-data_left {
-		font-weight: bold;
-		font-size: 22rpx;
+	.comment-card-data-left {
+		font-size: 20rpx;
+		color: #999999;
+		display: flex;
 	}
 
-	.comment-card-data_right {
+	.comment-card-data-right {
 		weight: 100rpx;
 		display: flex;
 		align-items: center;
+	}
 
+	.view-all {
+		background-color: #f8f8f8;
+		border-radius: 5rpx;
+		width: fit-content;
+		padding: 10rpx 20rpx;
+		margin-left: 80rpx;
+	}
+	
+	.view-all text {
+		font-size: 22rpx;
+		font-weight: bold;
+		color: rgb(41, 121, 255);
 	}
 
 	.data {
@@ -415,7 +454,7 @@
 		width: 100%;
 	}
 
-	.data_right {
+	.data-right {
 		weight: 100rpx;
 		display: flex;
 		align-items: center;
@@ -431,23 +470,24 @@
 	}
 
 	/* 回复版块样式 */
-	.inline_card_two {
+	.reply {
 		background-color: #f8f8f8;
 		width: 100%;
 		border-radius: 5rpx;
 		padding: 20rpx 20rpx 10rpx;
 	}
 
-	.reply_head {
+	.reply-head {
 		display: flex;
+		align-items: center;
 		font-weight: bold;
 	}
 
-	.reply_content {
+	.reply-content {
 		display: flex;
 		justify-self: start;
 		width: 100%;
-		padding-left: 15%;
+		margin-left: 80rpx;
 		font-weight: bold;
 	}
 </style>

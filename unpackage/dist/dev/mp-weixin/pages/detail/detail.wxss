@@ -15,9 +15,18 @@
 	margin-top: 40rpx;
 }
 .article-card-head {
+	width: 100%;
 	display: flex;
-	align-self: flex-start;
+	justify-content: space-between;
 	margin-bottom: 40rpx;
+}
+.article-card-head-left {
+	display: flex;
+}
+.item-category {
+	margin-left: 10px;
+	font-size: 14px;
+	color: rgb(193, 193, 193);
 }
 .article-card-content {
 	width: 100%;
@@ -47,10 +56,13 @@
 	flex-direction: column;
 	margin-top: 40rpx;
 }
+.comment-card-head {
+	display: flex;
+}
 .content {
 	width: 100%;
 }
-.detail_comment_area_content {
+.comment-card-content {
 	display: flex;
 	justify-self: start;
 	width: 100%;
@@ -59,25 +71,40 @@
 }
 .comment-card-data {
 	display: flex;
-	justify-content: flex-end;
+	justify-content: space-between;
+	align-items: center;
 	width: 100%;
 	margin-bottom: 20rpx;
 }
-.comment-card-data_left {
-	font-weight: bold;
-	font-size: 22rpx;
+.comment-card-data-left {
+	font-size: 20rpx;
+	color: #999999;
+	display: flex;
 }
-.comment-card-data_right {
+.comment-card-data-right {
 	weight: 100rpx;
 	display: flex;
 	align-items: center;
+}
+.view-all {
+	background-color: #f8f8f8;
+	border-radius: 5rpx;
+	width: -webkit-fit-content;
+	width: fit-content;
+	padding: 10rpx 20rpx;
+	margin-left: 80rpx;
+}
+.view-all text {
+	font-size: 22rpx;
+	font-weight: bold;
+	color: rgb(41, 121, 255);
 }
 .data {
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
 }
-.data_right {
+.data-right {
 	weight: 100rpx;
 	display: flex;
 	align-items: center;
@@ -92,21 +119,22 @@
 }
 
 /* 回复版块样式 */
-.inline_card_two {
+.reply {
 	background-color: #f8f8f8;
 	width: 100%;
 	border-radius: 5rpx;
 	padding: 20rpx 20rpx 10rpx;
 }
-.reply_head {
+.reply-head {
 	display: flex;
+	align-items: center;
 	font-weight: bold;
 }
-.reply_content {
+.reply-content {
 	display: flex;
 	justify-self: start;
 	width: 100%;
-	padding-left: 15%;
+	margin-left: 80rpx;
 	font-weight: bold;
 }
 
