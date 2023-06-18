@@ -9986,7 +9986,7 @@ var k = "development" === "development",
         "127.0.0.1",
         "192.168.135.1",
         "192.168.239.1",
-        "192.168.1.6"
+        "192.168.1.3"
     ],
     "debugPort": 9000,
     "initialLaunchType": "local",
