@@ -49,7 +49,7 @@
 
 			<view style="align-self: flex-start;padding: 30rpx 30rpx;">
 				<text style="font-weight: bold;margin-right: 20rpx;">评论</text>
-				<text style="font-weight: bold;">1</text>
+				<text style="font-weight: bold;">{{article.comment_num}}</text>
 			</view>
 
 			<!-- 评论区 -->
@@ -95,25 +95,25 @@
 				
 				
 				<!-- 评论回复区 -->
-				<view class="reply" v-for="(reply,index2) in item.reply" :key="index2">
+				<!-- <view class="reply" v-for="(reply,index2) in item.reply" :key="index2"> -->
 					<!-- 头像组件无法修改样式，在组件外加一个view用来调整外边距 -->
-					<view class="reply-head">
+					<!-- <view class="reply-head"> -->
 						<!-- 发布者头像 -->
-						<image :src="reply.replyer_info.user_avatar"
-							style="border-radius: 50%;width: 60rpx;height: 60rpx;margin-right: 20rpx;"></image>
+						<!-- <image :src="reply.replyer_info.user_avatar" -->
+							<!-- style="border-radius: 50%;width: 60rpx;height: 60rpx;margin-right: 20rpx;"></image> -->
 						<!-- 发布者 -->
-						<view class="comment-publisher" style="align-self: center;font-size: 24rpx;">
-							{{reply.replyer_info.user_name}}
-						</view>
-						<uni-icons type="forward" size="20rpx" style="margin: 0 20rpx;" />
-						<view style="align-self: center;font-size: 24rpx; ">{{reply.replyer_to_user_name}}</view>
-					</view>
+						<!-- <view class="comment-publisher" style="align-self: center;font-size: 24rpx;"> -->
+							<!-- {{reply.replyer_info.user_name}} -->
+						<!-- </view> -->
+						<!-- <uni-icons type="forward" size="20rpx" style="margin: 0 20rpx;" /> -->
+						<!-- <view style="align-self: center;font-size: 24rpx; ">{{reply.replyer_to_user_name}}</view> -->
+					<!-- </view> -->
 					<!-- 发布内容 -->
-					<view class="reply-content">
-						{{reply.content_reply}}
-					</view>
+					<!-- <view class="reply-content"> -->
+						<!-- {{reply.content_reply}} -->
+					<!-- </view> -->
 
-					<view class="comment-card-data">
+					<!-- <view class="comment-card-data">
 						<view class="comment-card-data-left">
 							<view style="width: 80rpx;"></view>
 							<uni-dateformat :date="reply.time" :threshold="[60000,3600000,86400000]"></uni-dateformat>
@@ -123,16 +123,16 @@
 								@click="replyLikeClicked('add',article_id,item._id,reply._id)" />
 							<uni-icons color="rgb(41, 121, 255)" type="hand-up-filled" size='40rpx' v-else
 								@click="replyLikeClicked('sub',article_id,item._id,reply._id)" />
-							<text style="font-size: 22rpx;">{{reply.like_num}}</text>
+							<text style="font-size: 22rpx;">{{reply.like_num}}</text> -->
 							<!-- 评论按钮 -->
 							<!-- <uni-icons type="chat" size='40rpx'
 								@click="() => showKeyboard(true,'reply',item._id,reply.commenter_info.user_name,itme.commenter_info._id)"></uni-icons> -->
-						</view>
+					<!-- 	</view>
 
 					</view>
 					
-					
-				</view>
+				
+				</view> -->
 			
 			</view>
 
@@ -300,31 +300,31 @@
 					}
 				});
 			},
-			replyLikeClicked(api, article_id, comment_id, reply_id) {
-				const liked = (api === "add");
-				store.commit('tempSetLiked', {
-					liked,
-					article_id,
-					comment_id,
-					reply_id
-				});
-				uniCloud.callFunction({
-					name: 'updateLike',
-					data: {
-						api: "reply",
-						liked,
-						token: uni.getStorageSync('token'),
-						reply_id
-					}
-				});
-			},
+			// replyLikeClicked(api, article_id, comment_id, reply_id) {
+			// 	const liked = (api === "add");
+			// 	store.commit('tempSetLiked', {
+			// 		liked,
+			// 		article_id,
+			// 		comment_id,
+			// 		reply_id
+			// 	});
+			// 	uniCloud.callFunction({
+			// 		name: 'updateLike',
+			// 		data: {
+			// 			api: "reply",
+			// 			liked,
+			// 			token: uni.getStorageSync('token'),
+			// 			reply_id
+			// 		}
+			// 	});
+			// },
 			avatar() {
 				return uni.getStorageSync('user_info').user_avatar
 			},
-			viewAll(article_index,comment_index,comment_id) {
-				store.dispatch('getReply',{article_index,comment_id});
-				store.commit('setIsViewAll',{article_index,comment_index});
-			}
+			// viewAll(article_index,comment_index,comment_id) {
+			// 	store.dispatch('getReply',{article_index,comment_id});
+			// 	store.commit('setIsViewAll',{article_index,comment_index});
+			// }
 		}
 	}
 </script>

@@ -178,8 +178,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 28));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 31));
 var _index = _interopRequireDefault(__webpack_require__(/*! @/store/index.js */ 45));
-//
 //
 //
 //
@@ -299,67 +300,64 @@ var _default = {
     },
     uploadForm: function uploadForm() {
       var _this = this;
-      //检查是否登录
-      var target = this.checkLogin();
-      if (!target) {
-        return 0;
-      }
-      //检查表单内容是否合法
-      if (!this.checkForm()) {
-        return 0;
-      }
-      uni.showLoading({
-        title: '发布中...'
-      });
-      this.$refs.images.upload(); //将选中的图片上传到云储存
-      try {} catch (e) {
-        //TODO handle the exception
-      }
-      uniCloud.callFunction({
-        name: "uploadArticle",
-        data: {
-          content: this.content,
-          images: this.images,
-          token: uni.getStorageSync('token'),
-          category: this.tags.find(function (item) {
-            return item.inverted === false;
-          }).tag,
-          nimingFlag: this.nimingFlag,
-          time: Date.now()
-        }
-      }).then(function () {
-        uni.hideLoading;
-        var value = {
-          content: _this.content,
-          images: _this.images,
-          author_info: uni.getStorageSync('user_info'),
-          category: _this.category,
-          niming_flag: _this.nimingFlag,
-          time: _this.time,
-          view_num: 0,
-          like_num: 0,
-          like_user_id: [],
-          comment_num: 0
-        };
-        _index.default.commit(value);
-        console.log(_this.content);
-        uni.redirectTo({
-          url: '../home/home'
-        });
-        uni.showToast({
-          title: '发布成功'
-        });
-      }, function (err) {
-        console.log(err);
-        // 消失加载效果
-        uni.hideLoading();
-        //提示失败
-        uni.showToast({
-          title: '发布失败',
-          icon: 'error',
-          duration: 2000
-        });
-      });
+      return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+        var target;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                //检查是否登录
+                target = _this.checkLogin();
+                if (target) {
+                  _context.next = 3;
+                  break;
+                }
+                return _context.abrupt("return", 0);
+              case 3:
+                if (_this.checkForm()) {
+                  _context.next = 5;
+                  break;
+                }
+                return _context.abrupt("return", 0);
+              case 5:
+                uni.showLoading({
+                  title: '发布中...'
+                });
+                _context.next = 8;
+                return _this.$refs.images.upload();
+              case 8:
+                //将选中的图片上传到云储存
+                console.log("测试：", _this.images);
+                _context.next = 11;
+                return uniCloud.callFunction({
+                  name: "uploadArticle",
+                  data: {
+                    content: _this.content,
+                    images: _this.images,
+                    token: uni.getStorageSync('token'),
+                    category: _this.tags.find(function (item) {
+                      return item.inverted === false;
+                    }).tag,
+                    nimingFlag: _this.nimingFlag,
+                    time: Date.now()
+                  }
+                });
+              case 11:
+                uni.hideLoading;
+                _index.default.dispatch('getArticle');
+                uni.redirectTo({
+                  url: '../home/home'
+                });
+                uni.showToast({
+                  title: '发布成功'
+                });
+              case 15:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
     }
   }
 };

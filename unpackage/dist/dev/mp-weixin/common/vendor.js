@@ -9986,7 +9986,7 @@ var k = "development" === "development",
         "127.0.0.1",
         "192.168.135.1",
         "192.168.239.1",
-        "192.168.1.6"
+        "192.168.1.3"
     ],
     "debugPort": 9000,
     "initialLaunchType": "local",
@@ -17665,22 +17665,17 @@ var store = new _vuex.default.Store({
         value = _ref.value;
       _vue.default.set(state.article[index], "comment", value);
     },
-    addReply: function addReply(state, _ref2) {
-      var article_index = _ref2.article_index,
+    // addReply(state,{article_index,comment_id,value}) {
+    // 	const comment = state.article[article_index].comment.find(item => item._id===comment_id);
+    // 	console.log(comment);
+    // 	// comment.reply = value;
+    // 	Vue.set(comment,"reply",value);
+    // },
+    tempSetLiked: function tempSetLiked(state, _ref2) {
+      var liked = _ref2.liked,
+        article_id = _ref2.article_id,
         comment_id = _ref2.comment_id,
-        value = _ref2.value;
-      var comment = state.article[article_index].comment.find(function (item) {
-        return item._id === comment_id;
-      });
-      console.log(comment);
-      // comment.reply = value;
-      _vue.default.set(comment, "reply", value);
-    },
-    tempSetLiked: function tempSetLiked(state, _ref3) {
-      var liked = _ref3.liked,
-        article_id = _ref3.article_id,
-        comment_id = _ref3.comment_id,
-        reply_id = _ref3.reply_id;
+        reply_id = _ref2.reply_id;
       //通过id定位点赞的内容
       if (reply_id) {
         var article = state.article.find(function (item) {
@@ -17722,12 +17717,9 @@ var store = new _vuex.default.Store({
           _article2.like_num--;
         }
       }
-    },
-    setIsViewAll: function setIsViewAll(state, _ref4) {
-      var article_index = _ref4.article_index,
-        comment_index = _ref4.comment_index;
-      _vue.default.set(state.article[article_index].comment[comment_index], 'isViewAll', true);
-    }
+    } // setIsViewAll(state, {article_index,comment_index}){
+    // 	Vue.set(state.article[article_index].comment[comment_index],'isViewAll',true)
+    // }
   },
   actions: {
     //相当于异步的操作,不能直接改变state的值，只能通过触发mutations的方法才能改变
@@ -17743,14 +17735,14 @@ var store = new _vuex.default.Store({
       // 
     },
     //根据文章id获取评论数据
-    getComment: function getComment(context, _ref5) {
+    getComment: function getComment(context, _ref3) {
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
         var index, article_id;
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                index = _ref5.index, article_id = _ref5.article_id;
+                index = _ref3.index, article_id = _ref3.article_id;
                 uniCloud.callFunction({
                   name: 'getComment',
                   data: {
@@ -17770,40 +17762,22 @@ var store = new _vuex.default.Store({
           }
         }, _callee);
       }))();
-    },
-    getReply: function getReply(context, _ref6) {
-      return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
-        var article_index, comment_id;
-        return _regenerator.default.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                article_index = _ref6.article_index, comment_id = _ref6.comment_id;
-                console.log("store120:", {
-                  article_index: article_index,
-                  comment_id: comment_id
-                });
-                uniCloud.callFunction({
-                  name: 'getReply',
-                  data: {
-                    comment_id: comment_id,
-                    token: uni.getStorageSync('token')
-                  }
-                }).then(function (result) {
-                  context.commit('addReply', {
-                    article_index: article_index,
-                    comment_id: comment_id,
-                    value: result.result
-                  });
-                });
-              case 3:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2);
-      }))();
-    }
+    } // async getReply(context, {article_index,comment_id}){
+    // 	console.log("store120:",{article_index,comment_id});
+    // 	uniCloud.callFunction({
+    // 		name: 'getReply',
+    // 		data: {
+    // 			comment_id,
+    // 			token: uni.getStorageSync('token'),
+    // 		}
+    // 	}).then(result => {
+    // 		context.commit('addReply', {
+    // 			article_index,
+    // 			comment_id,
+    // 			value: result.result
+    // 		})
+    // 	});
+    // },
   }
 });
 var _default = store;

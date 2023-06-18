@@ -1,52 +1,52 @@
 
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 .card {
-  width: 90%;
-  border-radius: 20rpx;
-  background-color: white;
-  padding: 30rpx;
-  display: flex;
-  flex-direction: column;
-  margin-top: 40rpx;
+	width: 90%;
+	border-radius: 20rpx;
+	background-color: white;
+	padding: 30rpx;
+	display: flex;
+	flex-direction: column;
+	margin-top: 40rpx;
 }
 .text {
 
-  align-self: center;
-  font-size: 24rpx;
-  width: 100%;
-  /* 根据需要调整行间距的数值 */
-  line-height: 3px;
-  /* 根据需要调整字间距的数值 */
-  letter-spacing: 3px;
+	align-self: center;
+	font-size: 24rpx;
+	width: 100%;
+	/* 根据需要调整行间距的数值 */
+	line-height: 3px;
+	/* 根据需要调整字间距的数值 */
+	letter-spacing: 3px;
 }
 .tags {
-  display: flex;
-  margin-top: 20rpx;
+	display: flex;
+	margin-top: 20rpx;
 }
 .tag {
-  margin-right: 20rpx;
+	margin-right: 20rpx;
 }
 .line {
-  width: 100%;
-  height: 1px;
-  background-color: #808080;
-  margin: 40rpx 0 20rpx;
+	width: 100%;
+	height: 1px;
+	background-color: #808080;
+	margin: 40rpx 0 20rpx;
 }
 .niming {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 .button {
-  border-radius: 50rpx;
-  width: 90%;
-  font-weight: bold;
-  color: #fff;
-  background-color: #2b85e4;
-  margin-top: 40rpx;
+	border-radius: 50rpx;
+	width: 90%;
+	font-weight: bold;
+	color: #fff;
+	background-color: #2b85e4;
+	margin-top: 40rpx;
 }
 

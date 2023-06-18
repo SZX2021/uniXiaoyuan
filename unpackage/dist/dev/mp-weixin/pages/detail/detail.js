@@ -511,37 +511,30 @@ var _default = {
         }
       });
     },
-    replyLikeClicked: function replyLikeClicked(api, article_id, comment_id, reply_id) {
-      var liked = api === "add";
-      _index.default.commit('tempSetLiked', {
-        liked: liked,
-        article_id: article_id,
-        comment_id: comment_id,
-        reply_id: reply_id
-      });
-      uniCloud.callFunction({
-        name: 'updateLike',
-        data: {
-          api: "reply",
-          liked: liked,
-          token: uni.getStorageSync('token'),
-          reply_id: reply_id
-        }
-      });
-    },
+    // replyLikeClicked(api, article_id, comment_id, reply_id) {
+    // 	const liked = (api === "add");
+    // 	store.commit('tempSetLiked', {
+    // 		liked,
+    // 		article_id,
+    // 		comment_id,
+    // 		reply_id
+    // 	});
+    // 	uniCloud.callFunction({
+    // 		name: 'updateLike',
+    // 		data: {
+    // 			api: "reply",
+    // 			liked,
+    // 			token: uni.getStorageSync('token'),
+    // 			reply_id
+    // 		}
+    // 	});
+    // },
     avatar: function avatar() {
       return uni.getStorageSync('user_info').user_avatar;
-    },
-    viewAll: function viewAll(article_index, comment_index, comment_id) {
-      _index.default.dispatch('getReply', {
-        article_index: article_index,
-        comment_id: comment_id
-      });
-      _index.default.commit('setIsViewAll', {
-        article_index: article_index,
-        comment_index: comment_index
-      });
-    }
+    } // viewAll(article_index,comment_index,comment_id) {
+    // 	store.dispatch('getReply',{article_index,comment_id});
+    // 	store.commit('setIsViewAll',{article_index,comment_index});
+    // }
   }
 };
 exports.default = _default;

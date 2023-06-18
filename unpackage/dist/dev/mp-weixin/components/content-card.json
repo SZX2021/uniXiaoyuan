@@ -1,6 +1,8 @@
 {
   "usingComponents": {
     "uni-dateformat": "/uni_modules/uni-dateformat/components/uni-dateformat/uni-dateformat",
+    "uni-grid": "/uni_modules/uni-grid/components/uni-grid/uni-grid",
+    "uni-grid-item": "/uni_modules/uni-grid/components/uni-grid-item/uni-grid-item",
     "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons"
   },
   "component": true

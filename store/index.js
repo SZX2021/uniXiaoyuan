@@ -45,12 +45,12 @@ const store = new Vuex.Store({
 		addComment(state, {index,value}) {
 			Vue.set(state.article[index], "comment", value);
 		},
-		addReply(state,{article_index,comment_id,value}) {
-			const comment = state.article[article_index].comment.find(item => item._id===comment_id);
-			console.log(comment);
-			// comment.reply = value;
-			Vue.set(comment,"reply",value);
-		},
+		// addReply(state,{article_index,comment_id,value}) {
+		// 	const comment = state.article[article_index].comment.find(item => item._id===comment_id);
+		// 	console.log(comment);
+		// 	// comment.reply = value;
+		// 	Vue.set(comment,"reply",value);
+		// },
 		tempSetLiked(state, {
 			liked,
 			article_id,
@@ -89,9 +89,9 @@ const store = new Vuex.Store({
 			}
 
 		},
-		setIsViewAll(state, {article_index,comment_index}){
-			Vue.set(state.article[article_index].comment[comment_index],'isViewAll',true)
-		}
+		// setIsViewAll(state, {article_index,comment_index}){
+		// 	Vue.set(state.article[article_index].comment[comment_index],'isViewAll',true)
+		// }
 	},
 	actions: {
 		//相当于异步的操作,不能直接改变state的值，只能通过触发mutations的方法才能改变
@@ -119,22 +119,22 @@ const store = new Vuex.Store({
 				})
 			});
 		},
-		async getReply(context, {article_index,comment_id}){
-			console.log("store120:",{article_index,comment_id});
-			uniCloud.callFunction({
-				name: 'getReply',
-				data: {
-					comment_id,
-					token: uni.getStorageSync('token'),
-				}
-			}).then(result => {
-				context.commit('addReply', {
-					article_index,
-					comment_id,
-					value: result.result
-				})
-			});
-		},
+		// async getReply(context, {article_index,comment_id}){
+		// 	console.log("store120:",{article_index,comment_id});
+		// 	uniCloud.callFunction({
+		// 		name: 'getReply',
+		// 		data: {
+		// 			comment_id,
+		// 			token: uni.getStorageSync('token'),
+		// 		}
+		// 	}).then(result => {
+		// 		context.commit('addReply', {
+		// 			article_index,
+		// 			comment_id,
+		// 			value: result.result
+		// 		})
+		// 	});
+		// },
 	}
 })
 export default store

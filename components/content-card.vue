@@ -28,10 +28,13 @@
 			
 			
 			<view class="article-list-card-content" @click="toDetail(item._id,false)">
-
 				{{item.content}} <!-- 发布内容 -->
-
 			</view>
+			<uni-grid :column="3">
+				<uni-grid-item v-for="(image,index2) in item.images" :key="index2">
+					<image :src="image"></image>
+				</uni-grid-item>
+			</uni-grid>
 			<view class="article-list-card-data">
 				<!-- 浏览量 -->
 				<view class="article-list-card-data-left">
