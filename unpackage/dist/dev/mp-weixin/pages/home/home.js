@@ -198,7 +198,9 @@ var _default = {
               uni.showLoading({
                 title: '加载中...'
               });
-              _this.article();
+              if (!_this.$store.state.article) {
+                _this.article();
+              }
               _this.$store.dispatch('getArticle');
             case 3:
             case "end":

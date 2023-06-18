@@ -399,12 +399,42 @@ var _default = {
     }
   },
   methods: {
+    checkLogin: function checkLogin() {
+      // 检查是否注册过
+      var token = uni.getStorageSync('token');
+      if (!token) {
+        uni.showModal({
+          title: '提示',
+          content: '未登录，请您登录',
+          success: function success(res) {
+            if (res.confirm) {
+              console.log('用户点击确定');
+              uni.switchTab({
+                url: '/pages/my/my'
+              });
+            } else if (res.cancel) {
+              console.log('用户点击取消');
+              uni.switchTab({
+                url: '/pages/home/home'
+              });
+            }
+          }
+        });
+        return false;
+      } else {
+        return true;
+      }
+    },
     showKeyboard: function showKeyboard(flag, message_type, comment_id, replyer_to_user, replyer_to_user_id) {
-      this.isShowKeyboard = flag;
-      this.message_type = message_type;
-      this.comment_id = comment_id;
-      this.replyer_to_user = replyer_to_user;
-      this.replyer_to_user_id = replyer_to_user_id;
+      if (!this.checkLogin()) {
+        return;
+      } else {
+        this.isShowKeyboard = flag;
+        this.message_type = message_type;
+        this.comment_id = comment_id;
+        this.replyer_to_user = replyer_to_user;
+        this.replyer_to_user_id = replyer_to_user_id;
+      }
     },
     sendMessage: function sendMessage() {
       var that = this;
@@ -479,37 +509,46 @@ var _default = {
       }
     },
     articleLikeClicked: function articleLikeClicked(api, article_id) {
-      var liked = api === "add";
-      _index.default.commit('tempSetLiked', {
-        liked: liked,
-        aritcle_id: aritcle_id
-      });
-      uniCloud.callFunction({
-        name: 'updateLike',
-        data: {
-          api: "article",
+      if (!this.checkLogin()) {
+        return;
+      } else {
+        var liked = api === "add";
+        _index.default.commit('tempSetLiked', {
           liked: liked,
-          token: uni.getStorageSync('token'),
-          article_id: article_id
-        }
-      });
+          aritcle_id: aritcle_id
+        });
+        uniCloud.callFunction({
+          name: 'updateLike',
+          data: {
+            api: "article",
+            liked: liked,
+            token: uni.getStorageSync('token'),
+            article_id: article_id
+          }
+        });
+      }
     },
     commentLikeClicked: function commentLikeClicked(api, article_id, comment_id) {
-      var liked = api === "add";
-      _index.default.commit('tempSetLiked', {
-        liked: liked,
-        article_id: article_id,
-        comment_id: comment_id
-      });
-      uniCloud.callFunction({
-        name: 'updateLike',
-        data: {
-          api: "comment",
+      if (!this.checkLogin()) {
+        return;
+      } else {
+        var liked = api === "add";
+        _index.default.commit('tempSetLiked', {
           liked: liked,
-          token: uni.getStorageSync('token'),
+          article_id: article_id,
           comment_id: comment_id
-        }
-      });
+        });
+        uniCloud.callFunction({
+          name: 'updateLike',
+          data: {
+            api: "comment",
+            liked: liked,
+            token: uni.getStorageSync('token'),
+            comment_id: comment_id
+          }
+        });
+      }
+      ;
     },
     // replyLikeClicked(api, article_id, comment_id, reply_id) {
     // 	const liked = (api === "add");

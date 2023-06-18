@@ -30,7 +30,6 @@
 			contentCard
 		},
 		data() {
-
 			return {
 				items: ['全部', '日常', '集市', '树洞'],
 				swipers: ['../../static/home/lunbo1.jpg', '../../static/home/lunbo2.jpg', '../../static/home/lunbo3.jpg'],
@@ -43,7 +42,10 @@
 			uni.showLoading({
 				title: '加载中...'
 			});
-			this.article()
+			if(!this.$store.state.article){
+				this.article()
+			}
+			
 			this.$store.dispatch('getArticle');
 
 		},

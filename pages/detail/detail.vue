@@ -87,11 +87,11 @@
 					
 				</view>
 				
-				<view v-if="item.isViewAll === false">
+				<!-- <view v-if="item.isViewAll === false">
 					<view class="view-all" v-if="item.reply_num > 0" @click="viewAll(article_index,index1,item._id)">
 						<text>展开{{item.reply_num}}条回复</text>
 					</view>
-				</view>
+				</view> -->
 				
 				
 				<!-- 评论回复区 -->
@@ -190,13 +190,45 @@
 			}
 		},
 		methods: {
-			showKeyboard(flag, message_type, comment_id, replyer_to_user, replyer_to_user_id) {
-				this.isShowKeyboard = flag;
-				this.message_type = message_type;
-				this.comment_id = comment_id;
-				this.replyer_to_user = replyer_to_user;
-				this.replyer_to_user_id = replyer_to_user_id;
+			checkLogin() {
+				// 检查是否注册过
+				const token = uni.getStorageSync('token');
+				if (!token) {
+					uni.showModal({
+						title: '提示',
+						content: '未登录，请您登录',
+						success: function(res) {
+							if (res.confirm) {
+								console.log('用户点击确定');
+								uni.switchTab({
+									url: '/pages/my/my'
+								});
+							} else if (res.cancel) {
+								console.log('用户点击取消');
+								uni.switchTab({
+									url: '/pages/home/home'
+								});
+							}
+						}
+					});
+					return false
+			
+				} else {
+					return true
+				}
 			},
+			showKeyboard(flag, message_type, comment_id, replyer_to_user, replyer_to_user_id) {
+				if(!this.checkLogin()){
+					return ;
+				} else {
+					this.isShowKeyboard = flag;
+					this.message_type = message_type;
+					this.comment_id = comment_id;
+					this.replyer_to_user = replyer_to_user;
+					this.replyer_to_user_id = replyer_to_user_id;
+				}
+			},
+			
 			sendMessage() {
 				const that = this;
 				if (!this.message) {
@@ -264,41 +296,48 @@
 						};
 					});
 				}
-
 			},
 
 			articleLikeClicked(api, article_id) {
-				const liked = api === "add";
-				store.commit('tempSetLiked', {
-					liked,
-					aritcle_id
-				});
-				uniCloud.callFunction({
-					name: 'updateLike',
-					data: {
-						api: "article",
+				if(!this.checkLogin()){
+					return ;
+				} else {
+					const liked = api === "add";
+					store.commit('tempSetLiked', {
 						liked,
-						token: uni.getStorageSync('token'),
-						article_id
-					}
-				});
+						aritcle_id
+					});
+					uniCloud.callFunction({
+						name: 'updateLike',
+						data: {
+							api: "article",
+							liked,
+							token: uni.getStorageSync('token'),
+							article_id
+						}
+					});
+				}
 			},
 			commentLikeClicked(api, article_id, comment_id) {
-				const liked = (api === "add");
-				store.commit('tempSetLiked', {
-					liked,
-					article_id,
-					comment_id
-				});
-				uniCloud.callFunction({
-					name: 'updateLike',
-					data: {
-						api: "comment",
+				if(!this.checkLogin()){
+					return ;
+				} else {
+					const liked = (api === "add");
+					store.commit('tempSetLiked', {
 						liked,
-						token: uni.getStorageSync('token'),
+						article_id,
 						comment_id
-					}
-				});
+					});
+					uniCloud.callFunction({
+						name: 'updateLike',
+						data: {
+							api: "comment",
+							liked,
+							token: uni.getStorageSync('token'),
+							comment_id
+						}
+					});
+				};
 			},
 			// replyLikeClicked(api, article_id, comment_id, reply_id) {
 			// 	const liked = (api === "add");
