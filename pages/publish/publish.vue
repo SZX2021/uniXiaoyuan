@@ -32,13 +32,10 @@
 	export default {
 		data() {
 			return {
-				tags: [{
+				tags: [
+					{
 						inverted: false,
 						tag: "日常"
-					},
-					{
-						inverted: true,
-						tag: "吐槽"
 					},
 					{
 						inverted: true,
@@ -46,7 +43,7 @@
 					},
 					{
 						inverted: true,
-						tag: "寻物/招领"
+						tag: "树洞"
 					},
 				],
 				content: '',

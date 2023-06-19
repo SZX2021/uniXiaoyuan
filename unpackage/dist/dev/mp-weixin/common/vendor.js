@@ -17622,8 +17622,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 28));
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 31));
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ 18));
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 25));
 var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 46));
@@ -17635,8 +17633,7 @@ var store = new _vuex.default.Store({
       userInfo: Object,
       article: [],
       swiper: [],
-      skipcount: 0,
-      limitcount: 10
+      skipcount: 0
     };
   },
   mutations: {
@@ -17660,6 +17657,8 @@ var store = new _vuex.default.Store({
           }
         });
       }
+      ;
+      state.skipcount += 10;
     },
     addComment: function addComment(state, _ref) {
       var index = _ref.index,
@@ -17741,32 +17740,20 @@ var store = new _vuex.default.Store({
     },
     //根据文章id获取评论数据
     getComment: function getComment(context, _ref3) {
-      return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
-        var index, article_id;
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                index = _ref3.index, article_id = _ref3.article_id;
-                uniCloud.callFunction({
-                  name: 'getComment',
-                  data: {
-                    article_id: article_id,
-                    token: uni.getStorageSync('token')
-                  }
-                }).then(function (result) {
-                  context.commit('addComment', {
-                    index: index,
-                    value: result.result
-                  });
-                });
-              case 2:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }))();
+      var index = _ref3.index,
+        article_id = _ref3.article_id;
+      uniCloud.callFunction({
+        name: 'getComment',
+        data: {
+          article_id: article_id,
+          token: uni.getStorageSync('token')
+        }
+      }).then(function (result) {
+        context.commit('addComment', {
+          index: index,
+          value: result.result
+        });
+      });
     },
     getSwiper: function getSwiper(store) {
       uniCloud.databaseForJQL().collection('swiper').get().then(function (res) {

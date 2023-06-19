@@ -9,7 +9,7 @@
 		<uni-segmented-control :current="current" :values="items" styleType="text" @clickItem="onClickItem" />
 		<view class="article">
 			<view class="" v-for="(itme,index) in items" :key="index">
-				<contentCard v-if="current===index" :contentList="cardList" />
+				<contentCard v-if="current===index" :contentList="tabList" />
 			</view>
 			<view style="width: 100%;height: 200rpx; padding-top: 22rpx;">
 				<text
@@ -23,9 +23,7 @@
 
 <script>
 	import contentCard from '@/components/content-card.vue'
-import store from '../../store';
-	const db = uniCloud.database();
-	const dbCmd = db.command;
+	import store from '../../store';
 	export default {
 		components: {
 			contentCard
@@ -34,10 +32,12 @@ import store from '../../store';
 			return {
 				items: ['全部', '日常', '集市', '树洞'],
 				current: 0,
-				tabContentList: '',
-				cardList: []
+				totalList: '',
+				tabList: [],
+				scrollTopList: [0,0,0,0],
 			}
 		},
+		
 		onLoad() {
 			uni.showLoading({
 				title: '加载中...'
@@ -47,37 +47,44 @@ import store from '../../store';
 			};
 			if(this.$store.state.article.length === 0){
 				this.$store.dispatch('getArticle');
-				this.article();
 			};
+			this.article();
 			uni.hideLoading();
+		},
+		onPageScroll(e) {
+		  // 更新保存的滚动条位置
+		  this.scrollTopList[this.current] = e.scrollTop;
 		},
 		computed: {
 			//检查数据是否有，没有一直显示加载中。。。
 			showLoading() {
-				this.tabContentList.length > 0 ? uni.hideLoading() : 0
+				this.totalList.length > 0 ? uni.hideLoading() : 0
 				return 1
 			},
 			swiper(){
 				return store.state.swiper
-			}
+			},
 		},
 		methods: {
 			onClickItem(e) {
-				const currentIndex = e.currentIndex
+				const currentIndex = e.currentIndex;
+				uni.pageScrollTo({scrollTop:this.scrollTopList[currentIndex],duration:0});
 				if (this.current !== currentIndex) {
 					this.current = currentIndex
 				};
 				//筛选数据
 				const target = this.items[currentIndex]
-				const data = (currentIndex === 0) ? this.tabContentList : this.tabContentList.filter(item => item.category ===
+				const data = (currentIndex === 0) ? this.totalList : this.totalList.filter(item => item.category ===
 					target)
-				this.cardList = data
+				this.tabList = data;
+				
 			},
 			article() {
-				this.tabContentList = this.$store.state.article
-				this.cardList = this.$store.state.article
+				this.totalList = this.$store.state.article
+				this.tabList = this.$store.state.article
 				return 1
-			}
+			},
+			
 
 		}
 	}
@@ -113,5 +120,6 @@ import store from '../../store';
 		position: sticky;
 		top: 0;
 		background-color: #f8f8f8;
+		z-index: 999;
 	}
 </style>

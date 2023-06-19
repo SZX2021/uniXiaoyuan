@@ -159,7 +159,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uniCloud, uni) {
+/* WEBPACK VAR INJECTION */(function(uni) {
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
 Object.defineProperty(exports, "__esModule", {
@@ -172,8 +172,6 @@ var contentCard = function contentCard() {
     return resolve(__webpack_require__(/*! @/components/content-card.vue */ 138));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
-var db = uniCloud.database();
-var dbCmd = db.command;
 var _default = {
   components: {
     contentCard: contentCard
@@ -182,8 +180,9 @@ var _default = {
     return {
       items: ['全部', '日常', '集市', '树洞'],
       current: 0,
-      tabContentList: '',
-      cardList: []
+      totalList: '',
+      tabList: [],
+      scrollTopList: [0, 0, 0, 0]
     };
   },
   onLoad: function onLoad() {
@@ -196,15 +195,19 @@ var _default = {
     ;
     if (this.$store.state.article.length === 0) {
       this.$store.dispatch('getArticle');
-      this.article();
     }
     ;
+    this.article();
     uni.hideLoading();
+  },
+  onPageScroll: function onPageScroll(e) {
+    // 更新保存的滚动条位置
+    this.scrollTopList[this.current] = e.scrollTop;
   },
   computed: {
     //检查数据是否有，没有一直显示加载中。。。
     showLoading: function showLoading() {
-      this.tabContentList.length > 0 ? uni.hideLoading() : 0;
+      this.totalList.length > 0 ? uni.hideLoading() : 0;
       return 1;
     },
     swiper: function swiper() {
@@ -214,26 +217,30 @@ var _default = {
   methods: {
     onClickItem: function onClickItem(e) {
       var currentIndex = e.currentIndex;
+      uni.pageScrollTo({
+        scrollTop: this.scrollTopList[currentIndex],
+        duration: 0
+      });
       if (this.current !== currentIndex) {
         this.current = currentIndex;
       }
       ;
       //筛选数据
       var target = this.items[currentIndex];
-      var data = currentIndex === 0 ? this.tabContentList : this.tabContentList.filter(function (item) {
+      var data = currentIndex === 0 ? this.totalList : this.totalList.filter(function (item) {
         return item.category === target;
       });
-      this.cardList = data;
+      this.tabList = data;
     },
     article: function article() {
-      this.tabContentList = this.$store.state.article;
-      this.cardList = this.$store.state.article;
+      this.totalList = this.$store.state.article;
+      this.tabList = this.$store.state.article;
       return 1;
     }
   }
 };
 exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 27)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
 
 /***/ }),
 

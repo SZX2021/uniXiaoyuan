@@ -12,7 +12,6 @@ const store = new Vuex.Store({
 			article: [],
 			swiper: [],
 			skipcount: 0,
-			limitcount: 10
 		}
 
 	},
@@ -39,9 +38,9 @@ const store = new Vuex.Store({
 					}
 
 				})
-
-
-			}
+			};
+			state.skipcount += 10;
+			
 		},
 		addComment(state, {index,value}) {
 			Vue.set(state.article[index], "comment", value);
@@ -103,13 +102,13 @@ const store = new Vuex.Store({
 			uniCloud.callFunction({
 				name: 'getArticle',
 				data: {
-					token: uni.getStorageSync('token')
+					token: uni.getStorageSync('token'),
 				}
 			}).then(value => context.commit('addArticle', value.result));
 			// 
 		},
 		//根据文章id获取评论数据
-		async getComment(context, {index,article_id}) {
+		getComment(context, {index,article_id}) {
 			uniCloud.callFunction({
 				name: 'getComment',
 				data: {
