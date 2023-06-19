@@ -6,7 +6,7 @@
 		"read": true,
 		"create": true,
 		"update": true,
-		"delete": false
+		"delete": true
 	},
 	"properties": {
 		"_id": {

@@ -68,9 +68,10 @@
           desc: "Wexin", // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
         });
         //获取code
-        const codeRes = await wx.login({
+        const codeRes = await uni.login({
           provider: 'weixin',
         });
+		console.log(codeRes);
         const code = codeRes.code;
         try {
           //云函数 提交数据

@@ -38,11 +38,15 @@
 					},
 					{
 						inverted: true,
+						tag: "吐槽"
+					},
+					{
+						inverted: true,
 						tag: "集市"
 					},
 					{
 						inverted: true,
-						tag: "树洞"
+						tag: "寻物/招领"
 					},
 				],
 				content: '',
@@ -136,7 +140,7 @@
 				});
 				await this.$refs.images.upload(); //将选中的图片上传到云储存
 				console.log("测试：",this.images);
-				await uniCloud.callFunction({
+				uniCloud.callFunction({
 					name: "uploadArticle",
 					data: {
 						content: this.content,

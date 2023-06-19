@@ -23,6 +23,7 @@
 
 <script>
 	import contentCard from '@/components/content-card.vue'
+import store from '../../store';
 	const db = uniCloud.database();
 	const dbCmd = db.command;
 	export default {
@@ -32,28 +33,32 @@
 		data() {
 			return {
 				items: ['全部', '日常', '集市', '树洞'],
-				swipers: ['../../static/home/lunbo1.jpg', '../../static/home/lunbo2.jpg', '../../static/home/lunbo3.jpg'],
 				current: 0,
 				tabContentList: '',
 				cardList: []
 			}
 		},
-		async onLoad() {
+		onLoad() {
 			uni.showLoading({
 				title: '加载中...'
 			});
-			if(!this.$store.state.article){
-				this.article()
-			}
-			
-			this.$store.dispatch('getArticle');
-
+			if(store.state.swiper.length === 0){
+				store.dispatch('getSwiper');
+			};
+			if(this.$store.state.article.length === 0){
+				this.$store.dispatch('getArticle');
+				this.article();
+			};
+			uni.hideLoading();
 		},
 		computed: {
 			//检查数据是否有，没有一直显示加载中。。。
 			showLoading() {
 				this.tabContentList.length > 0 ? uni.hideLoading() : 0
 				return 1
+			},
+			swiper(){
+				return store.state.swiper
 			}
 		},
 		methods: {

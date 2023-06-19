@@ -166,8 +166,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 28));
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 31));
+var _store = _interopRequireDefault(__webpack_require__(/*! ../../store */ 45));
 var contentCard = function contentCard() {
   __webpack_require__.e(/*! require.ensure | components/content-card */ "components/content-card").then((function () {
     return resolve(__webpack_require__(/*! @/components/content-card.vue */ 138));
@@ -182,39 +181,34 @@ var _default = {
   data: function data() {
     return {
       items: ['全部', '日常', '集市', '树洞'],
-      swipers: ['../../static/home/lunbo1.jpg', '../../static/home/lunbo2.jpg', '../../static/home/lunbo3.jpg'],
       current: 0,
       tabContentList: '',
       cardList: []
     };
   },
   onLoad: function onLoad() {
-    var _this = this;
-    return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
-      return _regenerator.default.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              uni.showLoading({
-                title: '加载中...'
-              });
-              if (!_this.$store.state.article) {
-                _this.article();
-              }
-              _this.$store.dispatch('getArticle');
-            case 3:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }))();
+    uni.showLoading({
+      title: '加载中...'
+    });
+    if (_store.default.state.swiper.length === 0) {
+      _store.default.dispatch('getSwiper');
+    }
+    ;
+    if (this.$store.state.article.length === 0) {
+      this.$store.dispatch('getArticle');
+      this.article();
+    }
+    ;
+    uni.hideLoading();
   },
   computed: {
     //检查数据是否有，没有一直显示加载中。。。
     showLoading: function showLoading() {
       this.tabContentList.length > 0 ? uni.hideLoading() : 0;
       return 1;
+    },
+    swiper: function swiper() {
+      return _store.default.state.swiper;
     }
   },
   methods: {

@@ -25,10 +25,14 @@
 // 	"like_user_id": [],
 // 	"time": Date.now()
 // })
-db.collection('comment').add({
-    "article_id": "647e68a928064a22b19c2aac",
-    "content": "第一次",
-    "commenter_id": "001",
-    "like_num": 1,
-    "reply_num": 2
-})
+// db.collection('comment').add({
+//     "article_id": "647e68a928064a22b19c2aac",
+//     "content": "第一次",
+//     "commenter_id": "001",
+//     "like_num": 1,
+//     "reply_num": 2
+// })
+// 清空数据表
+db.collection("comment_reply").where(
+  '_id >= "648c3b70e1a35c14d5bbbff5"'
+).remove()

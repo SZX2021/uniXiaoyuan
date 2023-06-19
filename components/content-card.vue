@@ -26,13 +26,15 @@
 				
 			</view>
 			
-			
+			 <!-- 发布内容 -->
 			<view class="article-list-card-content" @click="toDetail(item._id,false)">
-				{{item.content}} <!-- 发布内容 -->
+				{{item.content}}
 			</view>
-			<uni-grid :column="3">
+			
+			<!-- 图片 -->
+			<uni-grid :column="3" :showBorder="false" >
 				<uni-grid-item v-for="(image,index2) in item.images" :key="index2">
-					<image :src="image"></image>
+					<image :src="image" style="height: 90%;width: 90%;border-radius: 20rpx;margin: 10rpx;"></image>
 				</uni-grid-item>
 			</uni-grid>
 			<view class="article-list-card-data">
@@ -89,7 +91,7 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	.article-list {
 		display: flex;
 		flex-direction: column;

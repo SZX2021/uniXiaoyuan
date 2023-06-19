@@ -9986,7 +9986,7 @@ var k = "development" === "development",
         "127.0.0.1",
         "192.168.135.1",
         "192.168.239.1",
-        "192.168.1.3"
+        "192.168.1.4"
     ],
     "debugPort": 9000,
     "initialLaunchType": "local",
@@ -17634,6 +17634,7 @@ var store = new _vuex.default.Store({
       //公共的变量，这里的变量不能随便修改，只能通过触发mutations的方法才能改变
       userInfo: Object,
       article: [],
+      swiper: [],
       skipcount: 0,
       limitcount: 10
     };
@@ -17717,9 +17718,13 @@ var store = new _vuex.default.Store({
           _article2.like_num--;
         }
       }
-    } // setIsViewAll(state, {article_index,comment_index}){
+    },
+    // setIsViewAll(state, {article_index,comment_index}){
     // 	Vue.set(state.article[article_index].comment[comment_index],'isViewAll',true)
     // }
+    addSwiper: function addSwiper(state, value) {
+      state.swiper = value;
+    }
   },
   actions: {
     //相当于异步的操作,不能直接改变state的值，只能通过触发mutations的方法才能改变
@@ -17762,6 +17767,11 @@ var store = new _vuex.default.Store({
           }
         }, _callee);
       }))();
+    },
+    getSwiper: function getSwiper(store) {
+      uniCloud.databaseForJQL().collection('swiper').get().then(function (res) {
+        store.commit('addSwiper', res.data);
+      });
     } // async getReply(context, {article_index,comment_id}){
     // 	console.log("store120:",{article_index,comment_id});
     // 	uniCloud.callFunction({

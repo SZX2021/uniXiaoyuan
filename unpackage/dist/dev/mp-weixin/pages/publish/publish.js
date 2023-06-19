@@ -219,10 +219,13 @@ var _default = {
         tag: "日常"
       }, {
         inverted: true,
+        tag: "吐槽"
+      }, {
+        inverted: true,
         tag: "集市"
       }, {
         inverted: true,
-        tag: "树洞"
+        tag: "寻物/招领"
       }],
       content: '',
       images: [],
@@ -328,8 +331,7 @@ var _default = {
               case 8:
                 //将选中的图片上传到云储存
                 console.log("测试：", _this.images);
-                _context.next = 11;
-                return uniCloud.callFunction({
+                uniCloud.callFunction({
                   name: "uploadArticle",
                   data: {
                     content: _this.content,
@@ -342,7 +344,6 @@ var _default = {
                     time: Date.now()
                   }
                 });
-              case 11:
                 uni.hideLoading;
                 _index.default.dispatch('getArticle');
                 uni.redirectTo({
@@ -351,7 +352,7 @@ var _default = {
                 uni.showToast({
                   title: '发布成功'
                 });
-              case 15:
+              case 14:
               case "end":
                 return _context.stop();
             }

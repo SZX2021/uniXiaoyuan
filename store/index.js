@@ -10,6 +10,7 @@ const store = new Vuex.Store({
 			//公共的变量，这里的变量不能随便修改，只能通过触发mutations的方法才能改变
 			userInfo: Object,
 			article: [],
+			swiper: [],
 			skipcount: 0,
 			limitcount: 10
 		}
@@ -92,6 +93,9 @@ const store = new Vuex.Store({
 		// setIsViewAll(state, {article_index,comment_index}){
 		// 	Vue.set(state.article[article_index].comment[comment_index],'isViewAll',true)
 		// }
+		addSwiper(state, value){
+			state.swiper = value;
+		}
 	},
 	actions: {
 		//相当于异步的操作,不能直接改变state的值，只能通过触发mutations的方法才能改变
@@ -119,6 +123,11 @@ const store = new Vuex.Store({
 				})
 			});
 		},
+		getSwiper(store){
+			uniCloud.databaseForJQL().collection('swiper').get().then((res)=>{
+				store.commit('addSwiper',res.data)
+			})
+		}
 		// async getReply(context, {article_index,comment_id}){
 		// 	console.log("store120:",{article_index,comment_id});
 		// 	uniCloud.callFunction({

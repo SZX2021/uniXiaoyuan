@@ -222,14 +222,15 @@ var _default = {
               case 3:
                 userInfoRes = _context.sent;
                 _context.next = 6;
-                return wx.login({
+                return uni.login({
                   provider: 'weixin'
                 });
               case 6:
                 codeRes = _context.sent;
+                console.log(codeRes);
                 code = codeRes.code;
-                _context.prev = 8;
-                _context.next = 11;
+                _context.prev = 9;
+                _context.next = 12;
                 return uniCloud.callFunction({
                   name: 'user-register',
                   data: {
@@ -238,7 +239,7 @@ var _default = {
                     nickName: userInfoRes.userInfo.nickName
                   }
                 });
-              case 11:
+              case 12:
                 dataRes = _context.sent;
                 //返回的用户数据
                 userdata = dataRes.result; //消失加载效果
@@ -254,11 +255,11 @@ var _default = {
                 uni.redirectTo({
                   url: 'my'
                 });
-                _context.next = 26;
+                _context.next = 27;
                 break;
-              case 22:
-                _context.prev = 22;
-                _context.t0 = _context["catch"](8);
+              case 23:
+                _context.prev = 23;
+                _context.t0 = _context["catch"](9);
                 //消失加载效果
                 uni.hideLoading();
                 //提示失败
@@ -267,12 +268,12 @@ var _default = {
                   icon: 'error',
                   duration: 2000
                 });
-              case 26:
+              case 27:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[8, 22]]);
+        }, _callee, null, [[9, 23]]);
       }))();
     },
     //跳转用户信息编辑页面

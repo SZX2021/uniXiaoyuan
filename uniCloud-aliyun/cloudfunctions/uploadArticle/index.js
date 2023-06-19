@@ -14,7 +14,7 @@ exports.main = async (event, context) => {
 		like_num: 0,
 		like_user_id: [],
 		comment_num: 0
-	})
+	});
 	//返回数据给客户端
 	return "succuss"
 };
