@@ -126,6 +126,10 @@
 	}
 
 	.article-list-card-content {
+		 display: -webkit-box;
+		-webkit-line-clamp: 2; /* 设置文本行数 */
+		-webkit-box-orient: vertical;
+		overflow: hidden;
 		width: 100%;
 		margin-bottom: 30rpx;
 		/* margin-left: 10px; */
