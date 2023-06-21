@@ -105,7 +105,6 @@ const store = new Vuex.Store({
 					token: uni.getStorageSync('token'),
 				}
 			}).then(value => context.commit('addArticle', value.result));
-			// 
 		},
 		//根据文章id获取评论数据
 		getComment(context, {index,article_id}) {

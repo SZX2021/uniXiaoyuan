@@ -219,10 +219,13 @@ var _default = {
         tag: "日常"
       }, {
         inverted: true,
+        tag: "吐槽"
+      }, {
+        inverted: true,
         tag: "集市"
       }, {
         inverted: true,
-        tag: "树洞"
+        tag: "失物招领"
       }],
       content: '',
       images: [],

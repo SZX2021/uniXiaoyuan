@@ -39,11 +39,14 @@
 					},
 					{
 						inverted: true,
-						tag: "集市"
+						tag: "吐槽"
 					},
 					{
 						inverted: true,
-						tag: "树洞"
+						tag: "集市"
+					},{
+						inverted: true,
+						tag: "失物招领"
 					},
 				],
 				content: '',

@@ -30,7 +30,7 @@
 		},
 		data() {
 			return {
-				items: ['全部', '日常', '集市', '树洞'],
+				items: ['全部', '日常', '吐槽', '集市', '失物招领'],
 				current: 0,
 				totalList: '',
 				tabList: [],

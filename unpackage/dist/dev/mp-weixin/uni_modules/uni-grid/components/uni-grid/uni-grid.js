@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 (global["webpackJsonp"] = global["webpackJsonp"] || []).push([["uni_modules/uni-grid/components/uni-grid/uni-grid"],{
 
 /***/ 175:
@@ -258,6 +257,3 @@ __webpack_require__.r(__webpack_exports__);
     },
     [['uni_modules/uni-grid/components/uni-grid/uni-grid-create-component']]
 ]);
-=======
-Component({})
->>>>>>> 44b1f0c5b17a1730e1ce66657e7b3db60175d714
