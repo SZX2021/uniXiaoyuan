@@ -4,7 +4,8 @@
       "path": "pages/home/home",
       "style": {
         "navigationBarTitleText": "",
-        "enablePullDownRefresh": false
+        "enablePullDownRefresh": true,
+		"onReachBottomDistance": 60
       }
 
     }, {

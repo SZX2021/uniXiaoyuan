@@ -182,7 +182,7 @@
 
   /* 链接列表样式 */
   .my-link-list {
-    width: 95%;
-    margin: 10px auto;
+    width: 90%;
+    margin: 10px;
   }
 </style>

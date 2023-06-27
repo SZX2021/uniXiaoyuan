@@ -8,9 +8,11 @@
 
 		<uni-segmented-control :current="current" :values="items" styleType="text" @clickItem="onClickItem" />
 		<view class="article">
-			<view class="" v-for="(itme,index) in items" :key="index">
-				<contentCard v-if="current===index" :contentList="tabList" />
-			</view>
+				<contentCard v-show="items[current]==='全部'" :contentList="allArticles" />
+				<contentCard v-show="items[current]==='日常'" :contentList="dailyArticles" />
+				<contentCard v-show="items[current]==='吐槽'" :contentList="rantArticles" />
+				<contentCard v-show="items[current]==='集市'" :contentList="bazaarArticles" />
+				<contentCard v-show="items[current]==='失物招领'" :contentList="lostFoundArticles" />
 			<view style="width: 100%;height: 200rpx; padding-top: 22rpx;">
 				<text
 					style="font-size: 20rpx; color: #888888;display: flex;justify-content: center;">人家也是有底线的，怎么刷都没有了哦~</text>
@@ -24,6 +26,7 @@
 <script>
 	import contentCard from '@/components/content-card.vue'
 	import store from '../../store';
+	import { mapGetters, mapActions} from 'vuex';
 	export default {
 		components: {
 			contentCard
@@ -32,59 +35,56 @@
 			return {
 				items: ['全部', '日常', '吐槽', '集市', '失物招领'],
 				current: 0,
-				totalList: '',
-				tabList: [],
-				scrollTopList: [0,0,0,0],
+				scrollTopList: [0,0,0,0,0],
 			}
 		},
-		
 		onLoad() {
 			uni.showLoading({
 				title: '加载中...'
-			});
-			if(store.state.swiper.length === 0){
-				store.dispatch('getSwiper');
-			};
-			if(this.$store.state.article.length === 0){
-				this.$store.dispatch('getArticle');
-			};
-			this.article();
+			})
+			this.getSwiper();
+			this.getArticle();
 			uni.hideLoading();
+			
+			this.getArticle("日常");
+			this.getArticle("吐槽");
+			this.getArticle("集市");
+			this.getArticle("失物招领");
+			this.fetchArticleTotalNum();			
 		},
 		onPageScroll(e) {
 		  // 更新保存的滚动条位置
 		  this.scrollTopList[this.current] = e.scrollTop;
 		},
+		onReachBottom() {
+			this.getArticle(this.items[this.current]);
+		},
 		computed: {
+			...mapGetters([
+				'allArticles',
+				'dailyArticles',
+				'rantArticles',
+				'bazaarArticles',
+				'lostFoundArticles',
+			]),
 			//检查数据是否有，没有一直显示加载中。。。
-			showLoading() {
-				this.totalList.length > 0 ? uni.hideLoading() : 0
-				return 1
-			},
 			swiper(){
 				return store.state.swiper
 			},
+			
 		},
 		methods: {
+			...mapActions([
+				'getArticle',
+				'fetchArticleTotalNum',
+				'getSwiper',
+			]),
 			onClickItem(e) {
-				const currentIndex = e.currentIndex;
-				uni.pageScrollTo({scrollTop:this.scrollTopList[currentIndex],duration:0});
-				if (this.current !== currentIndex) {
-					this.current = currentIndex
-				};
-				//筛选数据
-				const target = this.items[currentIndex]
-				const data = (currentIndex === 0) ? this.totalList : this.totalList.filter(item => item.category ===
-					target)
-				this.tabList = data;
-				
-			},
-			article() {
-				this.totalList = this.$store.state.article
-				this.tabList = this.$store.state.article
-				return 1
-			},
-			
+				uni.pageScrollTo({scrollTop:this.scrollTopList[e.currentIndex],duration:0});
+				if(this.current !== e.currentIndex) {
+					this.current = e.currentIndex
+				};				
+			}
 
 		}
 	}

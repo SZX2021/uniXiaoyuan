@@ -9,38 +9,24 @@ const store = new Vuex.Store({
 		return {
 			//公共的变量，这里的变量不能随便修改，只能通过触发mutations的方法才能改变
 			userInfo: Object,
-			article: [],
 			swiper: [],
-			skipcount: 0,
+			article: {
+				'全部': [],
+				'日常': [],
+				'吐槽': [],
+				'集市': [],
+				'失物招领': [],
+			}, //键值对为分类列表，如："全部"：[文章数据]
+			page: {'全部':0,'日常':0,'吐槽':0,'集市':0,'失物招领':0}, //不同分类的分页情况
+			total_num: {'全部':0,'日常':0,'吐槽':0,'集市':0,'失物招领':0},
+			limitcount: 10
 		}
 
 	},
 	mutations: {
-		addArticle(state, value) {
-			if (state.article.length === 0) {
-				state.article.push(...value);
-			} else {
-				//比较两个数组的差异 并且把差异添加数组中
-				let target = state.article
-				const data = value
-
-				data.forEach(item1 => {
-					let isDifferent = true;
-
-					target.forEach(item2 => {
-						if (item1._id === item2._id) {
-							isDifferent = false;
-						}
-					})
-
-					if (isDifferent) {
-						target.unshift(item1)
-					}
-
-				})
-			};
-			state.skipcount += 10;
-			
+		addArticle(state,{category,articles}) {
+			state.article[category].push(...articles);
+			state.page[category]++;
 		},
 		addComment(state, {index,value}) {
 			Vue.set(state.article[index], "comment", value);
@@ -94,17 +80,33 @@ const store = new Vuex.Store({
 		// }
 		addSwiper(state, value){
 			state.swiper = value;
+		},
+		setArticleTotalNum(state,value){
+			state.total_num["全部"] = value[0]; 
+			state.total_num["日常"] = value[1]; 
+			state.total_num["吐槽"] = value[2]; 
+			state.total_num["集市"] = value[3] ;
+			state.total_num["失物招领"] = value[4];
 		}
 	},
 	actions: {
 		//相当于异步的操作,不能直接改变state的值，只能通过触发mutations的方法才能改变
-		getArticle(context) {
-			uniCloud.callFunction({
+		getArticle({state,commit},category="全部") {
+			const skipcount = state.page[category] * state.limitcount;
+			if(skipcount<state.total_num[category] || skipcount===0){
+				uniCloud.callFunction({
 				name: 'getArticle',
 				data: {
+					category,
+					skipcount,
+					limitcount: state.limitcount,
 					token: uni.getStorageSync('token'),
 				}
-			}).then(value => context.commit('addArticle', value.result));
+			}).then(value => commit('addArticle', {category,articles: value.result}));
+			} else {
+				return ;
+			}
+			
 		},
 		//根据文章id获取评论数据
 		getComment(context, {index,article_id}) {
@@ -125,6 +127,14 @@ const store = new Vuex.Store({
 			uniCloud.databaseForJQL().collection('swiper').get().then((res)=>{
 				store.commit('addSwiper',res.data)
 			})
+		},
+		async fetchArticleTotalNum({commit}){
+			const all_total_num = await uniCloud.databaseForJQL().collection('article').where({}).count();
+			const daily_total_num = await uniCloud.databaseForJQL().collection('article').where({'category':"日常"}).count();
+			const rant_total_num = await uniCloud.databaseForJQL().collection('article').where({'category':"吐槽"}).count();
+			const bazaar_total_num = await uniCloud.databaseForJQL().collection('article').where({'category':"集市"}).count();
+			const lostFound_total_num = await uniCloud.databaseForJQL().collection('article').where({'category':"失物招领"}).count();
+			commit('setArticleTotalNum',[all_total_num.total,daily_total_num.total,rant_total_num.total,bazaar_total_num.total,lostFound_total_num.total]);
 		}
 		// async getReply(context, {article_index,comment_id}){
 		// 	console.log("store120:",{article_index,comment_id});
@@ -142,6 +152,24 @@ const store = new Vuex.Store({
 		// 		})
 		// 	});
 		// },
+	},
+	getters: {
+		allArticles(state){
+			return state.article['全部']
+		},
+		dailyArticles(state){
+			return state.article['日常']
+		},
+		rantArticles(state){
+			return state.article['吐槽']
+		},
+		bazaarArticles(state){
+			return state.article['集市']
+		},
+		lostFoundArticles(state){
+			return state.article['失物招领']
+		},
+		
 	}
 })
 export default store

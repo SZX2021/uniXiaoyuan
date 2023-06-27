@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "",
-  "enablePullDownRefresh": false,
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 60,
   "usingComponents": {
     "uni-segmented-control": "/uni_modules/uni-segmented-control/components/uni-segmented-control/uni-segmented-control",
     "content-card": "/components/content-card"

@@ -166,7 +166,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ 11));
 var _store = _interopRequireDefault(__webpack_require__(/*! ../../store */ 45));
+var _vuex = __webpack_require__(/*! vuex */ 46);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var contentCard = function contentCard() {
   __webpack_require__.e(/*! require.ensure | components/content-card */ "components/content-card").then((function () {
     return resolve(__webpack_require__(/*! @/components/content-card.vue */ 138));
@@ -180,64 +184,47 @@ var _default = {
     return {
       items: ['全部', '日常', '吐槽', '集市', '失物招领'],
       current: 0,
-      totalList: '',
-      tabList: [],
-      scrollTopList: [0, 0, 0, 0]
+      scrollTopList: [0, 0, 0, 0, 0]
     };
   },
   onLoad: function onLoad() {
     uni.showLoading({
       title: '加载中...'
     });
-    if (_store.default.state.swiper.length === 0) {
-      _store.default.dispatch('getSwiper');
-    }
-    ;
-    if (this.$store.state.article.length === 0) {
-      this.$store.dispatch('getArticle');
-    }
-    ;
-    this.article();
+    this.getSwiper();
+    this.getArticle();
     uni.hideLoading();
+    this.getArticle("日常");
+    this.getArticle("吐槽");
+    this.getArticle("集市");
+    this.getArticle("失物招领");
+    this.fetchArticleTotalNum();
   },
   onPageScroll: function onPageScroll(e) {
     // 更新保存的滚动条位置
     this.scrollTopList[this.current] = e.scrollTop;
   },
-  computed: {
+  onReachBottom: function onReachBottom() {
+    this.getArticle(this.items[this.current]);
+  },
+  computed: _objectSpread(_objectSpread({}, (0, _vuex.mapGetters)(['allArticles', 'dailyArticles', 'rantArticles', 'bazaarArticles', 'lostFoundArticles'])), {}, {
     //检查数据是否有，没有一直显示加载中。。。
-    showLoading: function showLoading() {
-      this.totalList.length > 0 ? uni.hideLoading() : 0;
-      return 1;
-    },
     swiper: function swiper() {
       return _store.default.state.swiper;
     }
-  },
-  methods: {
+  }),
+  methods: _objectSpread(_objectSpread({}, (0, _vuex.mapActions)(['getArticle', 'fetchArticleTotalNum', 'getSwiper'])), {}, {
     onClickItem: function onClickItem(e) {
-      var currentIndex = e.currentIndex;
       uni.pageScrollTo({
-        scrollTop: this.scrollTopList[currentIndex],
+        scrollTop: this.scrollTopList[e.currentIndex],
         duration: 0
       });
-      if (this.current !== currentIndex) {
-        this.current = currentIndex;
+      if (this.current !== e.currentIndex) {
+        this.current = e.currentIndex;
       }
       ;
-      //筛选数据
-      var target = this.items[currentIndex];
-      var data = currentIndex === 0 ? this.totalList : this.totalList.filter(function (item) {
-        return item.category === target;
-      });
-      this.tabList = data;
-    },
-    article: function article() {
-      this.totalList = this.$store.state.article;
-      this.tabList = this.$store.state.article;
-      return 1;
     }
-  }
+  })
 };
 exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))

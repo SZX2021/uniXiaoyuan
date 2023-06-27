@@ -1557,7 +1557,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -8938,7 +8938,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -8959,14 +8959,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -9062,7 +9062,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"uniXiaoyuan","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -9986,7 +9986,7 @@ var k = "development" === "development",
         "127.0.0.1",
         "192.168.135.1",
         "192.168.239.1",
-        "192.168.1.4"
+        "192.168.1.3"
     ],
     "debugPort": 9000,
     "initialLaunchType": "local",
@@ -17369,7 +17369,8 @@ var _default = {
     "path": "pages/home/home",
     "style": {
       "navigationBarTitleText": "",
-      "enablePullDownRefresh": false
+      "enablePullDownRefresh": true,
+      "onReachBottomDistance": 60
     }
   }, {
     "path": "pages/my/my",
@@ -17622,6 +17623,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 28));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 31));
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ 18));
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 25));
 var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 46));
@@ -17631,38 +17634,44 @@ var store = new _vuex.default.Store({
     return {
       //公共的变量，这里的变量不能随便修改，只能通过触发mutations的方法才能改变
       userInfo: Object,
-      article: [],
       swiper: [],
-      skipcount: 0
+      article: {
+        '全部': [],
+        '日常': [],
+        '吐槽': [],
+        '集市': [],
+        '失物招领': []
+      },
+      //键值对为分类列表，如："全部"：[文章数据]
+      page: {
+        '全部': 0,
+        '日常': 0,
+        '吐槽': 0,
+        '集市': 0,
+        '失物招领': 0
+      },
+      //不同分类的分页情况
+      total_num: {
+        '全部': 0,
+        '日常': 0,
+        '吐槽': 0,
+        '集市': 0,
+        '失物招领': 0
+      },
+      limitcount: 10
     };
   },
   mutations: {
-    addArticle: function addArticle(state, value) {
-      if (state.article.length === 0) {
-        var _state$article;
-        (_state$article = state.article).push.apply(_state$article, (0, _toConsumableArray2.default)(value));
-      } else {
-        //比较两个数组的差异 并且把差异添加数组中
-        var target = state.article;
-        var data = value;
-        data.forEach(function (item1) {
-          var isDifferent = true;
-          target.forEach(function (item2) {
-            if (item1._id === item2._id) {
-              isDifferent = false;
-            }
-          });
-          if (isDifferent) {
-            target.unshift(item1);
-          }
-        });
-      }
-      ;
-      state.skipcount += 10;
+    addArticle: function addArticle(state, _ref) {
+      var _state$article$catego;
+      var category = _ref.category,
+        articles = _ref.articles;
+      (_state$article$catego = state.article[category]).push.apply(_state$article$catego, (0, _toConsumableArray2.default)(articles));
+      state.page[category]++;
     },
-    addComment: function addComment(state, _ref) {
-      var index = _ref.index,
-        value = _ref.value;
+    addComment: function addComment(state, _ref2) {
+      var index = _ref2.index,
+        value = _ref2.value;
       _vue.default.set(state.article[index], "comment", value);
     },
     // addReply(state,{article_index,comment_id,value}) {
@@ -17671,11 +17680,11 @@ var store = new _vuex.default.Store({
     // 	// comment.reply = value;
     // 	Vue.set(comment,"reply",value);
     // },
-    tempSetLiked: function tempSetLiked(state, _ref2) {
-      var liked = _ref2.liked,
-        article_id = _ref2.article_id,
-        comment_id = _ref2.comment_id,
-        reply_id = _ref2.reply_id;
+    tempSetLiked: function tempSetLiked(state, _ref3) {
+      var liked = _ref3.liked,
+        article_id = _ref3.article_id,
+        comment_id = _ref3.comment_id,
+        reply_id = _ref3.reply_id;
       //通过id定位点赞的内容
       if (reply_id) {
         var article = state.article.find(function (item) {
@@ -17723,24 +17732,45 @@ var store = new _vuex.default.Store({
     // }
     addSwiper: function addSwiper(state, value) {
       state.swiper = value;
+    },
+    setArticleTotalNum: function setArticleTotalNum(state, value) {
+      state.total_num["全部"] = value[0];
+      state.total_num["日常"] = value[1];
+      state.total_num["吐槽"] = value[2];
+      state.total_num["集市"] = value[3];
+      state.total_num["失物招领"] = value[4];
     }
   },
   actions: {
     //相当于异步的操作,不能直接改变state的值，只能通过触发mutations的方法才能改变
-    getArticle: function getArticle(context) {
-      uniCloud.callFunction({
-        name: 'getArticle',
-        data: {
-          token: uni.getStorageSync('token')
-        }
-      }).then(function (value) {
-        return context.commit('addArticle', value.result);
-      });
+    getArticle: function getArticle(_ref4) {
+      var state = _ref4.state,
+        commit = _ref4.commit;
+      var category = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "全部";
+      var skipcount = state.page[category] * state.limitcount;
+      if (skipcount < state.total_num[category] || skipcount === 0) {
+        uniCloud.callFunction({
+          name: 'getArticle',
+          data: {
+            category: category,
+            skipcount: skipcount,
+            limitcount: state.limitcount,
+            token: uni.getStorageSync('token')
+          }
+        }).then(function (value) {
+          return commit('addArticle', {
+            category: category,
+            articles: value.result
+          });
+        });
+      } else {
+        return;
+      }
     },
     //根据文章id获取评论数据
-    getComment: function getComment(context, _ref3) {
-      var index = _ref3.index,
-        article_id = _ref3.article_id;
+    getComment: function getComment(context, _ref5) {
+      var index = _ref5.index,
+        article_id = _ref5.article_id;
       uniCloud.callFunction({
         name: 'getComment',
         data: {
@@ -17758,6 +17788,51 @@ var store = new _vuex.default.Store({
       uniCloud.databaseForJQL().collection('swiper').get().then(function (res) {
         store.commit('addSwiper', res.data);
       });
+    },
+    fetchArticleTotalNum: function fetchArticleTotalNum(_ref6) {
+      return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+        var commit, all_total_num, daily_total_num, rant_total_num, bazaar_total_num, lostFound_total_num;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                commit = _ref6.commit;
+                _context.next = 3;
+                return uniCloud.databaseForJQL().collection('article').where({}).count();
+              case 3:
+                all_total_num = _context.sent;
+                _context.next = 6;
+                return uniCloud.databaseForJQL().collection('article').where({
+                  'category': "日常"
+                }).count();
+              case 6:
+                daily_total_num = _context.sent;
+                _context.next = 9;
+                return uniCloud.databaseForJQL().collection('article').where({
+                  'category': "吐槽"
+                }).count();
+              case 9:
+                rant_total_num = _context.sent;
+                _context.next = 12;
+                return uniCloud.databaseForJQL().collection('article').where({
+                  'category': "集市"
+                }).count();
+              case 12:
+                bazaar_total_num = _context.sent;
+                _context.next = 15;
+                return uniCloud.databaseForJQL().collection('article').where({
+                  'category': "失物招领"
+                }).count();
+              case 15:
+                lostFound_total_num = _context.sent;
+                commit('setArticleTotalNum', [all_total_num.total, daily_total_num.total, rant_total_num.total, bazaar_total_num.total, lostFound_total_num.total]);
+              case 17:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
     } // async getReply(context, {article_index,comment_id}){
     // 	console.log("store120:",{article_index,comment_id});
     // 	uniCloud.callFunction({
@@ -17774,6 +17849,23 @@ var store = new _vuex.default.Store({
     // 		})
     // 	});
     // },
+  },
+  getters: {
+    allArticles: function allArticles(state) {
+      return state.article['全部'];
+    },
+    dailyArticles: function dailyArticles(state) {
+      return state.article['日常'];
+    },
+    rantArticles: function rantArticles(state) {
+      return state.article['吐槽'];
+    },
+    bazaarArticles: function bazaarArticles(state) {
+      return state.article['集市'];
+    },
+    lostFoundArticles: function lostFoundArticles(state) {
+      return state.article['失物招领'];
+    }
   }
 });
 var _default = store;
