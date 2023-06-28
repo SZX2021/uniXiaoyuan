@@ -1,7 +1,7 @@
 <template>
   <view class="about-container">
     <view class="about-info">
-      <image src="../../../static/logo.png" mode=""></image>
+      <image src="../../../static/touxiang.png" mode=""></image>
       <text class="info-title">墙墙校友圈</text>
       <text class="info-version">V1.0.0</text>
     </view>

@@ -45,6 +45,7 @@
   },
   "usingComponents": {
     "zdy-tabbar": "/components/zdy-tabbar",
-    "list-card": "/components/listCard"
+    "list-card": "/components/listCard",
+    "totop": "/components/view-top"
   }
 }

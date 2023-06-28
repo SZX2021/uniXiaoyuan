@@ -1,10 +1,12 @@
 import App from './App'
 import zdyTabbar from "components/zdy-tabbar.vue"
 import listCard from "components/listCard.vue"
+import totop from "components/view-top.vue"
 
 // 注册全局组件
 Vue.component('zdy-tabbar', zdyTabbar)
 Vue.component('listCard', listCard)
+Vue.component('totop', totop)
 
 // #ifndef VUE3
 import Vue from 'vue'

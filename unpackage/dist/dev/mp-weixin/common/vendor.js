@@ -248,22 +248,22 @@ function removeInterceptor(method, option) {
     removeInterceptorHook(globalInterceptors, method);
   }
 }
-function wrapperHook(hook, params) {
+function wrapperHook(hook) {
   return function (data) {
-    return hook(data, params) || data;
+    return hook(data) || data;
   };
 }
 function isPromise(obj) {
   return !!obj && ((0, _typeof2.default)(obj) === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
 }
-function queue(hooks, data, params) {
+function queue(hooks, data) {
   var promise = false;
   for (var i = 0; i < hooks.length; i++) {
     var hook = hooks[i];
     if (promise) {
-      promise = Promise.resolve(wrapperHook(hook, params));
+      promise = Promise.resolve(wrapperHook(hook));
     } else {
-      var res = hook(data, params);
+      var res = hook(data);
       if (isPromise(res)) {
         promise = Promise.resolve(res);
       }
@@ -286,7 +286,7 @@ function wrapperOptions(interceptor) {
     if (Array.isArray(interceptor[name])) {
       var oldCallback = options[name];
       options[name] = function callbackInterceptor(res) {
-        queue(interceptor[name], res, options).then(function (res) {
+        queue(interceptor[name], res).then(function (res) {
           /* eslint-disable no-mixed-operators */
           return isFn(oldCallback) && oldCallback(res) || res;
         });
@@ -335,8 +335,7 @@ function invokeApi(method, api, options) {
     if (Array.isArray(interceptor.invoke)) {
       var res = queue(interceptor.invoke, options);
       return res.then(function (options) {
-        // 重新访问 getApiInterceptorHooks, 允许 invoke 中再次调用 addInterceptor,removeInterceptor
-        return api.apply(void 0, [wrapperOptions(getApiInterceptorHooks(method), options)].concat(params));
+        return api.apply(void 0, [wrapperOptions(interceptor, options)].concat(params));
       });
     } else {
       return api.apply(void 0, [wrapperOptions(interceptor, options)].concat(params));
@@ -780,8 +779,8 @@ function populateParameters(result) {
     appVersion: "1.0.0",
     appVersionCode: "100",
     appLanguage: getAppLanguage(hostLanguage),
-    uniCompileVersion: "3.8.4",
-    uniRuntimeVersion: "3.8.4",
+    uniCompileVersion: "3.7.11",
+    uniRuntimeVersion: "3.7.11",
     uniPlatform: undefined || "mp-weixin",
     deviceBrand: deviceBrand,
     deviceModel: model,
@@ -1983,54 +1982,38 @@ function initEventChannel() {
 function initScopedSlotsParams() {
   var center = {};
   var parents = {};
-  function currentId(fn) {
-    var vueIds = this.$options.propsData.vueId;
-    if (vueIds) {
-      var vueId = vueIds.split(',')[0];
-      fn(vueId);
-    }
-  }
-  _vue.default.prototype.$hasSSP = function (vueId) {
-    var slot = center[vueId];
-    if (!slot) {
+  _vue.default.prototype.$hasScopedSlotsParams = function (vueId) {
+    var has = center[vueId];
+    if (!has) {
       parents[vueId] = this;
       this.$on('hook:destroyed', function () {
         delete parents[vueId];
       });
     }
-    return slot;
+    return has;
   };
-  _vue.default.prototype.$getSSP = function (vueId, name, needAll) {
-    var slot = center[vueId];
-    if (slot) {
-      var params = slot[name] || [];
-      if (needAll) {
-        return params;
-      }
-      return params[0];
+  _vue.default.prototype.$getScopedSlotsParams = function (vueId, name, key) {
+    var data = center[vueId];
+    if (data) {
+      var object = data[name] || {};
+      return key ? object[key] : object;
+    } else {
+      parents[vueId] = this;
+      this.$on('hook:destroyed', function () {
+        delete parents[vueId];
+      });
     }
   };
-  _vue.default.prototype.$setSSP = function (name, value) {
-    var index = 0;
-    currentId.call(this, function (vueId) {
-      var slot = center[vueId];
-      var params = slot[name] = slot[name] || [];
-      params.push(value);
-      index = params.length - 1;
-    });
-    return index;
-  };
-  _vue.default.prototype.$initSSP = function () {
-    currentId.call(this, function (vueId) {
-      center[vueId] = {};
-    });
-  };
-  _vue.default.prototype.$callSSP = function () {
-    currentId.call(this, function (vueId) {
+  _vue.default.prototype.$setScopedSlotsParams = function (name, value) {
+    var vueIds = this.$options.propsData.vueId;
+    if (vueIds) {
+      var vueId = vueIds.split(',')[0];
+      var object = center[vueId] = center[vueId] || {};
+      object[name] = value;
       if (parents[vueId]) {
         parents[vueId].$forceUpdate();
       }
-    });
+    }
   };
   _vue.default.mixin({
     destroyed: function destroyed() {
@@ -2182,7 +2165,6 @@ function parseBaseComponent(vueComponentOptions) {
     vueOptions = _initVueComponent2[1];
   var options = _objectSpread({
     multipleSlots: true,
-    // styleIsolation: 'apply-shared',
     addGlobalClass: true
   }, vueOptions.options || {});
   {
@@ -2847,6 +2829,7 @@ var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runt
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ 23));
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ 24));
 var _typeof2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/typeof */ 13));
+var isArray = Array.isArray;
 var isObject = function isObject(val) {
   return val !== null && (0, _typeof2.default)(val) === 'object';
 };
@@ -2925,7 +2908,7 @@ function parse(format, _ref) {
 function compile(tokens, values) {
   var compiled = [];
   var index = 0;
-  var mode = Array.isArray(values) ? 'list' : isObject(values) ? 'named' : 'unknown';
+  var mode = isArray(values) ? 'list' : isObject(values) ? 'named' : 'unknown';
   if (mode === 'unknown') {
     return compiled;
   }
@@ -2991,10 +2974,6 @@ function normalizeLocale(locale, messages) {
     return locale;
   }
   locale = locale.toLowerCase();
-  if (locale === 'chinese') {
-    // 支付宝
-    return LOCALE_ZH_HANS;
-  }
   if (locale.indexOf('zh') === 0) {
     if (locale.indexOf('-hans') > -1) {
       return LOCALE_ZH_HANS;
@@ -3007,11 +2986,7 @@ function normalizeLocale(locale, messages) {
     }
     return LOCALE_ZH_HANS;
   }
-  var locales = [LOCALE_EN, LOCALE_FR, LOCALE_ES];
-  if (messages && Object.keys(messages).length > 0) {
-    locales = Object.keys(messages);
-  }
-  var lang = startsWith(locale, locales);
+  var lang = startsWith(locale, [LOCALE_EN, LOCALE_FR, LOCALE_ES]);
   if (lang) {
     return lang;
   }
@@ -3318,7 +3293,7 @@ function compileJsonObj(jsonObj, localeValues, delimiters) {
   return jsonObj;
 }
 function walkJsonObj(jsonObj, walk) {
-  if (Array.isArray(jsonObj)) {
+  if (isArray(jsonObj)) {
     for (var i = 0; i < jsonObj.length; i++) {
       if (walk(jsonObj, i)) {
         return true;
@@ -3410,7 +3385,7 @@ module.exports = _createClass, module.exports.__esModule = true, module.exports[
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(global) {/*!
  * Vue.js v2.6.11
- * (c) 2014-2023 Evan You
+ * (c) 2014-2022 Evan You
  * Released under the MIT License.
  */
 /*  */
@@ -9420,13 +9395,12 @@ var LIFECYCLE_HOOKS$1 = [
     'onNavigationBarSearchInputChanged',
     'onNavigationBarSearchInputConfirmed',
     'onNavigationBarSearchInputClicked',
-    'onUploadDouyinVideo',
-    'onNFCReadMessage',
     //Component
     // 'onReady', // 兼容旧版本，应该移除该事件
     'onPageShow',
     'onPageHide',
-    'onPageResize'
+    'onPageResize',
+    'onUploadDouyinVideo'
 ];
 function lifecycleMixin$1(Vue) {
 
@@ -9481,9 +9455,9 @@ internalMixin(Vue);
 
 /***/ }),
 /* 26 */
-/*!******************************************!*\
-  !*** D:/testcode/uniXiaoyuan/pages.json ***!
-  \******************************************/
+/*!***********************************************************************!*\
+  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/pages.json ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -9984,20 +9958,18 @@ var k = "development" === "development",
   E = b({
     "address": [
         "127.0.0.1",
-        "192.168.135.1",
-        "192.168.239.1",
-        "192.168.1.3"
+        "10.5.7.248"
     ],
     "debugPort": 9000,
     "initialLaunchType": "local",
     "servePort": 7000,
     "skipFiles": [
         "<node_internals>/**",
-        "D:/Programs/HBuilderX/plugins/unicloud/**/*.js"
+        "D:/Users/user/Desktop/HBuilderX.3.4.7.20220422/HBuilderX/plugins/unicloud/**/*.js"
     ]
 }
 ),
-  O = b([{"provider":"aliyun","spaceName":"test-xiaoyuan","spaceId":"mp-a797baca-203d-4891-8ea0-0831ebc75329","clientSecret":"J0aL/dJBLFPDNi3TjvautQ==","endpoint":"https://api.next.bspapp.com"}]) || [],
+  O = b([{"provider":"aliyun","spaceName":"test221202","spaceId":"mp-449f655d-1dfc-47b3-8d77-5ea41022aae8","clientSecret":"M0R1pUwmJ+VyPTMoZre59Q==","endpoint":"https://api.next.bspapp.com"}]) || [],
   x = true;
 var R = "";
 try {
@@ -17351,9 +17323,9 @@ module.exports = _isNativeFunction, module.exports.__esModule = true, module.exp
 
 /***/ }),
 /* 37 */
-/*!***********************************************************************!*\
-  !*** D:/testcode/uniXiaoyuan/pages.json?{"type":"origin-pages-json"} ***!
-  \***********************************************************************/
+/*!****************************************************************************************************!*\
+  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/pages.json?{"type":"origin-pages-json"} ***!
+  \****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17453,9 +17425,9 @@ exports.default = _default;
 
 /***/ }),
 /* 38 */
-/*!**********************************************************!*\
-  !*** D:/testcode/uniXiaoyuan/pages.json?{"type":"stat"} ***!
-  \**********************************************************/
+/*!***************************************************************************************!*\
+  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/pages.json?{"type":"stat"} ***!
+  \***************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17609,9 +17581,9 @@ function normalizeComponent (
 
 /***/ }),
 /* 45 */
-/*!**********************************************!*\
-  !*** D:/testcode/uniXiaoyuan/store/index.js ***!
-  \**********************************************/
+/*!***************************************************************************!*\
+  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/store/index.js ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19130,9 +19102,9 @@ module.exports = index_cjs;
 
 /***/ }),
 /* 47 */
-/*!********************************************************!*\
-  !*** D:/testcode/uniXiaoyuan/uni.promisify.adaptor.js ***!
-  \********************************************************/
+/*!*************************************************************************************!*\
+  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/uni.promisify.adaptor.js ***!
+  \*************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19167,9 +19139,9 @@ uni.addInterceptor({
 /* 60 */,
 /* 61 */,
 /* 62 */
-/*!**************************************************!*\
-  !*** D:/testcode/uniXiaoyuan/pages/my/icont.css ***!
-  \**************************************************/
+/*!*******************************************************************************!*\
+  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/pages/my/icont.css ***!
+  \*******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19265,10 +19237,17 @@ uni.addInterceptor({
 /* 147 */,
 /* 148 */,
 /* 149 */,
-/* 150 */
-/*!***************************************************************************************************!*\
-  !*** D:/testcode/uniXiaoyuan/uni_modules/uni-dateformat/components/uni-dateformat/date-format.js ***!
-  \***************************************************************************************************/
+/* 150 */,
+/* 151 */,
+/* 152 */,
+/* 153 */,
+/* 154 */,
+/* 155 */,
+/* 156 */,
+/* 157 */
+/*!********************************************************************************************************************************!*\
+  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/uni_modules/uni-dateformat/components/uni-dateformat/date-format.js ***!
+  \********************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19482,15 +19461,15 @@ function friendlyDate(time, _ref) {
 }
 
 /***/ }),
-/* 151 */,
-/* 152 */,
-/* 153 */,
-/* 154 */,
-/* 155 */,
-/* 156 */
-/*!***********************************************************************************!*\
-  !*** D:/testcode/uniXiaoyuan/uni_modules/uni-icons/components/uni-icons/icons.js ***!
-  \***********************************************************************************/
+/* 158 */,
+/* 159 */,
+/* 160 */,
+/* 161 */,
+/* 162 */,
+/* 163 */
+/*!****************************************************************************************************************!*\
+  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/uni_modules/uni-icons/components/uni-icons/icons.js ***!
+  \****************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -20508,17 +20487,17 @@ var _default = {
 exports.default = _default;
 
 /***/ }),
-/* 157 */,
-/* 158 */,
-/* 159 */,
-/* 160 */,
-/* 161 */,
-/* 162 */,
-/* 163 */,
-/* 164 */
-/*!****************************************************************************************************************!*\
-  !*** D:/testcode/uniXiaoyuan/uni_modules/uni-file-picker/components/uni-file-picker/choose-and-upload-file.js ***!
-  \****************************************************************************************************************/
+/* 164 */,
+/* 165 */,
+/* 166 */,
+/* 167 */,
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */
+/*!*********************************************************************************************************************************************!*\
+  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/uni_modules/uni-file-picker/components/uni-file-picker/choose-and-upload-file.js ***!
+  \*********************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -20730,10 +20709,10 @@ function chooseAndUploadFile() {
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/wx.js */ 1)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 27)["default"]))
 
 /***/ }),
-/* 165 */
-/*!***********************************************************************************************!*\
-  !*** D:/testcode/uniXiaoyuan/uni_modules/uni-file-picker/components/uni-file-picker/utils.js ***!
-  \***********************************************************************************************/
+/* 172 */
+/*!****************************************************************************************************************************!*\
+  !*** C:/Users/user/Documents/HBuilderProjects/uniXiaoyuan/uni_modules/uni-file-picker/components/uni-file-picker/utils.js ***!
+  \****************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
