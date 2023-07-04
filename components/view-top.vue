@@ -44,7 +44,8 @@
     line-height: 70rpx;
     border-radius: 50%;
     background-color: rgba($color: #FFFFFF, $alpha: 0.8);
-    border: 1rpx solid #ddd;
+    display: flex;
+	justify-content: center;
     position: fixed;
     z-index: 999;
     // 距离右边

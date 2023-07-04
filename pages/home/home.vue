@@ -1,7 +1,7 @@
 <template>
   <view style="display: flex;flex-direction: column;">
     <swiper autoplay circular class="lunbotu">
-      <swiper-item v-for="(item,index1) in swipers " :key="index1">
+      <swiper-item v-for="(item,index1) in swiper" :key="index1">
         <image :src="item"></image>
       </swiper-item>
     </swiper>
@@ -14,7 +14,6 @@
       <contentCard v-show="items[current]==='集市'" :contentList="bazaarArticles" />
       <contentCard v-show="items[current]==='失物招领'" :contentList="lostFoundArticles" />
       <view style="width: 100%;height: 200rpx; padding-top: 22rpx;">
-        <p v-for="(item,index) in 50"> {{item}}</p>
         <P style="font-size: 20rpx; color: #888888;display: flex;justify-content: center;height: 200rpx;">
           人家也是有底线的，怎么刷都没有了哦~</P>
       </view>

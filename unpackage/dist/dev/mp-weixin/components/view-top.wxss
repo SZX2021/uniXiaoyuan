@@ -25,16 +25,17 @@
 /* 透明度 */
 /* 文章场景相关 */
 .top {
-  height: 80rpx;
-  width: 80rpx;
+  height: 70rpx;
+  width: 70rpx;
   text-align: center;
-  line-height: 80rpx;
+  line-height: 70rpx;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.8);
-  border: 1rpx solid #ddd;
+  display: flex;
+  justify-content: center;
   position: fixed;
   z-index: 999;
-  right: 30rpx;
+  right: 25rpx;
   bottom: 150rpx;
   -webkit-animation: heart 0.3s;
           animation: heart 0.3s;

@@ -125,7 +125,9 @@ const store = new Vuex.Store({
 		},
 		getSwiper(store){
 			uniCloud.databaseForJQL().collection('swiper').get().then((res)=>{
-				store.commit('addSwiper',res.data)
+				const newRes = [];
+				res.data.forEach(item => newRes.push(item.image));
+				store.commit('addSwiper',newRes)
 			})
 		},
 		async fetchArticleTotalNum({commit}){
