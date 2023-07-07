@@ -1,0 +1,1 @@
+<view><block wx:if="{{topShow}}"><view data-event-opts="{{[['tap',[['goTop']]]]}}" class="top" bindtap="__e"><uni-icons vue-id="c6ef5bc4-1" type="navigate-filled" size="{{55}}" color="#2b85e4" bind:__l="__l"></uni-icons></view></block></view>

@@ -1,0 +1,1 @@
+.top{height:70rpx;width:70rpx;text-align:center;line-height:70rpx;border-radius:50%;background-color:hsla(0,0%,100%,.8);display:flex;justify-content:center;position:fixed;z-index:999;right:25rpx;bottom:150rpx;-webkit-animation:heart .3s;animation:heart .3s}@-webkit-keyframes heart{0%{right:-30rpx}100%{right:30rpx}}@keyframes heart{0%{right:-30rpx}100%{right:30rpx}}

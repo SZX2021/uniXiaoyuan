@@ -1,6 +1,7 @@
 {
   "name": "uploadComment",
   "dependencies": {
+    "jsonwebtoken": "^9.0.0",
     "jwt": "file:../common/jwt",
     "uni-sec-check": "file:../../../uni_modules/uni-sec-check/uniCloud/cloudfunctions/common/uni-sec-check"
   },

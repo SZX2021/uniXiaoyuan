@@ -14,11 +14,11 @@
 			</view>
 			<view class="line"></view>
 			<!-- 是否匿名 -->
-			<view class="niming">
+			<!-- <view class="niming">
 				<text style="font-size: 24rpx;">开启匿名模式</text>
 
 				<switch color="#FCC53A" :checked="nimingFlag" style="transform: scale(0.7);" @change="isNiming" />
-			</view>
+			</view> -->
 		</view>
 
 		<button class="button" @click="uploadForm">发布投稿</button>

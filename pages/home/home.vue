@@ -8,11 +8,11 @@
 
     <uni-segmented-control :current="current" :values="items" styleType="text" @clickItem="onClickItem" />
     <view class="article">
-      <contentCard v-show="items[current]==='全部'" :contentList="allArticles" />
-      <contentCard v-show="items[current]==='日常'" :contentList="dailyArticles" />
-      <contentCard v-show="items[current]==='吐槽'" :contentList="rantArticles" />
-      <contentCard v-show="items[current]==='集市'" :contentList="bazaarArticles" />
-      <contentCard v-show="items[current]==='失物招领'" :contentList="lostFoundArticles" />
+      <contentCard v-show="items[current]==='全部'" :contentList="allArticles" :category="items[current]" />
+      <contentCard v-show="items[current]==='日常'" :contentList="dailyArticles" :category="items[current]"/>
+      <contentCard v-show="items[current]==='吐槽'" :contentList="rantArticles" :category="items[current]"/>
+      <contentCard v-show="items[current]==='集市'" :contentList="bazaarArticles" :category="items[current]"/>
+      <contentCard v-show="items[current]==='失物招领'" :contentList="lostFoundArticles" :category="items[current]"/>
       <view style="width: 100%;height: 200rpx; padding-top: 22rpx;">
         <P style="font-size: 20rpx; color: #888888;display: flex;justify-content: center;height: 200rpx;">
           人家也是有底线的，怎么刷都没有了哦~</P>
@@ -45,7 +45,7 @@
     onLoad() {
       uni.showLoading({
         title: '加载中...'
-      })
+      });
       this.getSwiper();
       this.getArticle();
       uni.hideLoading();

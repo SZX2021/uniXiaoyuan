@@ -39,9 +39,9 @@
 						<uni-icons type="chat" size='40rpx' @click="() => showKeyboard(true,'comment')"></uni-icons>
 						<view style="margin-right: 20rpx;font-size: 22rpx;">{{article.comment_num}}</view>
 						<uni-icons type="hand-up" size='40rpx' v-if="article.liked===false"
-							@click="articleLikeClicked('add',article_id)" />
+							@click="articleLikeClicked('add')" />
 						<uni-icons color="rgb(41, 121, 255)"  type="hand-up-filled" size='40rpx' v-else
-							@click="articleLikeClicked('sub',article_id)" />
+							@click="articleLikeClicked('sub')" />
 						<view style="font-size: 22rpx;">{{article.like_num}}</view>
 					</view>
 				</view>
@@ -77,63 +77,12 @@
 					</view>
 					<view class="comment-card-data-right">
 						<uni-icons type="hand-up" size='40rpx' v-if="item.liked===false"
-							@click="commentLikeClicked('add',article_id,item._id)" />
+							@click="commentLikeClicked('add',false,item)" />
 						<uni-icons color="rgb(41, 121, 255)" type="hand-up-filled" size='40rpx' v-else
-							@click="commentLikeClicked('sub',article_id,item._id)" />
+							@click="commentLikeClicked('sub',false,item)" />
 						<text style="font-size: 22rpx;margin-right: 20rpx;">{{item.like_num}}</text>
-						<uni-icons type="chat" size='40rpx'
-							@click="() => showKeyboard(true,'reply',item._id,item.commenter_info.user_name,item.commenter_info._id)" />
 					</view>
-					
-				</view>
-				
-				<!-- <view v-if="item.isViewAll === false">
-					<view class="view-all" v-if="item.reply_num > 0" @click="viewAll(article_index,index1,item._id)">
-						<text>展开{{item.reply_num}}条回复</text>
-					</view>
-				</view> -->
-				
-				
-				<!-- 评论回复区 -->
-				<!-- <view class="reply" v-for="(reply,index2) in item.reply" :key="index2"> -->
-					<!-- 头像组件无法修改样式，在组件外加一个view用来调整外边距 -->
-					<!-- <view class="reply-head"> -->
-						<!-- 发布者头像 -->
-						<!-- <image :src="reply.replyer_info.user_avatar" -->
-							<!-- style="border-radius: 50%;width: 60rpx;height: 60rpx;margin-right: 20rpx;"></image> -->
-						<!-- 发布者 -->
-						<!-- <view class="comment-publisher" style="align-self: center;font-size: 24rpx;"> -->
-							<!-- {{reply.replyer_info.user_name}} -->
-						<!-- </view> -->
-						<!-- <uni-icons type="forward" size="20rpx" style="margin: 0 20rpx;" /> -->
-						<!-- <view style="align-self: center;font-size: 24rpx; ">{{reply.replyer_to_user_name}}</view> -->
-					<!-- </view> -->
-					<!-- 发布内容 -->
-					<!-- <view class="reply-content"> -->
-						<!-- {{reply.content_reply}} -->
-					<!-- </view> -->
-
-					<!-- <view class="comment-card-data">
-						<view class="comment-card-data-left">
-							<view style="width: 80rpx;"></view>
-							<uni-dateformat :date="reply.time" :threshold="[60000,3600000,86400000]"></uni-dateformat>
-						</view>
-						<view class="comment-card-data-right">
-							<uni-icons type="hand-up" size='40rpx' v-if="reply.liked===false"
-								@click="replyLikeClicked('add',article_id,item._id,reply._id)" />
-							<uni-icons color="rgb(41, 121, 255)" type="hand-up-filled" size='40rpx' v-else
-								@click="replyLikeClicked('sub',article_id,item._id,reply._id)" />
-							<text style="font-size: 22rpx;">{{reply.like_num}}</text> -->
-							<!-- 评论按钮 -->
-							<!-- <uni-icons type="chat" size='40rpx'
-								@click="() => showKeyboard(true,'reply',item._id,reply.commenter_info.user_name,itme.commenter_info._id)"></uni-icons> -->
-					<!-- 	</view>
-
-					</view>
-					
-				
-				</view> -->
-			
+				</view>			
 			</view>
 
 			<!-- 键盘区 -->
@@ -159,9 +108,10 @@
 		data() {
 			return {
 				isShowKeyboard: false, //控制输入框显示
+				article: {},
 				message: '', //评论区输入框内容
-				article_id: '',
-				article_index: '',
+				category: '',
+				category_index: '',
 				message_type: String,
 				comment_id: String,
 				replyer_to_user: String,
@@ -173,21 +123,14 @@
 				title: '加载中...'
 			});
 			this.isShowKeyboard = JSON.parse(options.isShowKeyboard);
-			this.article_id = options.article_id;
+			this.category = options.category;
+			this.category_index = options.category_index;
 			this.message_type = options.message_type;
-			this.article_index = store.state.article.findIndex(item => item._id === options.article_id);
-			if (!("comment" in store.state.article[this.article_index])) {
-				store.dispatch('getComment', {
-					index: this.article_index,
-					article_id: options.article_id
-				});
+			this.article = this.$store.state.article[this.category][this.category_index];
+			if (!("comment" in this.article) ) {
+				store.dispatch('getComment',this.article);
 			};
 			uni.hideLoading();
-		},
-		computed: {
-			article() {
-				return store.state.article.find(item => item._id === this.article_id);
-			}
 		},
 		methods: {
 			checkLogin() {
@@ -227,13 +170,13 @@
 					this.replyer_to_user = replyer_to_user;
 					this.replyer_to_user_id = replyer_to_user_id;
 				}
-			},
-			
+			},	
 			sendMessage() {
 				const that = this;
 				if (!this.message) {
 					uni.showToast({
-						title: "输入不能为空"
+						title: "输入不能为空",
+						icon: "error"
 					});
 					return;
 				};
@@ -244,7 +187,7 @@
 					uniCloud.callFunction({
 						name: 'uploadComment',
 						data: {
-							article_id: this.article_id,
+							article_id: this.article._id,
 							content: this.message,
 							token: uni.getStorageSync('token'),
 							time: Date.now(),
@@ -258,54 +201,20 @@
 								icon: 'error'
 							});
 						} else {
-							store.dispatch('getComment', {
-								index: that.article_index,
-								article_id: that.article_id,
-							});
+							store.dispatch('getComment',this.article);
 							that.message = '';
 						};
 					});
 				};
-				if (this.message_type === "reply") {
-					uniCloud.callFunction({
-						name: 'uploadReply',
-						data: {
-							article_id: this.article_id,
-							content_reply: this.message,
-							replyer_name: uni.getStorageSync('user_info').user_name,
-							token: uni.getStorageSync('token'),
-							time: Date.now(),
-							comment_id: this.comment_id,
-							replyer_to_user_name: this.replyer_to_user,
-							replyer_to_user_id: this.replyer_to_user_id,
-						}
-					}).then((res) => {
-						console.log(that.comment_id);
-						uni.hideLoading();
-						if (res.result) {
-							uni.showToast({
-								title: '内容敏感',
-								icon: 'error'
-							});
-						} else {
-							console.log(that.comment_id);
-							store.dispatch('getReply', {
-								article_index: that.article_index,
-								comment_id: that.comment_id
-							});
-						};
-					});
-				}
 			},
-
-			articleLikeClicked(api, article_id) {
+			articleLikeClicked(api) {
 				if(!this.checkLogin()){
 					return ;
 				} else {
 					const liked = api === "add";
 					store.commit('tempSetLiked', {
 						liked,
-						aritcle_id
+						article:this.article
 					});
 					uniCloud.callFunction({
 						name: 'updateLike',
@@ -313,20 +222,20 @@
 							api: "article",
 							liked,
 							token: uni.getStorageSync('token'),
-							article_id
+							article_id: this.article._id
 						}
 					});
 				}
 			},
-			commentLikeClicked(api, article_id, comment_id) {
+			commentLikeClicked(api, article, comment) {
 				if(!this.checkLogin()){
 					return ;
 				} else {
 					const liked = (api === "add");
 					store.commit('tempSetLiked', {
 						liked,
-						article_id,
-						comment_id
+						article,
+						comment
 					});
 					uniCloud.callFunction({
 						name: 'updateLike',
@@ -334,36 +243,14 @@
 							api: "comment",
 							liked,
 							token: uni.getStorageSync('token'),
-							comment_id
+							comment_id: comment._id
 						}
 					});
 				};
 			},
-			// replyLikeClicked(api, article_id, comment_id, reply_id) {
-			// 	const liked = (api === "add");
-			// 	store.commit('tempSetLiked', {
-			// 		liked,
-			// 		article_id,
-			// 		comment_id,
-			// 		reply_id
-			// 	});
-			// 	uniCloud.callFunction({
-			// 		name: 'updateLike',
-			// 		data: {
-			// 			api: "reply",
-			// 			liked,
-			// 			token: uni.getStorageSync('token'),
-			// 			reply_id
-			// 		}
-			// 	});
-			// },
 			avatar() {
 				return uni.getStorageSync('user_info').user_avatar
 			},
-			// viewAll(article_index,comment_index,comment_id) {
-			// 	store.dispatch('getReply',{article_index,comment_id});
-			// 	store.commit('setIsViewAll',{article_index,comment_index});
-			// }
 		}
 	}
 </script>

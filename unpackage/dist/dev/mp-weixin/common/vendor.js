@@ -17670,9 +17670,11 @@ var store = new _vuex.default.Store({
       state.page[category]++;
     },
     addComment: function addComment(state, _ref2) {
-      var index = _ref2.index,
+      var article = _ref2.article,
         value = _ref2.value;
-      _vue.default.set(state.article[index], "comment", value);
+      console.log("32:", article);
+      _vue.default.set(article, "comment", value);
+      console.log("34:", article);
     },
     // addReply(state,{article_index,comment_id,value}) {
     // 	const comment = state.article[article_index].comment.find(item => item._id===comment_id);
@@ -17682,48 +17684,22 @@ var store = new _vuex.default.Store({
     // },
     tempSetLiked: function tempSetLiked(state, _ref3) {
       var liked = _ref3.liked,
-        article_id = _ref3.article_id,
-        comment_id = _ref3.comment_id,
-        reply_id = _ref3.reply_id;
-      //通过id定位点赞的内容
-      if (reply_id) {
-        var article = state.article.find(function (item) {
-          return article_id === item._id;
-        });
-        var comment = article.comment.find(function (item) {
-          return comment_id === item._id;
-        });
-        var reply = comment.reply.find(function (item) {
-          return reply_id === item._id;
-        });
-        reply.liked = liked;
+        article = _ref3.article,
+        comment = _ref3.comment;
+      console.log(article, liked);
+      if (article) {
+        article.liked = liked;
         if (liked) {
-          reply.like_num++;
+          _vue.default.set(article, 'like_num', article.like_num + 1);
         } else {
-          reply.like_num--;
-        }
-      } else if (comment_id) {
-        var _article = state.article.find(function (item) {
-          return item._id === article_id;
-        });
-        var _comment = _article.comment.find(function (item) {
-          return item._id === comment_id;
-        });
-        _comment.liked = liked;
-        if (liked) {
-          _comment.like_num++;
-        } else {
-          _comment.like_num--;
+          _vue.default.set(article, 'like_num', article.like_num - 1);
         }
       } else {
-        var _article2 = state.article.find(function (item) {
-          return article_id === item._id;
-        });
-        _article2.liked = liked;
+        _vue.default.set(comment, 'liked', liked);
         if (liked) {
-          _article2.like_num++;
+          _vue.default.set(comment, 'like_num', comment.like_num + 1);
         } else {
-          _article2.like_num--;
+          _vue.default.set(comment, 'like_num', comment.like_num - 1);
         }
       }
     },
@@ -17768,18 +17744,16 @@ var store = new _vuex.default.Store({
       }
     },
     //根据文章id获取评论数据
-    getComment: function getComment(context, _ref5) {
-      var index = _ref5.index,
-        article_id = _ref5.article_id;
+    getComment: function getComment(context, article) {
       uniCloud.callFunction({
         name: 'getComment',
         data: {
-          article_id: article_id,
+          article_id: article._id,
           token: uni.getStorageSync('token')
         }
       }).then(function (result) {
         context.commit('addComment', {
-          index: index,
+          article: article,
           value: result.result
         });
       });
@@ -17793,14 +17767,14 @@ var store = new _vuex.default.Store({
         store.commit('addSwiper', newRes);
       });
     },
-    fetchArticleTotalNum: function fetchArticleTotalNum(_ref6) {
+    fetchArticleTotalNum: function fetchArticleTotalNum(_ref5) {
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
         var commit, all_total_num, daily_total_num, rant_total_num, bazaar_total_num, lostFound_total_num;
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                commit = _ref6.commit;
+                commit = _ref5.commit;
                 _context.next = 3;
                 return uniCloud.databaseForJQL().collection('article').where({}).count();
               case 3:

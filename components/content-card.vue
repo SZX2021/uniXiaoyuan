@@ -1,8 +1,6 @@
 <template>
 	<view class="article-list">
 		<view class="article-list-card" v-for="(item,index) in contentList" :key="index">
-			
-			
 			<view class="article-list-card-head">
 				<view class="article-list-card-head-left">
 					<!-- 发布者头像 -->
@@ -27,7 +25,7 @@
 			</view>
 			
 			 <!-- 发布内容 -->
-			<view class="article-list-card-content" @click="toDetail(item._id,false)">
+			<view class="article-list-card-content" @click="toDetail(index,false)">
 				{{item.content}}
 			</view>
 			
@@ -45,12 +43,12 @@
 					<text style="margin-left: 2px;">次</text> -->
 				</view><!--例：浏览量 29次 -->
 				<view class="article-list-card-data-right">
-					<uni-icons type="chat" size='40rpx' @click="toDetail(item._id,true)"></uni-icons>
+					<uni-icons type="chat" size='40rpx' @click="toDetail(index,true)"></uni-icons>
 					<view style="margin-right: 20rpx;font-size: 22rpx;">{{item.comment_num}}</view>
-					<uni-icons type="hand-up" size='40rpx' v-if="!item.liked"
-						@click="likeClicked('add',item._id)" />
+					<uni-icons type="hand-up" size='40rpx' v-if="item.liked===false"
+						@click="likeClicked('add',index)" />
 					<uni-icons color="rgb(41, 121, 255)" type="hand-up-filled" size='40rpx' v-else
-						@click="likeClicked('sub',item._id)" />
+						@click="likeClicked('sub',index)" />
 					<view style="font-size: 22rpx;">{{item.like_num}}</view>
 				</view>
 			</view>
@@ -63,19 +61,23 @@
 		props: {
 			contentList: {
 				type: Array
+			},
+			category: {
+				type: String
 			}
 		},
 		methods: {
-			toDetail(value, flag) {
+			toDetail(category_index,flag) {
 				uni.navigateTo({
-					url: `../detail/detail?article_id=${value}&isShowKeyboard=${flag}&message_type=comment`
+					url: `../detail/detail?category=${this.category}&category_index=${category_index}&isShowKeyboard=${flag}&message_type=comment`
 				});
 			},
-			likeClicked(api, article_id) {
+			likeClicked(api,category_index) {
 				let liked = api === "add";
+				const article = this.$store.state.article[this.category][category_index]
 				this.$store.commit('tempSetLiked', {
 					liked,
-					article_id
+					article
 				});
 				uniCloud.callFunction({
 					name: 'updateLike',
@@ -83,7 +85,7 @@
 						api:"article",
 						liked,
 						token: uni.getStorageSync('token'),
-						article_id
+						article_id: article._id
 					}
 				})
 			}

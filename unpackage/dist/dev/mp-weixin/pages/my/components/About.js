@@ -189,7 +189,7 @@ var _default = {
       var _this = this;
       wx.showModal({
         title: '联系我们',
-        content: '邮箱：Hashan@88.com',
+        content: '邮箱：2379762197@qq.com',
         cancelText: '关闭',
         confirmText: '复制',
         success: function success(res) {

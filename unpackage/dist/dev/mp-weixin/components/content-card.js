@@ -210,25 +210,27 @@ exports.default = void 0;
 //
 //
 //
-//
-//
 var _default = {
   props: {
     contentList: {
       type: Array
+    },
+    category: {
+      type: String
     }
   },
   methods: {
-    toDetail: function toDetail(value, flag) {
+    toDetail: function toDetail(category_index, flag) {
       uni.navigateTo({
-        url: "../detail/detail?article_id=".concat(value, "&isShowKeyboard=").concat(flag, "&message_type=comment")
+        url: "../detail/detail?category=".concat(this.category, "&category_index=").concat(category_index, "&isShowKeyboard=").concat(flag, "&message_type=comment")
       });
     },
-    likeClicked: function likeClicked(api, article_id) {
+    likeClicked: function likeClicked(api, category_index) {
       var liked = api === "add";
+      var article = this.$store.state.article[this.category][category_index];
       this.$store.commit('tempSetLiked', {
         liked: liked,
-        article_id: article_id
+        article: article
       });
       uniCloud.callFunction({
         name: 'updateLike',
@@ -236,7 +238,7 @@ var _default = {
           api: "article",
           liked: liked,
           token: uni.getStorageSync('token'),
-          article_id: article_id
+          article_id: article._id
         }
       });
     }

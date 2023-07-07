@@ -28,8 +28,10 @@ const store = new Vuex.Store({
 			state.article[category].push(...articles);
 			state.page[category]++;
 		},
-		addComment(state, {index,value}) {
-			Vue.set(state.article[index], "comment", value);
+		addComment(state,{article,value}) {
+			console.log("32:",article);
+			Vue.set(article,"comment",value)
+			console.log("34:",article);
 		},
 		// addReply(state,{article_index,comment_id,value}) {
 		// 	const comment = state.article[article_index].comment.find(item => item._id===comment_id);
@@ -39,40 +41,26 @@ const store = new Vuex.Store({
 		// },
 		tempSetLiked(state, {
 			liked,
-			article_id,
-			comment_id,
-			reply_id
+			article,
+			comment
 		}) {
-			//通过id定位点赞的内容
-			if (reply_id) {
-				const article = state.article.find(item => article_id === item._id);
-				const comment = article.comment.find(item => comment_id === item._id);
-				const reply = comment.reply.find(item => reply_id === item._id);
-				reply.liked = liked;
-				if (liked) {
-					reply.like_num++;
+			console.log(article,liked);
+			if(article){
+				article.liked = liked;
+				if(liked){
+					Vue.set(article,'like_num',article.like_num+1)
 				} else {
-					reply.like_num--;
-				}
-			} else if (comment_id) {
-				const article = state.article.find(item => item._id === article_id);
-				const comment = article.comment.find(item =>item._id === comment_id);
-				comment.liked = liked;
-				if (liked) {
-					comment.like_num++;
-				} else {
-					comment.like_num--;
+					Vue.set(article,'like_num',article.like_num-1)
 				}
 			} else {
-				const article = state.article.find(item => article_id === item._id);
-				article.liked = liked;
-				if (liked) {
-					article.like_num++;
+				Vue.set(comment,'liked',liked)
+				if(liked){
+					Vue.set(comment,'like_num',comment.like_num+1)
 				} else {
-					article.like_num--;
+					Vue.set(comment,'like_num',comment.like_num-1)
 				}
-
 			}
+			
 
 		},
 		// setIsViewAll(state, {article_index,comment_index}){
@@ -109,18 +97,15 @@ const store = new Vuex.Store({
 			
 		},
 		//根据文章id获取评论数据
-		getComment(context, {index,article_id}) {
+		getComment(context, article) {
 			uniCloud.callFunction({
 				name: 'getComment',
 				data: {
-					article_id,
+					article_id: article._id,
 					token: uni.getStorageSync('token'),
 				}
 			}).then(result => {
-				context.commit('addComment', {
-					index,
-					value: result.result
-				})
+				context.commit('addComment', {article,value:result.result})
 			});
 		},
 		getSwiper(store){

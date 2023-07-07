@@ -134,23 +134,6 @@ var render = function () {
     _vm.e0 = function () {
       return _vm.showKeyboard(true, "comment")
     }
-    _vm.e1 = function (item) {
-      var args = [],
-        len = arguments.length - 1
-      while (len-- > 0) args[len] = arguments[len + 1]
-
-      var _temp = args[args.length - 1].currentTarget.dataset,
-        _temp2 = _temp.eventParams || _temp["event-params"],
-        item = _temp2.item
-      var _temp, _temp2
-      return _vm.showKeyboard(
-        true,
-        "reply",
-        item._id,
-        item.commenter_info.user_name,
-        item.commenter_info._id
-      )
-    }
   }
   _vm.$mp.data = Object.assign(
     {},
@@ -305,66 +288,16 @@ var _index = _interopRequireDefault(__webpack_require__(/*! @/store/index.js */ 
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 var _default = {
   data: function data() {
     return {
       isShowKeyboard: false,
       //控制输入框显示
+      article: {},
       message: '',
       //评论区输入框内容
-      article_id: '',
-      article_index: '',
+      category: '',
+      category_index: '',
       message_type: String,
       comment_id: String,
       replyer_to_user: String,
@@ -376,27 +309,15 @@ var _default = {
       title: '加载中...'
     });
     this.isShowKeyboard = JSON.parse(options.isShowKeyboard);
-    this.article_id = options.article_id;
+    this.category = options.category;
+    this.category_index = options.category_index;
     this.message_type = options.message_type;
-    this.article_index = _index.default.state.article.findIndex(function (item) {
-      return item._id === options.article_id;
-    });
-    if (!("comment" in _index.default.state.article[this.article_index])) {
-      _index.default.dispatch('getComment', {
-        index: this.article_index,
-        article_id: options.article_id
-      });
+    this.article = this.$store.state.article[this.category][this.category_index];
+    if (!("comment" in this.article)) {
+      _index.default.dispatch('getComment', this.article);
     }
     ;
     uni.hideLoading();
-  },
-  computed: {
-    article: function article() {
-      var _this = this;
-      return _index.default.state.article.find(function (item) {
-        return item._id === _this.article_id;
-      });
-    }
   },
   methods: {
     checkLogin: function checkLogin() {
@@ -437,10 +358,12 @@ var _default = {
       }
     },
     sendMessage: function sendMessage() {
+      var _this = this;
       var that = this;
       if (!this.message) {
         uni.showToast({
-          title: "输入不能为空"
+          title: "输入不能为空",
+          icon: "error"
         });
         return;
       }
@@ -452,7 +375,7 @@ var _default = {
         uniCloud.callFunction({
           name: 'uploadComment',
           data: {
-            article_id: this.article_id,
+            article_id: this.article._id,
             content: this.message,
             token: uni.getStorageSync('token'),
             time: Date.now()
@@ -466,56 +389,22 @@ var _default = {
               icon: 'error'
             });
           } else {
-            _index.default.dispatch('getComment', {
-              index: that.article_index,
-              article_id: that.article_id
-            });
+            _index.default.dispatch('getComment', _this.article);
             that.message = '';
           }
           ;
         });
       }
       ;
-      if (this.message_type === "reply") {
-        uniCloud.callFunction({
-          name: 'uploadReply',
-          data: {
-            article_id: this.article_id,
-            content_reply: this.message,
-            replyer_name: uni.getStorageSync('user_info').user_name,
-            token: uni.getStorageSync('token'),
-            time: Date.now(),
-            comment_id: this.comment_id,
-            replyer_to_user_name: this.replyer_to_user,
-            replyer_to_user_id: this.replyer_to_user_id
-          }
-        }).then(function (res) {
-          console.log(that.comment_id);
-          uni.hideLoading();
-          if (res.result) {
-            uni.showToast({
-              title: '内容敏感',
-              icon: 'error'
-            });
-          } else {
-            console.log(that.comment_id);
-            _index.default.dispatch('getReply', {
-              article_index: that.article_index,
-              comment_id: that.comment_id
-            });
-          }
-          ;
-        });
-      }
     },
-    articleLikeClicked: function articleLikeClicked(api, article_id) {
+    articleLikeClicked: function articleLikeClicked(api) {
       if (!this.checkLogin()) {
         return;
       } else {
         var liked = api === "add";
         _index.default.commit('tempSetLiked', {
           liked: liked,
-          aritcle_id: aritcle_id
+          article: this.article
         });
         uniCloud.callFunction({
           name: 'updateLike',
@@ -523,20 +412,20 @@ var _default = {
             api: "article",
             liked: liked,
             token: uni.getStorageSync('token'),
-            article_id: article_id
+            article_id: this.article._id
           }
         });
       }
     },
-    commentLikeClicked: function commentLikeClicked(api, article_id, comment_id) {
+    commentLikeClicked: function commentLikeClicked(api, article, comment) {
       if (!this.checkLogin()) {
         return;
       } else {
         var liked = api === "add";
         _index.default.commit('tempSetLiked', {
           liked: liked,
-          article_id: article_id,
-          comment_id: comment_id
+          article: article,
+          comment: comment
         });
         uniCloud.callFunction({
           name: 'updateLike',
@@ -544,36 +433,15 @@ var _default = {
             api: "comment",
             liked: liked,
             token: uni.getStorageSync('token'),
-            comment_id: comment_id
+            comment_id: comment._id
           }
         });
       }
       ;
     },
-    // replyLikeClicked(api, article_id, comment_id, reply_id) {
-    // 	const liked = (api === "add");
-    // 	store.commit('tempSetLiked', {
-    // 		liked,
-    // 		article_id,
-    // 		comment_id,
-    // 		reply_id
-    // 	});
-    // 	uniCloud.callFunction({
-    // 		name: 'updateLike',
-    // 		data: {
-    // 			api: "reply",
-    // 			liked,
-    // 			token: uni.getStorageSync('token'),
-    // 			reply_id
-    // 		}
-    // 	});
-    // },
     avatar: function avatar() {
       return uni.getStorageSync('user_info').user_avatar;
-    } // viewAll(article_index,comment_index,comment_id) {
-    // 	store.dispatch('getReply',{article_index,comment_id});
-    // 	store.commit('setIsViewAll',{article_index,comment_index});
-    // }
+    }
   }
 };
 exports.default = _default;
