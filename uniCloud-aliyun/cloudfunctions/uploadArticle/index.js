@@ -1,8 +1,8 @@
 'use strict';
-const jwt = require("jsonwebtoken");
+const jwt = require("jwt");
 const db = uniCloud.database();
 exports.main = async (event, context) => {
-	const openid = jwt.verify(event.token,"secret").openid;
+	const openid = jwt.verifyToken(event.token).openid;
 	db.collection('article').add({
 		content: event.content,
 		images: event.images,

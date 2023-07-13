@@ -1,5 +1,5 @@
 'use strict';
-const jwt = require('jsonwebtoken');
+const jwt = require('jwt');
 exports.main = async (event, context) => {
 	const dbJQL = uniCloud.databaseForJQL({
 		event,
@@ -17,7 +17,7 @@ exports.main = async (event, context) => {
 	
 	//根据是否传入token，对数据结构进行处理
 	if(event.token){
-		const openid = jwt.verify(event.token,"secret").openid;		
+		const openid = jwt.verifyToken(event.token).openid;		
 		const resultList = resultTemp.data.map((item) => {
 			item.liked = (item.like_user_id.indexOf(openid)!==-1);
 			// 将原始元素中author_id字段内容，提取到一级字段中作为author_info字段

@@ -225,7 +225,38 @@ var _default = {
         url: "../detail/detail?category=".concat(this.category, "&category_index=").concat(category_index, "&isShowKeyboard=").concat(flag, "&message_type=comment")
       });
     },
+    //检查用户是否登录
+    checkLogin: function checkLogin() {
+      // 检查是否注册过
+      var token = uni.getStorageSync('token');
+      if (!token) {
+        uni.showModal({
+          title: '提示',
+          content: '未登录，请您登录',
+          success: function success(res) {
+            if (res.confirm) {
+              console.log('用户点击确定');
+              uni.switchTab({
+                url: '/pages/my/my'
+              });
+            } else if (res.cancel) {
+              console.log('用户点击取消');
+              uni.switchTab({
+                url: '/pages/home/home'
+              });
+            }
+          }
+        });
+        return 0;
+      } else {
+        return 1;
+      }
+    },
     likeClicked: function likeClicked(api, category_index) {
+      if (this.checkLogin() === 0) {
+        return;
+      }
+      ;
       var liked = api === "add";
       var article = this.$store.state.article[this.category][category_index];
       this.$store.commit('tempSetLiked', {
@@ -240,6 +271,8 @@ var _default = {
           token: uni.getStorageSync('token'),
           article_id: article._id
         }
+      }).catch(function (e) {
+        console.log(e);
       });
     }
   }

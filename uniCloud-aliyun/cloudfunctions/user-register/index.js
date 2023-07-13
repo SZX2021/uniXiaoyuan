@@ -1,7 +1,7 @@
 'use strict';
 
 let rp = require("request-promise");
-let jwt = require("jsonwebtoken");
+const jwt = require('jwt')
 
 const db = uniCloud.database();
 
@@ -30,9 +30,9 @@ exports.main = async (event, context) => {
 	}
 
 	//token加密
-	let token = jwt.sign({
+	let token = jwt.generateToken({
 		openid: res.openid
-	}, "secret");
+	});
 
 	//查询用户是否注册
 	let user = await db.collection('user')

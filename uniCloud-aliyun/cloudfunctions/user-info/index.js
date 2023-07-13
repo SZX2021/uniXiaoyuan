@@ -1,5 +1,5 @@
 'use strict';
-let jwt = require("jsonwebtoken");
+let jwt = require("jwt");
 
 const db = uniCloud.database();
 
@@ -13,7 +13,7 @@ exports.main = async (event, context) => {
 
 	//解密token
 	try {
-		const decoded = await jwt.verify(token, secret);
+		const decoded = await jwt.verifyToken(token);
 		const openid = decoded.openid
 		//查询id 后更改数据
 		await db.collection('user').where({

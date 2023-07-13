@@ -1,9 +1,9 @@
 'use strict';
 const db = uniCloud.database();
 const dbCmd = db.command;
-const jwt = require('jsonwebtoken');
+const jwt = require('jwt');
 exports.main = async (event, context) => {
-	const openid = jwt.verify(event.token, "secret").openid
+	const openid = jwt.verifyToken(event.token, "secret").openid
 	if (event.api === "article") {
 		if (event.liked) {
 			db.collection('article').doc(event.article_id).update({

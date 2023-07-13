@@ -1,12 +1,12 @@
 'use strict';
-const jwt = require('jsonwebtoken');
+const jwt = require('jwt');
 exports.main = async (event, context) => {
 	const dbJQL = uniCloud.databaseForJQL({
 		event,
 		context
 	});
 	if(event.token){
-		const openid = jwt.verify(event.token, "secret").openid;
+		const openid = jwt.verifyToken(event.token).openid;
 		const commentTemp = await dbJQL.collection('comment').where({
 			article_id: event.article_id
 		}).orderBy('_id desc').getTemp();

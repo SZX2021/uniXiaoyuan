@@ -1,5 +1,5 @@
 'use strict';
-const jwt = require('jsonwebtoken'); 
+const jwt = require('jwt'); 
 const UniSecCheck = require('uni-sec-check');
 const db = uniCloud.database();
 const dbCmd = db.command;
@@ -9,7 +9,7 @@ exports.main = async (event, context) => {
 		event,
 		context
 	});
-	const openid = jwt.verify(event.token,"secret").openid;
+	const openid = jwt.verifyToken(event.token).openid;
 	const uniSecCheck = new UniSecCheck({
 		provider: "mp-weixin",
 		requestId: context.requestId,

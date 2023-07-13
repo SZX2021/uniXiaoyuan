@@ -1,9 +1,9 @@
 {
   "name": "updateLike",
-  "dependencies": {
-    "jsonwebtoken": "^9.0.0"
-  },
   "extensions": {
     "uni-cloud-jql": {}
+  },
+  "dependencies": {
+    "jwt": "file:../common/jwt"
   }
 }

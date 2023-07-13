@@ -1,7 +1,9 @@
 {
   "name": "getReply",
-  "dependencies": {},
   "extensions": {
     "uni-cloud-jql": {}
+  },
+  "dependencies": {
+    "jwt": "file:../common/jwt"
   }
 }

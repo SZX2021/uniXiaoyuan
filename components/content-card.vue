@@ -72,7 +72,38 @@
 					url: `../detail/detail?category=${this.category}&category_index=${category_index}&isShowKeyboard=${flag}&message_type=comment`
 				});
 			},
+			//检查用户是否登录
+			checkLogin() {
+				// 检查是否注册过
+				const token = uni.getStorageSync('token');
+				if (!token) {
+					uni.showModal({
+						title: '提示',
+						content: '未登录，请您登录',
+						success: function(res) {
+							if (res.confirm) {
+								console.log('用户点击确定');
+								uni.switchTab({
+									url: '/pages/my/my'
+								});
+							} else if (res.cancel) {
+								console.log('用户点击取消');
+								uni.switchTab({
+									url: '/pages/home/home'
+								});
+							}
+						}
+					});
+					return 0
+			
+				} else {
+					return 1
+				}
+			},
 			likeClicked(api,category_index) {
+				if(this.checkLogin()===0){
+					return
+				};
 				let liked = api === "add";
 				const article = this.$store.state.article[this.category][category_index]
 				this.$store.commit('tempSetLiked', {
@@ -87,6 +118,8 @@
 						token: uni.getStorageSync('token'),
 						article_id: article._id
 					}
+				}).catch(e =>{
+					console.log(e)
 				})
 			}
 		},
