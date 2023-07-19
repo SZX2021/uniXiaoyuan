@@ -3,7 +3,7 @@ const jwt = require("jwt");
 const db = uniCloud.database();
 exports.main = async (event, context) => {
 	const openid = jwt.verifyToken(event.token).openid;
-	db.collection('article').add({
+	await db.collection('article').add({
 		content: event.content,
 		images: event.images,
 		author_id: openid,

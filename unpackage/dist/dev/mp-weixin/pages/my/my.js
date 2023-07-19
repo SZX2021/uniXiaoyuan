@@ -136,7 +136,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni, wx, uniCloud) {
+/* WEBPACK VAR INJECTION */(function(uni, uniCloud, wx) {
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
 Object.defineProperty(exports, "__esModule", {
@@ -171,9 +171,6 @@ var _icont = _interopRequireDefault(__webpack_require__(/*! ./icont.css */ 62));
 // 引入icont
 // import listCard from "./components/listCard.vue"
 var _default = {
-  components: {
-    // listCard
-  },
   data: function data() {
     return {
       list: [{
@@ -205,41 +202,36 @@ var _default = {
     login: function login() {
       var _this = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
-        var userInfoRes, codeRes, code, dataRes, userdata;
+        var codeRes, code, dataRes, userdata;
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                _context.prev = 0;
                 //加载
                 uni.showLoading({
                   title: '加载中'
                 });
-                //获取用户头像与姓名
-                _context.next = 3;
-                return wx.getUserProfile({
-                  desc: "Wexin" // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-                });
-              case 3:
-                userInfoRes = _context.sent;
-                _context.next = 6;
+                //获取code
+                _context.next = 4;
                 return uni.login({
                   provider: 'weixin'
                 });
-              case 6:
+              case 4:
                 codeRes = _context.sent;
                 console.log(codeRes);
-                code = codeRes.code;
-                _context.prev = 9;
-                _context.next = 12;
+                code = codeRes.code; //云函数 提交数据
+                _context.next = 9;
                 return uniCloud.callFunction({
                   name: 'user-register',
                   data: {
                     code: code,
-                    avatarUrl: userInfoRes.userInfo.avatarUrl,
-                    nickName: userInfoRes.userInfo.nickName
+                    avatarUrl: "https://mp-a797baca-203d-4891-8ea0-0831ebc75329.cdn.bspapp.com/default/touxiang.png",
+                    //touxiang.png上传后的地址
+                    nickName: "ybuer" + Date.now()
                   }
                 });
-              case 12:
+              case 9:
                 dataRes = _context.sent;
                 //返回的用户数据
                 userdata = dataRes.result; //消失加载效果
@@ -248,18 +240,18 @@ var _default = {
                 uni.setStorageSync('user_info', userdata.user);
                 uni.setStorageSync('token', userdata.token);
                 // data里面存
-                _this.token = dataRes.token;
+                _this.token = userdata.token;
                 _this.userInfo.avatarUrl = userdata.user.user_avatar;
                 _this.userInfo.nickName = userdata.user.user_name;
                 // 页面重载
                 uni.redirectTo({
                   url: 'my'
                 });
-                _context.next = 27;
+                _context.next = 24;
                 break;
-              case 23:
-                _context.prev = 23;
-                _context.t0 = _context["catch"](9);
+              case 20:
+                _context.prev = 20;
+                _context.t0 = _context["catch"](0);
                 //消失加载效果
                 uni.hideLoading();
                 //提示失败
@@ -268,12 +260,12 @@ var _default = {
                   icon: 'error',
                   duration: 2000
                 });
-              case 27:
+              case 24:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[9, 23]]);
+        }, _callee, null, [[0, 20]]);
       }))();
     },
     //跳转用户信息编辑页面
@@ -285,7 +277,7 @@ var _default = {
   }
 };
 exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/wx.js */ 1)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 27)["default"]))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 27)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/wx.js */ 1)["default"]))
 
 /***/ }),
 

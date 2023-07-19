@@ -315,9 +315,12 @@ var _default = {
     this.article = this.$store.state.article[this.category][this.category_index];
     if (!("comment" in this.article)) {
       _index.default.dispatch('getComment', this.article);
+      this.$watch('article', this.watchCall, {
+        flush: 'post'
+      });
+    } else {
+      uni.hideLoading();
     }
-    ;
-    uni.hideLoading();
   },
   methods: {
     checkLogin: function checkLogin() {
@@ -359,7 +362,6 @@ var _default = {
     },
     sendMessage: function sendMessage() {
       var _this = this;
-      var that = this;
       if (!this.message) {
         uni.showToast({
           title: "输入不能为空",
@@ -369,7 +371,7 @@ var _default = {
       }
       ;
       uni.showLoading({
-        title: '敏感内容检测中...'
+        title: '发布中...'
       });
       if (this.message_type === "comment") {
         uniCloud.callFunction({
@@ -390,7 +392,8 @@ var _default = {
             });
           } else {
             _index.default.dispatch('getComment', _this.article);
-            that.message = '';
+            _this.message = '';
+            _this.article.comment_num++;
           }
           ;
         });
@@ -441,6 +444,11 @@ var _default = {
     },
     avatar: function avatar() {
       return uni.getStorageSync('user_info').user_avatar;
+    },
+    watchCall: function watchCall() {
+      if ("comment" in this.article) {
+        uni.hideLoading();
+      }
     }
   }
 };

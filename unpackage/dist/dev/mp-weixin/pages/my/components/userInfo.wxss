@@ -1,4 +1,8 @@
 
+.error {
+	color: red;
+	font-size: 12px;
+}
 page {
 	background-color: rgb(245, 247, 250);
 }

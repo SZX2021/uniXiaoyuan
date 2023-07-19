@@ -24,6 +24,17 @@ const store = new Vuex.Store({
 
 	},
 	mutations: {
+		resetData(state){
+			state.article = {
+				'全部': [],
+				'日常': [],
+				'吐槽': [],
+				'集市': [],
+				'失物招领': [],
+			};//键值对为分类列表，如："全部"：[文章数据]
+			state.page = {'全部':0,'日常':0,'吐槽':0,'集市':0,'失物招领':0}; //不同分类的分页情况
+			state.total_num = {'全部':0,'日常':0,'吐槽':0,'集市':0,'失物招领':0};
+		},
 		addArticle(state,{category,articles}) {
 			state.article[category].push(...articles);
 			state.page[category]++;

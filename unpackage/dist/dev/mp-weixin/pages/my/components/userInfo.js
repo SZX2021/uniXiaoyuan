@@ -97,30 +97,34 @@ var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/r
 //
 //
 //
+//
+//
 var _default = {
   data: function data() {
     return {
-      avatarUrl: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
+      avatarUrl: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0',
+      userInfo: {
+        user_name: '',
+        user_gender: '男',
+        user_phoneNumber: '',
+        user_signature: ''
+      },
+      userNameValid: true,
+      phoneNumberValid: true
     };
   },
+  onShow: function onShow() {
+    this.userInfo = uni.getStorageSync('user_info');
+  },
   methods: {
-    //页面加载时
-    onLoad: function onLoad() {},
-    //头像更换
     onChooseAvatar: function onChooseAvatar(e) {
       var _this = this;
       var avatarUrl = e.detail.avatarUrl;
-
-      //图片转换成base64
       uni.getFileSystemManager().readFile({
         filePath: avatarUrl,
-        //选择图片返回的相对路径
         encoding: 'base64',
-        //编码格式
         success: function success(res) {
-          //成功的回调
-          console.log(res);
-          var base64 = 'data:image/jpeg;base64,' + res.data; //不加上这串字符，在页面无法显示的哦
+          var base64 = 'data:image/jpeg;base64,' + res.data;
           _this.avatarUrl = base64;
         },
         fail: function fail(e) {
@@ -128,61 +132,49 @@ var _default = {
         }
       });
     },
-    //处理数据并且调云函数
-    formSubmit: function formSubmit(e) {
+    radioChange: function radioChange(e) {
+      this.userInfo.user_gender = e.detail.value;
+    },
+    formSubmit: function formSubmit() {
       var _this2 = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
-        var fromInfo, userInfo, isok, token, res;
+        var formInfo, validation, token, res;
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                //加载
                 uni.showLoading({
                   title: '加载中'
                 });
-                //表单数据
-                fromInfo = e.target.value; // 用户数据
-                userInfo = {
-                  user_avatar: _this2.avatarUrl,
-                  user_name: fromInfo.userName,
-                  user_gender: fromInfo.radio,
-                  user_phoneNumber: fromInfo.phoneNumber,
-                  user_signature: fromInfo.signature
-                };
-                uni.setStorageSync('user_info', userInfo);
-
-                //检查表单
-                isok = _this2.rules(userInfo);
-                if (isok.res) {
-                  _context.next = 8;
+                formInfo = _this2.userInfo;
+                uni.setStorageSync('user_info', formInfo);
+                validation = _this2.validateForm(formInfo);
+                if (validation.valid) {
+                  _context.next = 7;
                   break;
                 }
                 uni.showToast({
-                  title: isok.title,
+                  title: validation.errorMessage,
                   icon: 'none',
                   duration: 2000
                 });
-                return _context.abrupt("return", 0);
-              case 8:
-                //获取token
-                token = uni.getStorageSync('token'); //云函数 提交数据
-                _context.next = 11;
+                return _context.abrupt("return");
+              case 7:
+                token = uni.getStorageSync('token');
+                _context.next = 10;
                 return uniCloud.callFunction({
                   name: 'user-info',
                   data: {
                     token: token,
-                    userInfo: userInfo
+                    userInfo: formInfo
                   }
                 });
-              case 11:
+              case 10:
                 res = _context.sent;
-                //返回成功
-                if (res.result == 'ok') {
-                  //消失加载效果
+                console.log(res);
+                if (res.result === 'ok') {
                   uni.hideLoading();
-                  uni.setStorageSync('user_info', userInfo);
-                  //跳转用户页面
+                  uni.setStorageSync('user_info', formInfo);
                   uni.reLaunch({
                     url: '/pages/my/my'
                   });
@@ -190,7 +182,7 @@ var _default = {
                   uni.showToast({
                     title: '保存失败',
                     duration: 2000,
-                    icon: "error"
+                    icon: 'error'
                   });
                 }
               case 13:
@@ -201,23 +193,22 @@ var _default = {
         }, _callee);
       }))();
     },
-    //表单验证
-    rules: function rules(userInfo) {
+    validateForm: function validateForm(userInfo) {
       if (!userInfo.user_name.length) {
         return {
-          title: '名字不能为空',
-          res: 0
+          valid: false,
+          errorMessage: '名字不能为空'
         };
       }
       var reg = /^[1][3,4,5,7,8][0-9]{9}$/;
       if (!reg.test(userInfo.user_phoneNumber)) {
         return {
-          title: '手机号不正确',
-          res: 1
+          valid: false,
+          errorMessage: '手机号不正确'
         };
       }
       return {
-        res: 1
+        valid: true
       };
     }
   }

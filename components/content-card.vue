@@ -8,7 +8,7 @@
 						style="border-radius: 50%;width: 80rpx;height: 80rpx; margin-right: 10px;"></image>
 					<view>
 						<!-- 发布者 -->
-						<view class="" style="color: #FC965E; font-weight: bold;">
+						<view class="" style="color: #FC965E; font-weight: bold;margin-bottom: 10rpx;">
 							{{item.author_info.user_name}}
 						</view>
 						<!-- 发布时间 -->

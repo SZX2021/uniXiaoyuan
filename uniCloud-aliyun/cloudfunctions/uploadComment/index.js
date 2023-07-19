@@ -14,18 +14,19 @@ exports.main = async (event, context) => {
 		provider: "mp-weixin",
 		requestId: context.requestId,
 	});
+	console.log(openid);
 	const checkRes = await uniSecCheck.textSecCheck({
 		content: event.content, // 文本内容，不可超过500KB
 		openid, // 用户的小程序openid
 		scene: 2, // 场景值
 		version: 2, // 接口版本号
 	});
-	
+	console.log("uploadComment23:",checkRes);
 	if(checkRes.result.suggest!="pass"){
 		return false
 	} else{
 		
-		dbJQL.collection('comment').add({
+		await dbJQL.collection('comment').add({
 			"article_id": event.article_id,
 			"commenter_id": openid,
 			"content": event.content,
@@ -34,7 +35,7 @@ exports.main = async (event, context) => {
 			"like_user_id": [],
 			"reply_num": 0,
 		});
-		db.collection('article').doc(event.article_id).update({
+		await db.collection('article').doc(event.article_id).update({
 				comment_num: dbCmd.inc(1)
 		})
 	}

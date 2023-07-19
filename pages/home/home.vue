@@ -48,14 +48,22 @@
       });
       this.getSwiper();
       this.getArticle();
-      uni.hideLoading();
-
-      this.getArticle("日常");
-      this.getArticle("吐槽");
-      this.getArticle("集市");
-      this.getArticle("失物招领");
-      this.fetchArticleTotalNum();
+	  this.$watch('allArticles',this.watchCall,{flush:'post'});
+      
     },
+	onReady() {
+		this.getArticle("日常");
+		this.getArticle("吐槽");
+		this.getArticle("集市");
+		this.getArticle("失物招领");
+		this.fetchArticleTotalNum();
+	},
+	onPullDownRefresh() {
+		store.commit('resetData');
+		uni.reLaunch({
+			url: 'home'
+		})
+	},
     onPageScroll(e) {
       // 更新保存的滚动条位置
       this.scrollTopList[this.current] = e.scrollTop;
@@ -77,7 +85,6 @@
       swiper() {
         return store.state.swiper
       },
-
     },
     methods: {
       ...mapActions([
@@ -93,8 +100,13 @@
         if (this.current !== e.currentIndex) {
           this.current = e.currentIndex
         };
-      }
-
+      },
+	  watchCall(){
+		  if(this.allArticles.length <= 10){
+			  uni.hideLoading()
+		  }
+	  }
+	  
     }
   }
 </script>

@@ -330,7 +330,6 @@ var _default = {
                 return _this.$refs.images.upload();
               case 8:
                 //将选中的图片上传到云储存
-                console.log("测试：", _this.images);
                 uniCloud.callFunction({
                   name: "uploadArticle",
                   data: {
@@ -345,12 +344,15 @@ var _default = {
                   }
                 });
                 uni.hideLoading;
-                _index.default.dispatch('getArticle');
-                uni.redirectTo({
-                  url: '../home/home'
-                });
                 uni.showToast({
                   title: '发布成功'
+                });
+                uni.switchTab({
+                  url: '../home/home'
+                });
+                _index.default.commit('resetData');
+                uni.reLaunch({
+                  url: '../home/home'
                 });
               case 14:
               case "end":

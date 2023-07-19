@@ -129,8 +129,12 @@
 			this.article = this.$store.state.article[this.category][this.category_index];
 			if (!("comment" in this.article) ) {
 				store.dispatch('getComment',this.article);
-			};
-			uni.hideLoading();
+				this.$watch('article',this.watchCall,{flush:'post'});
+			} else {
+				uni.hideLoading();
+			}
+			
+			
 		},
 		methods: {
 			checkLogin() {
@@ -172,7 +176,6 @@
 				}
 			},	
 			sendMessage() {
-				const that = this;
 				if (!this.message) {
 					uni.showToast({
 						title: "输入不能为空",
@@ -181,7 +184,7 @@
 					return;
 				};
 				uni.showLoading({
-					title: '敏感内容检测中...'
+					title: '发布中...'
 				});
 				if (this.message_type === "comment") {
 					uniCloud.callFunction({
@@ -202,7 +205,8 @@
 							});
 						} else {
 							store.dispatch('getComment',this.article);
-							that.message = '';
+							this.message = '';
+							this.article.comment_num++
 						};
 					});
 				};
@@ -251,6 +255,11 @@
 			avatar() {
 				return uni.getStorageSync('user_info').user_avatar
 			},
+			watchCall(){
+				if("comment" in this.article){
+					uni.hideLoading()
+				}
+			}
 		}
 	}
 </script>

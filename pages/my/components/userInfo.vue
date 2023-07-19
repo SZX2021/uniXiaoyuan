@@ -1,35 +1,37 @@
 <template>
 	<view class="user-info-container">
-		<!-- 头像选择器 -->
 		<button class="avatar-wrapper" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
 			<image class="avatar" :src="avatarUrl"></image>
 		</button>
-		<!-- 填写信息 -->
-		<form class="info-card" @submit="formSubmit" ref="from">
+		<form class="info-card" @submit="formSubmit" ref="form">
 			<view class="form-item">
 				<text class="title">姓名：</text>
-				<input name="userName" class="weui-input input" placeholder="请输入昵称" type="nickname" />
+				<input name="userName" class="weui-input input" placeholder="请输入昵称" type="text"
+					v-model="userInfo.user_name" required />
+				<span class="error" v-if="!userNameValid">请输入有效的姓名</span>
 			</view>
 			<view class="form-item">
-				<view class="title">性别： </view>
-				<radio-group name="radio" class="radio-group">
+				<text class="title">性别： </text>
+				<radio-group name="radio" class="radio-group" @change="radioChange">
 					<label class="radio">
-						<radio value="男" /><text>男</text>
+						<radio value="男" :checked="userInfo.user_gender==='男'? true:false"/><text>男</text>
 					</label>
 					<label class="radio">
-						<radio value="女" /><text>女</text>
+						<radio value="女" :checked="userInfo.user_gender==='女'? true:false"/><text>女</text>
 					</label>
 				</radio-group>
 			</view>
 			<view class="form-item">
 				<text class="title">手机：</text>
-				<input name="phoneNumber" class="input" type="tel" placeholder="请输入手机号" />
+				<input name="phoneNumber" class="input" type="tel" placeholder="请输入手机号"
+					v-model="userInfo.user_phoneNumber" required pattern="\d{11}" />
+				<span class="error" v-if="!phoneNumberValid">请输入有效的手机号</span>
 			</view>
 			<view class="form-item">
 				<text class="title">签名：</text>
-				<textarea name="signature" class="textarea" placeholder="请输入个性签名"></textarea>
+				<textarea name="signature" class="textarea" placeholder="请输入个性签名"
+					v-model="userInfo.user_signature"></textarea>
 			</view>
-			<!-- 保存信息 -->
 			<button form-type="submit" class="submit">保存信息</button>
 		</form>
 	</view>
@@ -40,122 +42,110 @@
 		data() {
 			return {
 				avatarUrl: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0',
-			}
-
+				userInfo: {
+					user_name: '',
+					user_gender: '男',
+					user_phoneNumber: '',
+					user_signature: ''
+				},
+				userNameValid: true,
+				phoneNumberValid: true
+			};
+		},
+		onShow() {
+			this.userInfo = uni.getStorageSync('user_info')
 		},
 		methods: {
-			//页面加载时
-			onLoad() {
-
-			},
-			//头像更换
 			onChooseAvatar(e) {
 				const {
 					avatarUrl
-				} = e.detail
+				} = e.detail;
 
-				//图片转换成base64
 				uni.getFileSystemManager().readFile({
-					filePath: avatarUrl, //选择图片返回的相对路径
-					encoding: 'base64', //编码格式
-					success: res => { //成功的回调
-						console.log(res);
-						let base64 = 'data:image/jpeg;base64,' + res.data //不加上这串字符，在页面无法显示的哦
-						this.avatarUrl = base64
+					filePath: avatarUrl,
+					encoding: 'base64',
+					success: (res) => {
+						let base64 = 'data:image/jpeg;base64,' + res.data;
+						this.avatarUrl = base64;
 					},
 					fail: (e) => {
 						console.log("图片转换失败" + e);
 					}
-				})
-
+				});
 			},
-			//处理数据并且调云函数
-			async formSubmit(e) {
-				//加载
+			radioChange(e){
+				this.userInfo.user_gender = e.detail.value
+			}
+			,
+			async formSubmit() {
 				uni.showLoading({
 					title: '加载中'
 				});
-				//表单数据
-				const fromInfo = e.target.value
+				const formInfo = this.userInfo;
 
-				// 用户数据
-				const userInfo = {
-					user_avatar: this.avatarUrl,
-					user_name: fromInfo.userName,
-					user_gender: fromInfo.radio,
-					user_phoneNumber: fromInfo.phoneNumber,
-					user_signature: fromInfo.signature
-				}
-				uni.setStorageSync('user_info', userInfo)
+				uni.setStorageSync('user_info', formInfo);
 
-				//检查表单
-				const isok = this.rules(userInfo)
-				if (!isok.res) {
-
+				const validation = this.validateForm(formInfo);
+				if (!validation.valid) {
 					uni.showToast({
-						title: isok.title,
+						title: validation.errorMessage,
 						icon: 'none',
 						duration: 2000
-					})
-					return 0
+					});
+					return;
 				}
-				//获取token
+
 				const token = uni.getStorageSync('token');
-				//云函数 提交数据
 				const res = await uniCloud.callFunction({
 					name: 'user-info',
 					data: {
 						token,
-						userInfo
+						userInfo: formInfo
 					}
-				})
-				//返回成功
-				if (res.result == 'ok') {
-					//消失加载效果
+				});
+				console.log(res);
+				if (res.result === 'ok') {
 					uni.hideLoading();
-					uni.setStorageSync('user_info', userInfo)
-					//跳转用户页面
+					uni.setStorageSync('user_info', formInfo);
 					uni.reLaunch({
 						url: '/pages/my/my'
 					});
-
 				} else {
 					uni.showToast({
 						title: '保存失败',
 						duration: 2000,
-						icon: "error"
-					})
-
+						icon: 'error'
+					});
 				}
-
 			},
-			//表单验证
-			rules(userInfo) {
+			validateForm(userInfo) {
 				if (!userInfo.user_name.length) {
 					return {
-						title: '名字不能为空',
-						res: 0
-					}
+						valid: false,
+						errorMessage: '名字不能为空'
+					};
 				}
 				let reg = /^[1][3,4,5,7,8][0-9]{9}$/;
 				if (!reg.test(userInfo.user_phoneNumber)) {
 					return {
-						title: '手机号不正确',
-						res: 1
+						valid: false,
+						errorMessage: '手机号不正确'
 					};
 				}
 				return {
-					res: 1
-				}
-
+					valid: true
+				};
 			}
-
 		}
-
-	}
+	};
 </script>
 
 <style>
+	.error {
+		color: red;
+		font-size: 12px;
+	}
+
 	page {
 		background-color: rgb(245, 247, 250);
 

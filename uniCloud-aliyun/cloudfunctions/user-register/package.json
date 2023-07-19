@@ -1,9 +1,9 @@
 {
   "name": "user-register",
   "dependencies": {
+    "jwt": "file:../common/jwt",
     "request": "^2.88.2",
-    "request-promise": "^4.2.6",
-    "jwt": "file:../common/jwt"
+    "request-promise": "^4.2.6"
   },
   "extensions": {
     "uni-cloud-jql": {}

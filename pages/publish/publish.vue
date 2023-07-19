@@ -139,7 +139,6 @@
 					title: '发布中...'
 				});
 				await this.$refs.images.upload(); //将选中的图片上传到云储存
-				console.log("测试：",this.images);
 				uniCloud.callFunction({
 					name: "uploadArticle",
 					data: {
@@ -152,14 +151,16 @@
 					},
 				});
 				uni.hideLoading;
-				store.dispatch('getArticle');
-				uni.redirectTo({
-					url: '../home/home'
-				});
-
 				uni.showToast({
 					title: '发布成功'
 				});
+				uni.switchTab({
+					url: '../home/home'
+				});
+				store.commit('resetData');
+				uni.reLaunch({
+					url: '../home/home'
+				})
 			}
 		}
 	}

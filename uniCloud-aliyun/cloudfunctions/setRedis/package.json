@@ -2,6 +2,7 @@
   "name": "setRedis",
   "dependencies": {},
   "extensions": {
-    "uni-cloud-jql": {}
+    "uni-cloud-jql": {},
+    "uni-cloud-redis": {}
   }
 }

@@ -9986,7 +9986,7 @@ var k = "development" === "development",
         "127.0.0.1",
         "192.168.135.1",
         "192.168.239.1",
-        "192.168.0.11"
+        "192.168.10.25"
     ],
     "debugPort": 9000,
     "initialLaunchType": "remote",
@@ -17662,6 +17662,29 @@ var store = new _vuex.default.Store({
     };
   },
   mutations: {
+    resetData: function resetData(state) {
+      state.article = {
+        '全部': [],
+        '日常': [],
+        '吐槽': [],
+        '集市': [],
+        '失物招领': []
+      }; //键值对为分类列表，如："全部"：[文章数据]
+      state.page = {
+        '全部': 0,
+        '日常': 0,
+        '吐槽': 0,
+        '集市': 0,
+        '失物招领': 0
+      }; //不同分类的分页情况
+      state.total_num = {
+        '全部': 0,
+        '日常': 0,
+        '吐槽': 0,
+        '集市': 0,
+        '失物招领': 0
+      };
+    },
     addArticle: function addArticle(state, _ref) {
       var _state$article$catego;
       var category = _ref.category,
