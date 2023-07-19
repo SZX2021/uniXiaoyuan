@@ -3,7 +3,6 @@ const db = uniCloud.database();
 const dbCmd = db.command;
 const jwt = require('jwt');
 exports.main = async (event, context) => {
-	console.log(event)
 	const openid = jwt.verifyToken(event.token, "secret").openid
 	if (event.api === "article") {
 		if (event.liked) {

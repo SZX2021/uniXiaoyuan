@@ -14,14 +14,12 @@ exports.main = async (event, context) => {
 		provider: "mp-weixin",
 		requestId: context.requestId,
 	});
-	console.log(openid);
 	const checkRes = await uniSecCheck.textSecCheck({
 		content: event.content, // 文本内容，不可超过500KB
 		openid, // 用户的小程序openid
 		scene: 2, // 场景值
 		version: 2, // 接口版本号
 	});
-	console.log("uploadComment23:",checkRes);
 	if(checkRes.result.suggest!="pass"){
 		return false
 	} else{
