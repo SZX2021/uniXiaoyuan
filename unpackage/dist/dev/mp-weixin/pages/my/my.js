@@ -187,17 +187,17 @@ var _default = {
       userInfoUrl: '/pages/my/components/userInfo'
     };
   },
+  onShow: function onShow() {
+    // 检查是否注册过
+    var token = uni.getStorageSync('token');
+    if (token) {
+      var userInfo = uni.getStorageSync('user_info');
+      this.token = token;
+      this.userInfo.avatarUrl = userInfo.user_avatar;
+      this.userInfo.nickName = userInfo.user_name;
+    }
+  },
   methods: {
-    onLoad: function onLoad() {
-      // 检查是否注册过
-      var token = uni.getStorageSync('token');
-      if (token) {
-        var userInfo = uni.getStorageSync('user_info');
-        this.token = token;
-        this.userInfo.avatarUrl = userInfo.user_avatar;
-        this.userInfo.nickName = userInfo.user_name;
-      }
-    },
     // 注册
     login: function login() {
       var _this = this;

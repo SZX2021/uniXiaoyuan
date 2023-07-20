@@ -102,15 +102,15 @@ var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/r
 var _default = {
   data: function data() {
     return {
-      avatarUrl: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0',
       userInfo: {
+        user_avatar: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0',
         user_name: '',
         user_gender: '男',
-        user_phoneNumber: '',
+        // user_phoneNumber: '',
         user_signature: ''
       },
-      userNameValid: true,
-      phoneNumberValid: true
+      userNameValid: true
+      // phoneNumberValid: true
     };
   },
   onShow: function onShow() {
@@ -125,7 +125,7 @@ var _default = {
         encoding: 'base64',
         success: function success(res) {
           var base64 = 'data:image/jpeg;base64,' + res.data;
-          _this.avatarUrl = base64;
+          _this.userInfo.user_avatar = base64;
         },
         fail: function fail(e) {
           console.log("图片转换失败" + e);
@@ -175,7 +175,7 @@ var _default = {
                 if (res.result === 'ok') {
                   uni.hideLoading();
                   uni.setStorageSync('user_info', formInfo);
-                  uni.reLaunch({
+                  uni.switchTab({
                     url: '/pages/my/my'
                   });
                 } else {
@@ -200,13 +200,13 @@ var _default = {
           errorMessage: '名字不能为空'
         };
       }
-      var reg = /^[1][3,4,5,7,8][0-9]{9}$/;
-      if (!reg.test(userInfo.user_phoneNumber)) {
-        return {
-          valid: false,
-          errorMessage: '手机号不正确'
-        };
-      }
+      // let reg = /^[1][3,4,5,7,8][0-9]{9}$/;
+      // if (!reg.test(userInfo.user_phoneNumber)) {
+      // 	return {
+      // 		valid: false,
+      // 		errorMessage: '手机号不正确'
+      // 	};
+      // }
       return {
         valid: true
       };

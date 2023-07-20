@@ -22,7 +22,6 @@ exports.main = async (event, context) => {
 			user_name: userInfo.user_name,
 			user_avatar: userInfo.user_avatar,
 			user_gender: userInfo.user_gender,
-			user_phoneNumber: userInfo.user_phoneNumber,
 			user_signature: userInfo.user_signature
 		})
 		return 'ok'

@@ -33,6 +33,4 @@
 //     "reply_num": 2
 // })
 // 清空数据表
-db.collection("comment_reply").where(
-  '_id >= "648c3b70e1a35c14d5bbbff5"'
-).remove()
+db.collection("comment").remove()

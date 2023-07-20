@@ -13,8 +13,8 @@ exports.main = async (event, context) => {
     nickName
   } = event;
   //微信登录配置
-  const SECRET = "自己的";
-  const APPID = "自己的"
+  const SECRET = "e8ff4436d1aa4bafaa86101ee05f9ec8";
+  const APPID = "wx45d141a964f1356c"
   let URL =
     `https://api.weixin.qq.com/sns/jscode2session?appid=${APPID}&secret=${SECRET}&js_code=${code}&grant_type=authorization_code `;
   let res = await rp(URL);
@@ -51,7 +51,6 @@ exports.main = async (event, context) => {
       user_name: nickName,
       user_avatar: avatarUrl,
       user_gender: '',
-      user_phoneNumber: '',
       user_signature: '',
     });
     return {
@@ -59,7 +58,6 @@ exports.main = async (event, context) => {
         user_name: nickName,
         user_avatar: avatarUrl,
         user_gender: '',
-        user_phoneNumber: '',
         user_signature: '',
       },
       token,

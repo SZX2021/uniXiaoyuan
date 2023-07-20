@@ -4,8 +4,8 @@
 	"required": [],
 	"permission": {
 		"read": true,
-		"create": false,
-		"update": false,
+		"create": true,
+		"update": true,
 		"delete": false
 	},
 	"properties": {
@@ -17,6 +17,13 @@
 		},
 		"user_avatar": {
 			"description": "头像"
+		},
+		"user_gender": {
+			"bsonType": "string",
+			"description": "性别"
+		},
+		"user_signature": {
+			"description": "签名"
 		}
 	}
 }

@@ -41,19 +41,18 @@
 				userInfoUrl: '/pages/my/components/userInfo'
 			}
 		},
+		onShow() {
+			// 检查是否注册过
+			const token = uni.getStorageSync('token');
+			if (token) {
+				const userInfo = uni.getStorageSync('user_info');
+				this.token = token;
+				this.userInfo.avatarUrl = userInfo.user_avatar;
+				this.userInfo.nickName = userInfo.user_name;
+			}
+		
+		},
 		methods: {
-
-			onLoad() {
-				// 检查是否注册过
-				const token = uni.getStorageSync('token');
-				if (token) {
-					const userInfo = uni.getStorageSync('user_info')
-					this.token = token;
-					this.userInfo.avatarUrl = userInfo.user_avatar;
-					this.userInfo.nickName = userInfo.user_name;
-				}
-
-			},
 			// 注册
 			async login() {
 				try {

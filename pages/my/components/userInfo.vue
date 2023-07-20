@@ -1,7 +1,7 @@
 <template>
 	<view class="user-info-container">
 		<button class="avatar-wrapper" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
-			<image class="avatar" :src="avatarUrl"></image>
+			<image class="avatar" :src="userInfo.user_avatar"></image>
 		</button>
 		<form class="info-card" @submit="formSubmit" ref="form">
 			<view class="form-item">
@@ -21,12 +21,12 @@
 					</label>
 				</radio-group>
 			</view>
-			<view class="form-item">
+			<!-- <view class="form-item">
 				<text class="title">手机：</text>
 				<input name="phoneNumber" class="input" type="tel" placeholder="请输入手机号"
 					v-model="userInfo.user_phoneNumber" required pattern="\d{11}" />
 				<span class="error" v-if="!phoneNumberValid">请输入有效的手机号</span>
-			</view>
+			</view> -->
 			<view class="form-item">
 				<text class="title">签名：</text>
 				<textarea name="signature" class="textarea" placeholder="请输入个性签名"
@@ -41,15 +41,15 @@
 	export default {
 		data() {
 			return {
-				avatarUrl: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0',
 				userInfo: {
+					user_avatar: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0',
 					user_name: '',
 					user_gender: '男',
-					user_phoneNumber: '',
+					// user_phoneNumber: '',
 					user_signature: ''
 				},
 				userNameValid: true,
-				phoneNumberValid: true
+				// phoneNumberValid: true
 			};
 		},
 		onShow() {
@@ -66,7 +66,7 @@
 					encoding: 'base64',
 					success: (res) => {
 						let base64 = 'data:image/jpeg;base64,' + res.data;
-						this.avatarUrl = base64;
+						this.userInfo.user_avatar = base64;
 					},
 					fail: (e) => {
 						console.log("图片转换失败" + e);
@@ -107,7 +107,7 @@
 				if (res.result === 'ok') {
 					uni.hideLoading();
 					uni.setStorageSync('user_info', formInfo);
-					uni.reLaunch({
+					uni.switchTab({
 						url: '/pages/my/my'
 					});
 				} else {
@@ -125,13 +125,13 @@
 						errorMessage: '名字不能为空'
 					};
 				}
-				let reg = /^[1][3,4,5,7,8][0-9]{9}$/;
-				if (!reg.test(userInfo.user_phoneNumber)) {
-					return {
-						valid: false,
-						errorMessage: '手机号不正确'
-					};
-				}
+				// let reg = /^[1][3,4,5,7,8][0-9]{9}$/;
+				// if (!reg.test(userInfo.user_phoneNumber)) {
+				// 	return {
+				// 		valid: false,
+				// 		errorMessage: '手机号不正确'
+				// 	};
+				// }
 				return {
 					valid: true
 				};
